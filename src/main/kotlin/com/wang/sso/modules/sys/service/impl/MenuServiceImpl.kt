@@ -22,6 +22,7 @@ open class MenuServiceImpl : MenuService {
     @Transactional
     override fun insert(entity: Menu?) {
         if (entity != null) {
+            entity.preInsert()
             val i = menuDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -32,6 +33,7 @@ open class MenuServiceImpl : MenuService {
     @Transactional
     override fun update(entity: Menu?) {
         if (entity != null) {
+            entity.preUpdate()
             val i = menuDao.update(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
@@ -42,6 +44,7 @@ open class MenuServiceImpl : MenuService {
     @Transactional
     override fun delete(entity: Menu?) {
         if (entity != null) {
+            entity.preLogicDelete()
             val i = menuDao.delete(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)

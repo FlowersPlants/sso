@@ -1,6 +1,7 @@
 package com.wang.sso.core.filter
 
 import com.alibaba.fastjson.JSONObject
+import com.wang.sso.core.exception.SsoException
 import org.springframework.http.MediaType
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -8,6 +9,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.nio.charset.Charset
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -21,8 +23,7 @@ import javax.servlet.http.HttpServletResponse
  */
 class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        println(request!!.contentType)
-        if (request.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
+        if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
             getParameters(request)
 
             val authRequest = UsernamePasswordAuthenticationToken(this.obtainUsername(request), this.obtainPassword(request))
@@ -49,11 +50,12 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
 
     /**
      * 自定义登录参数名称
+     * <p>account：登录账号，pwd：登录密码，validateCode：验证码，mobile：手机号</p>
      */
     companion object {
         private const val PARAMETER_USERNAME = "account"
         private const val PARAMETER_PASSWORD = "pwd"
-//        private const val PARAMETER_VALID_CODE = "validCode"
+//        private const val PARAMETER_VALIDATE_CODE = "validateCode"
 //        private const val PARAMETER_MOBILE = "mobile"
     }
 
@@ -67,7 +69,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
      */
     private fun getParameters(request: HttpServletRequest) {
         try {
-            val streamReader = BufferedReader(InputStreamReader(request.inputStream, "UTF-8"))
+            val streamReader = BufferedReader(InputStreamReader(request.inputStream, Charset.defaultCharset()))
             val responseStrBuilder = StringBuilder()
             var inputStr: String? = ""
             while (inputStr != null) {
@@ -79,6 +81,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
             paramsMap.putAll(jsonObject)
         } catch (e: IOException) {
             e.printStackTrace()
+            throw SsoException()
         }
     }
 }

@@ -22,6 +22,7 @@ open class RoleServiceImpl : RoleService {
     @Transactional
     override fun insert(entity: Role?) {
         if (entity != null) {
+            entity.preInsert()
             val i = roleDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -32,6 +33,7 @@ open class RoleServiceImpl : RoleService {
     @Transactional
     override fun update(entity: Role?) {
         if (entity != null) {
+            entity.preUpdate()
             val i = roleDao.update(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
@@ -42,6 +44,7 @@ open class RoleServiceImpl : RoleService {
     @Transactional
     override fun delete(entity: Role?) {
         if (entity != null) {
+            entity.preLogicDelete()
             val i = roleDao.delete(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)

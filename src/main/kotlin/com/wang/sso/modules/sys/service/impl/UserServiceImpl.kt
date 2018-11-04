@@ -26,6 +26,7 @@ open class UserServiceImpl : UserService {
     @Transactional
     override fun insert(entity: User?) {
         if (entity != null) {
+            entity.preInsert()
             val i = userDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -37,6 +38,7 @@ open class UserServiceImpl : UserService {
     @Transactional
     override fun update(entity: User?) {
         if (entity != null) {
+            entity.preUpdate()
             val i = userDao.update(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
@@ -47,6 +49,7 @@ open class UserServiceImpl : UserService {
     @Transactional
     override fun delete(entity: User?) {
         if (entity != null) {
+            entity.preLogicDelete()
             val i = userDao.delete(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)

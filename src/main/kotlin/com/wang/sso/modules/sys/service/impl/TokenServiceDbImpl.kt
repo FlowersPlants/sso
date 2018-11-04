@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
+/**
+ * 保存到db数据库的token，默认
+ */
 @Service
 @Primary
 class TokenServiceDbImpl : TokenService {
