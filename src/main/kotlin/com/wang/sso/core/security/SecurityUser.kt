@@ -120,8 +120,9 @@ class SecurityUser : UserDetails {
                 "account='" + account + '\''.toString() +
                 ", username='" + username + '\''.toString() +
                 ", token='" + token + '\''.toString() +
-                ", loginTime=" + loginTime +
-                ", expireTime=" + expireTime +
+                ", loginTime=" + loginTime + '\''.toString() +
+                ", expireTime=" + expireTime + '\''.toString() +
+                ", status=" + status + '\''.toString() +
                 '}'.toString()
     }
 }

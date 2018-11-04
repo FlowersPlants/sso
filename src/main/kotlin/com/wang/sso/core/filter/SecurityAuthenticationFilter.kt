@@ -26,35 +26,48 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
         if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
             getParameters(request)
 
+            println("obtainParameterValue方法执行结果：" + obtainParameterValue(request, PARAMETER_REMEMBER_ME))
             val authRequest = UsernamePasswordAuthenticationToken(this.obtainUsername(request), this.obtainPassword(request))
             setDetails(request, authRequest)
         }
         return super.attemptAuthentication(request, response)
     }
 
-    override fun obtainUsername(request: HttpServletRequest?): String {
+    override fun obtainUsername(request: HttpServletRequest): String {
         return if (paramsMap.isNotEmpty()) {
             paramsMap.getValue(PARAMETER_USERNAME).toString()
         } else {
-            request!!.getParameter(PARAMETER_USERNAME)
+            request.getParameter(PARAMETER_USERNAME)
         }
     }
 
-    override fun obtainPassword(request: HttpServletRequest?): String {
+    override fun obtainPassword(request: HttpServletRequest): String {
         return if (paramsMap.isNotEmpty()) {
             paramsMap.getValue(PARAMETER_PASSWORD).toString()
         } else {
-            request!!.getParameter(PARAMETER_PASSWORD)
+            request.getParameter(PARAMETER_PASSWORD)
+        }
+    }
+
+    /**
+     * 获取参数值，有很多自定义参数时，可重构原获取方式
+     */
+    private fun obtainParameterValue(request: HttpServletRequest, paramKey: String): String {
+        return if (paramsMap.isNotEmpty()) {
+            paramsMap.getValue(paramKey).toString()
+        } else {
+            request.getParameter(paramKey)
         }
     }
 
     /**
      * 自定义登录参数名称
-     * <p>account：登录账号，pwd：登录密码，validateCode：验证码，mobile：手机号</p>
+     * <p>account：登录账号，pwd：登录密码，rememberMe：记住我，validateCode：验证码，mobile：手机号</p>
      */
     companion object {
         private const val PARAMETER_USERNAME = "account"
         private const val PARAMETER_PASSWORD = "pwd"
+        private const val PARAMETER_REMEMBER_ME = "rememberMe" // 暂时没有使用
 //        private const val PARAMETER_VALIDATE_CODE = "validateCode"
 //        private const val PARAMETER_MOBILE = "mobile"
     }
@@ -81,7 +94,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
             paramsMap.putAll(jsonObject)
         } catch (e: IOException) {
             e.printStackTrace()
-            throw SsoException()
+            throw SsoException(500, e.message!!)
         }
     }
 }

@@ -4,8 +4,10 @@ import com.wang.sso.core.filter.SecurityAuthenticationFilter
 import com.wang.sso.core.handler.SsoFailureHandler
 import com.wang.sso.core.handler.SsoLoginSuccessHandler
 import com.wang.sso.core.security.SecurityUserService
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.Ordered
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,6 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
+import javax.servlet.Filter
 
 /**
  * spring security 安全配置
@@ -48,6 +54,26 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 //        return SsoFailureHandler()
 //    }
 
+    /**
+     * cors跨域配置
+     * 跨域问题在没有设置bean.order = Ordered.HIGHEST_PRECEDENCE时都还存在
+     * 设置之后跨域问题解决
+     */
+    @Bean
+    open fun corsFilter() :FilterRegistrationBean<*>{
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        config.addAllowedHeader("*")
+        config.addAllowedMethod("*")
+        config.addAllowedOrigin("http://localhost:8080")
+        source.registerCorsConfiguration("/**", config) // 对所有接口有效
+
+        val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
+        bean.order = Ordered.HIGHEST_PRECEDENCE
+        return bean
+    }
+
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager {
         return super.authenticationManagerBean()
@@ -57,7 +83,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
      * 自定义登录认证过滤器
      * 自定义之后登录失败和成功处理都不能使用Bean的方式
      * AntPathRequestMatcher设置登录处理URL(loginProcessingUrl)和有效的http method
-     * 在这里搞来好久，直到设置（setRequiresAuthenticationRequestMatcher）之后此过滤器才生效
+     * 在这里搞来好久，直到设置（setRequiresAuthenticationRequestMatcher）之后此过滤器才生效，待验证
      */
     @Bean
     open fun securityAuthenticationFilter(): SecurityAuthenticationFilter {
@@ -66,6 +92,8 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         filter.setRequiresAuthenticationRequestMatcher(AntPathRequestMatcher("/auth/login", "POST"))
         filter.setAuthenticationSuccessHandler(SsoLoginSuccessHandler())
         filter.setAuthenticationFailureHandler(SsoFailureHandler())
+        filter.usernameParameter = "account"
+        filter.passwordParameter = "pwd"
         return filter
     }
 
@@ -98,7 +126,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers("/register", "/")
+            .antMatchers("/register")
             .permitAll() // 配置可匿名访问的URL
 
             .anyRequest()
@@ -110,8 +138,8 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .permitAll() // 设置表单登录和登录URL
 //          .successHandler(loginSuccessHandler()) // 登录成功处理
 //          .failureHandler(failureHandler()) // 登录失败处理
-            .usernameParameter("account")
-            .passwordParameter("pwd")
+//          .usernameParameter("account")
+//          .passwordParameter("pwd")
             .and() // 配置表单登录相关
 
             .logout()

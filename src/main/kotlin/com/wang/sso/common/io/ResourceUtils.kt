@@ -1,5 +1,6 @@
 package com.wang.sso.common.io
 
+import com.wang.sso.core.exception.SsoException
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
@@ -57,7 +58,7 @@ object ResourceUtils : ResourceUtils() {
             `is` = com.wang.sso.common.io.ResourceUtils.getResourceFileStream(location)
             return `is`.toString()
         } catch (e: IOException) {
-            throw ExceptionUtils.unchecked(e)
+            throw SsoException(500, e.message!!)
         } finally {
             try {
                 `is`?.close()
@@ -76,7 +77,7 @@ object ResourceUtils : ResourceUtils() {
         try {
             return PathMatchingResourcePatternResolver().getResources(locationPattern)
         } catch (e: IOException) {
-            throw ExceptionUtils.unchecked(e)
+            throw SsoException(500, e.message!!)
         }
 
     }

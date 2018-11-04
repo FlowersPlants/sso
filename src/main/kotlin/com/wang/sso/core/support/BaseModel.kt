@@ -2,7 +2,6 @@ package com.wang.sso.core.support
 
 import com.wang.sso.common.idgen.IdGenerate
 import com.wang.sso.modules.sys.entity.User
-import com.wang.sso.modules.sys.utils.UserUtils
 import java.io.Serializable
 import java.util.*
 
@@ -26,7 +25,7 @@ abstract class BaseModel<T> : Serializable {
 
     var name: String? = null                  //名称
 
-    var currentUser: User = UserUtils.getCurrentUser()  //当前用户
+    var currentUser: User? = null             //当前用户
 
     var createBy: User? = null                //创建者
     var createdAt: Date? = null               //创建时间
@@ -52,7 +51,7 @@ abstract class BaseModel<T> : Serializable {
      */
     fun preInsert() {
         this.id = this.id ?: IdGenerate.uuid()
-        this.createBy = this.createBy ?: this.currentUser
+        this.createBy = this.createBy ?: this.currentUser ?: User()
         this.createdAt = Date()
     }
 
@@ -60,7 +59,7 @@ abstract class BaseModel<T> : Serializable {
      * 更新（修改和逻辑删除）之前执行的方法
      */
     fun preUpdate() {
-        this.updateBy = this.updateBy ?: this.currentUser
+        this.updateBy = this.updateBy ?: this.currentUser ?: User()
         this.updatedAt = Date()
     }
 

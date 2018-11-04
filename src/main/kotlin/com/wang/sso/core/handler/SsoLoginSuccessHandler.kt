@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse
 
 /**
  * 自定义登录成功处理器
+ * 发现一个问题：登录成功后会重定向到"/"URL，导致报错："页面找不到"！！！待解决
  */
 @Service
 class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
-
     @Throws(ServletException::class, IOException::class)
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
@@ -33,9 +33,6 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         }
         val out: PrintWriter = response.writer
         out.write(ObjectMapper().writeValueAsString(responseDto))
-        out.flush()
-        out.close()
-
         super.onAuthenticationSuccess(request, response, authentication)
     }
 }

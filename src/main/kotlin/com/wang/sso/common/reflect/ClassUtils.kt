@@ -10,7 +10,7 @@ import java.util.*
 import java.util.jar.JarFile
 
 /**
- * class工具
+ * class工具，不记得从那儿搞来的了。。
  */
 object ClassUtils {
 
@@ -28,7 +28,6 @@ object ClassUtils {
      */
     fun getAllClassByInterface(c: Class<*>): List<Class<*>>? {
         var returnClassList: MutableList<Class<*>>? = null
-
         if (c.isInterface) {
             // 获取当前的包名
             val packageName = c.getPackage().name
@@ -47,7 +46,6 @@ object ClassUtils {
         }
         return returnClassList
     }
-
 
     /**
      * 取得某一类所在包的所有类名 不含迭代
@@ -68,8 +66,6 @@ object ClassUtils {
 
     /**
      * 从包package中获取所有的Class
-     *
-     * @param pack
      * @return
      */
     fun getClasses(packageName: String): List<Class<*>> {
@@ -135,7 +131,6 @@ object ClassUtils {
                                         } catch (e: ClassNotFoundException) {
                                             e.printStackTrace()
                                         }
-
                                     }
                                 }
                             }
@@ -143,13 +138,11 @@ object ClassUtils {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
         return classes
     }
 
@@ -161,8 +154,6 @@ object ClassUtils {
      * @param recursive
      * @param classes
      */
-
-
     fun findAndAddClassesInPackageByFile(
         packageName: String,
         packagePath: String,
@@ -199,7 +190,6 @@ object ClassUtils {
                 } catch (e: ClassNotFoundException) {
                     e.printStackTrace()
                 }
-
             }
         }
     }
