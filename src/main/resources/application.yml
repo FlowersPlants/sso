@@ -1,0 +1,35 @@
+server:
+#  servlet:
+#    context-path: /sso
+  port: 8899
+
+
+spring:
+  application:
+    name: sys
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/ssms_sso?characterEncoding=utf-8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true # 下划线转驼峰
+#  mapper-locations: classpath:mappings/*/*.xml
+
+# 日志输出sql语句
+logging:
+  level:
+    org:
+      springframework:
+        security: info
+    com:
+      wang:
+        sso:
+          modules:
+            sys:
+              dao: debug
+          core:
+            -*: debug # security调试
