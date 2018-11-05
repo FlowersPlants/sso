@@ -27,6 +27,7 @@ class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {
         System.err.println("login fail.")
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val responseDto = ResponseDto().apply {
+            code = 500
             data = "login fail."
         }
         val out: PrintWriter = response.writer

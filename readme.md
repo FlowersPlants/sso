@@ -1,6 +1,7 @@
 ### 简介
 * 项目说明：
 * 项目前端[sso-front](https://github.com/FlowersPlants/sso-front)
+* 目前待解决问题：统一异常处理，因为登录失败时前端没有正确的提示
 
 ### 规划功能
 * 基于Spring Security的权限控制

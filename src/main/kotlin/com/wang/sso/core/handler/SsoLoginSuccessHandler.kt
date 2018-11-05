@@ -28,7 +28,7 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         authentication: Authentication
     ) {
         val user = UserUtils.getSecurityUser()
-        println("用户：" + user.account + " 登录成功.")
+        println("用户：" + user!!.account + " 登录成功.")
 
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val responseDto = ResponseDto().apply {

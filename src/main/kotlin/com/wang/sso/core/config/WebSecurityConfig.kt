@@ -43,30 +43,19 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return BCryptPasswordEncoder()
     }
 
-// 如果不实用自定义登录方式，怎取消下面两个方法的注释，并且进行configure配置
-//    @Bean
-//    open fun loginSuccessHandler(): SavedRequestAwareAuthenticationSuccessHandler {
-//        return SsoLoginSuccessHandler()
-//    }
-//
-//    @Bean
-//    open fun failureHandler(): SimpleUrlAuthenticationFailureHandler {
-//        return SsoFailureHandler()
-//    }
-
     /**
      * cors跨域配置
      * 跨域问题在没有设置bean.order = Ordered.HIGHEST_PRECEDENCE时都还存在
      * 设置之后跨域问题解决
      */
     @Bean
-    open fun corsFilter() :FilterRegistrationBean<*>{
+    open fun corsFilter(): FilterRegistrationBean<*> {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
-        config.allowCredentials = true
+        config.allowCredentials = true // 设置携带令牌
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
-        config.addAllowedOrigin("http://localhost:8080")
+        config.addAllowedOrigin("http://localhost:8080") // 设置允许跨域的域
         source.registerCorsConfiguration("/**", config) // 对所有接口有效
 
         val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
@@ -83,7 +72,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
      * 自定义登录认证过滤器
      * 自定义之后登录失败和成功处理都不能使用Bean的方式
      * AntPathRequestMatcher设置登录处理URL(loginProcessingUrl)和有效的http method
-     * 在这里搞来好久，直到设置（setRequiresAuthenticationRequestMatcher）之后此过滤器才生效，待验证
+     * 在这里搞来好久，直到设置（setRequiresAuthenticationRequestMatcher）之后此过滤器才生效
      */
     @Bean
     open fun securityAuthenticationFilter(): SecurityAuthenticationFilter {
@@ -134,12 +123,13 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .and() // 其他任何请求，登录后可访问
 
             .formLogin()
-            .loginPage("/login_page") // 这个可以不要
-            .permitAll() // 设置表单登录和登录URL
-//          .successHandler(loginSuccessHandler()) // 登录成功处理
-//          .failureHandler(failureHandler()) // 登录失败处理
-//          .usernameParameter("account")
-//          .passwordParameter("pwd")
+//            .loginPage("/login_page") // 这个可以不要
+//            .loginProcessingUrl("/auth/login")
+            .permitAll()
+//            .successHandler(loginSuccessHandler()) // 登录成功处理
+//            .failureHandler(failureHandler()) // 登录失败处理
+//            .usernameParameter("account")
+//            .passwordParameter("pwd")
             .and() // 配置表单登录相关
 
             .logout()
@@ -151,6 +141,9 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .csrf()
             .disable() // 关闭csrf
 
-            .addFilterBefore(securityAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java) // 自定义登录参数过滤器
+            .addFilterBefore(
+                securityAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter::class.java
+            ) // 自定义登录参数过滤器，加入到过滤器链
     }
 }

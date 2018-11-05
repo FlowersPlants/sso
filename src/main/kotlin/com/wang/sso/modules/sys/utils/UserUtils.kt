@@ -1,8 +1,6 @@
 package com.wang.sso.modules.sys.utils
 
 import com.wang.sso.core.security.SecurityUser
-import com.wang.sso.core.security.SecurityUserFactory
-import com.wang.sso.modules.sys.entity.User
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 
@@ -12,21 +10,31 @@ import org.springframework.security.core.userdetails.UserDetails
 object UserUtils {
 
     /**
-     * 获取当前登录用户（SecurityUser）
+     * 获取当前登录信息
      */
-    fun getSecurityUser(): SecurityUser {
+    private fun getPrincipal(): Any? {
         val authentication = SecurityContextHolder.getContext().authentication
-        return if (authentication != null && authentication.principal is UserDetails) {
-            authentication.principal as SecurityUser
-        } else {
-            SecurityUser()
+        return when (authentication) {
+            null -> null
+            else -> {
+                when (authentication.principal) {
+                    is UserDetails -> {
+                        authentication.principal
+                    }
+                    else -> authentication.principal.toString()
+                }
+            }
         }
     }
 
     /**
-     * 获取当前登录用户，有点问题，需要修改哦！！！
+     * 获取当前登录用户（SecurityUser）
      */
-    fun getCurrentUser() :User {
-        return SecurityUserFactory.create(getSecurityUser())
+    fun getSecurityUser(): SecurityUser? {
+        return if (getPrincipal() != null && getPrincipal() is UserDetails) {
+            getPrincipal() as SecurityUser
+        } else {
+            null
+        }
     }
 }

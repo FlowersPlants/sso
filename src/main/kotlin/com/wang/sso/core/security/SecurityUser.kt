@@ -51,6 +51,9 @@ class SecurityUser : UserDetails {
     var expireTime: Long? = null
 
     /**
+     * 最好的方式是：获取所有菜单还是获取所有角色？
+     */
+    /**
      * 所有角色
      */
     var roles: MutableList<Role>? = null
@@ -76,7 +79,7 @@ class SecurityUser : UserDetails {
         return roles!!.parallelStream()
             .filter { p -> !p.enname.isNullOrEmpty() }
             .map { p -> SimpleGrantedAuthority("ROLE_" + p.enname) }
-            .collect(Collectors.toSet())
+            .collect(Collectors.toSet()) // 此处类型推断失败？
     }
 
     /**

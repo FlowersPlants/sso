@@ -5,6 +5,7 @@ import com.wang.sso.core.exception.SsoException
 import org.springframework.http.MediaType
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.io.BufferedReader
 import java.io.IOException
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse
  * 可根据自己需求修改代码
  */
 class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
+    @Throws(AuthenticationException::class)
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
             getParameters(request)
