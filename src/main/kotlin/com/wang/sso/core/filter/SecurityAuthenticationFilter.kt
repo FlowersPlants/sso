@@ -1,6 +1,7 @@
 package com.wang.sso.core.filter
 
 import com.alibaba.fastjson.JSONObject
+import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.SsoException
 import org.springframework.http.MediaType
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -25,31 +26,35 @@ import javax.servlet.http.HttpServletResponse
 class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     @Throws(AuthenticationException::class)
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
+        return if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
             getParameters(request)
 
-            println("obtainParameterValue方法执行结果：" + obtainParameterValue(request, PARAMETER_REMEMBER_ME))
-            val authRequest = UsernamePasswordAuthenticationToken(this.obtainUsername(request), this.obtainPassword(request))
+            System.err.println("obtainParameterValue方法执行结果：" + obtainParameterValue(request, PARAMETER_REMEMBER_ME))
+            val username = this.obtainParameterValue(request, PARAMETER_USERNAME)
+            val password = this.obtainParameterValue(request, PARAMETER_PASSWORD)
+            val authRequest = UsernamePasswordAuthenticationToken(username, password)
             setDetails(request, authRequest)
-        }
-        return super.attemptAuthentication(request, response)
-    }
-
-    override fun obtainUsername(request: HttpServletRequest): String {
-        return if (paramsMap.isNotEmpty()) {
-            paramsMap.getValue(PARAMETER_USERNAME).toString()
+            this.authenticationManager.authenticate(authRequest)
         } else {
-            request.getParameter(PARAMETER_USERNAME)
+            super.attemptAuthentication(request, response)
         }
     }
 
-    override fun obtainPassword(request: HttpServletRequest): String {
-        return if (paramsMap.isNotEmpty()) {
-            paramsMap.getValue(PARAMETER_PASSWORD).toString()
-        } else {
-            request.getParameter(PARAMETER_PASSWORD)
-        }
-    }
+//    override fun obtainUsername(request: HttpServletRequest): String {
+//        return if (paramsMap.isNotEmpty()) {
+//            paramsMap.getValue(PARAMETER_USERNAME).toString()
+//        } else {
+//            request.getParameter(PARAMETER_USERNAME)
+//        }
+//    }
+//
+//    override fun obtainPassword(request: HttpServletRequest): String {
+//        return if (paramsMap.isNotEmpty()) {
+//            paramsMap.getValue(PARAMETER_PASSWORD).toString()
+//        } else {
+//            request.getParameter(PARAMETER_PASSWORD)
+//        }
+//    }
 
     /**
      * 获取参数值，有很多自定义参数时，可重构原获取方式
@@ -95,8 +100,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
             val jsonObject = JSONObject.parseObject(responseStrBuilder.toString())
             paramsMap.putAll(jsonObject)
         } catch (e: IOException) {
-            e.printStackTrace()
-            throw SsoException(500, e.message!!)
+            throw SsoException(ExceptionEnum.SERVICE_EXCEPTION)
         }
     }
 }

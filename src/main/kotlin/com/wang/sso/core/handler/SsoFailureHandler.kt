@@ -2,6 +2,8 @@ package com.wang.sso.core.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.common.dto.ResponseDto
+import com.wang.sso.core.exception.ExceptionEnum
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
@@ -24,14 +26,19 @@ class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {
         response: HttpServletResponse,
         exception: AuthenticationException
     ) {
-        System.err.println("login fail.")
+        System.err.println("login fail...")
+        response.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
-        val responseDto = ResponseDto().apply {
-            code = 500
-            data = "login fail."
+        val body = ResponseDto().apply {
+            // 前端不输出code了，所以此处不设置code的值
+            var msg = exception.message
+            if (exception.javaClass.simpleName == "BadCredentialsException") {
+                msg = ExceptionEnum.USERNAME_OR_PASSWORD_INCORRECT.message
+            }
+            data = msg
         }
         val out: PrintWriter = response.writer
-        out.write(ObjectMapper().writeValueAsString(responseDto))
+        out.write(ObjectMapper().writeValueAsString(body))
         // super.onAuthenticationFailure(request, response, exception)
     }
 }

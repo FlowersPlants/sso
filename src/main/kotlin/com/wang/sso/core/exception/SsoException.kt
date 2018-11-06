@@ -3,20 +3,20 @@ package com.wang.sso.core.exception
 /**
  * 自定义全局异常
  */
-class SsoException() : Exception() {
+open class SsoException() : RuntimeException() {
 
-    var code: Int? = null
+    private var code: Int? = null
 
-    override var message: String? = null
+    private var msg: String? = null
 
     constructor(enum: ExceptionEnum) : this() {
         this.code = enum.code
-        this.message = enum.message
+        this.msg = enum.message
     }
 
     constructor(code: Int, message: String) : this() {
         this.code = code
-        this.message = message
+        this.msg = message
     }
 
     /**
@@ -25,6 +25,6 @@ class SsoException() : Exception() {
      */
     constructor(code: Int, prefix: String, message: String) : this() {
         this.code = code
-        this.message = prefix + message
+        this.msg = prefix + message
     }
 }

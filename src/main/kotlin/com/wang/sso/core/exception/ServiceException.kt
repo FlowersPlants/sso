@@ -3,13 +3,11 @@ package com.wang.sso.core.exception
 /**
  * 自定义业务异常
  */
-class ServiceException() : RuntimeException() {
-
-    var code: Int? = null
-
+class ServiceException() : SsoException() {
+    private var code: Int? = null
     override var message: String? = null
 
-    constructor(enum: ExceptionEnum):this(){
+    constructor(enum: ExceptionEnum) : this() {
         this.code = enum.code
         this.message = enum.message
     }

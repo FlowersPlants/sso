@@ -24,7 +24,7 @@ logging:
   level:
     org:
       springframework:
-        security: info
+        security: debug
     com:
       wang:
         sso:

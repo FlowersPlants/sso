@@ -52,7 +52,7 @@ open class UserServiceImpl : UserService {
             entity.preLogicDelete()
             val i = userDao.delete(entity.id!!)
             if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_DELETE)
+                throw ServiceException(703, "删除失败")
             }
         }
     }

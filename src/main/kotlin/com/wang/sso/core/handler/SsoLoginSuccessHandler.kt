@@ -28,14 +28,14 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         authentication: Authentication
     ) {
         val user = UserUtils.getSecurityUser()
-        println("用户：" + user!!.account + " 登录成功.")
+        System.err.println("用户：" + user!!.account + " 登录成功.")
 
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
-        val responseDto = ResponseDto().apply {
+        val body = ResponseDto().apply {
             data = user
         }
         val out: PrintWriter = response.writer
-        out.write(ObjectMapper().writeValueAsString(responseDto))
+        out.write(ObjectMapper().writeValueAsString(body))
 
         // 调用父类的方法会默认跳转，来自：https://blog.csdn.net/qq_37502106/article/details/81045773
         // super.onAuthenticationSuccess(request, response, authentication)
