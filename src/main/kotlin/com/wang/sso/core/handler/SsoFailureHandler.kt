@@ -26,11 +26,10 @@ class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {
         response: HttpServletResponse,
         exception: AuthenticationException
     ) {
-        System.err.println("login fail...")
         response.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val body = ResponseDto().apply {
-            // 前端不输出code了，所以此处不设置code的值
+            // 前端不输出code，所以此处不设置code的值
             var msg = exception.message
             if (exception.javaClass.simpleName == "BadCredentialsException") {
                 msg = ExceptionEnum.USERNAME_OR_PASSWORD_INCORRECT.message

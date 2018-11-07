@@ -1,6 +1,6 @@
 package com.wang.sso.core.filter
 
-import com.alibaba.fastjson.JSONObject
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.SsoException
 import org.springframework.http.MediaType
@@ -18,10 +18,11 @@ import javax.servlet.http.HttpServletResponse
 /**
  * 自定义登录参数，获取json格式上传的数据（这种数据在request.getParameter方法中获取不到）
  * 可获取的参数包括：json格式和url拼接方式；优先取json格式的参数。
- * 代码可仿照UsernamePasswordAuthenticationFilter来写
  * 可看 https://blog.csdn.net/mushuntaosama/article/details/78904863
  *
- * 可根据自己需求修改代码
+ * 自定义参数有以下想法：
+ * 1、代码仿照UsernamePasswordAuthenticationFilter来写，完善类中的代码
+ * 1、建议继承AbstractAuthenticationProcessingFilter重写方法，自定义token来保存认证信息
  */
 class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     @Throws(AuthenticationException::class)
@@ -87,6 +88,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     /**
      * 获取json提交的参数的值
      */
+    @Suppress("UNCHECKED_CAST")
     private fun getParameters(request: HttpServletRequest) {
         try {
             val streamReader = BufferedReader(InputStreamReader(request.inputStream, Charset.defaultCharset()))
@@ -97,8 +99,8 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
                 inputStr = streamReader.readLine()
             }
 
-            val jsonObject = JSONObject.parseObject(responseStrBuilder.toString())
-            paramsMap.putAll(jsonObject)
+            val json = ObjectMapper().readValue(responseStrBuilder.toString(),Map::class.java)
+            paramsMap.putAll(json as Map<out String, Any>)
         } catch (e: IOException) {
             throw SsoException(ExceptionEnum.SERVICE_EXCEPTION)
         }

@@ -1,11 +1,13 @@
 package com.wang.sso.modules.sys.entity
 
+import com.baomidou.mybatisplus.annotation.TableName
 import com.wang.sso.core.support.BaseModel
 
 /**
  * @author wzj
  */
-class Role() : BaseModel<Role>() {
+@TableName("sys_role")
+class Role() : BaseModel() {
 
     constructor(id: String) : this() {
         this.id = id

@@ -1,5 +1,6 @@
 package com.wang.sso.modules.sys.service.impl
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IMenuDao
@@ -16,13 +17,14 @@ open class MenuServiceImpl : MenuService {
     private lateinit var menuDao: IMenuDao
 
     override fun findList(entity: Menu): MutableList<Menu> {
-        return menuDao.findList(entity)
+        return menuDao.selectList(QueryWrapper<Menu>().apply {
+
+        })
     }
 
     @Transactional
     override fun insert(entity: Menu?) {
         if (entity != null) {
-            entity.preInsert()
             val i = menuDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -33,8 +35,7 @@ open class MenuServiceImpl : MenuService {
     @Transactional
     override fun update(entity: Menu?) {
         if (entity != null) {
-            entity.preUpdate()
-            val i = menuDao.update(entity)
+            val i = menuDao.updateById(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
             }
@@ -44,8 +45,7 @@ open class MenuServiceImpl : MenuService {
     @Transactional
     override fun delete(entity: Menu?) {
         if (entity != null) {
-            entity.preLogicDelete()
-            val i = menuDao.delete(entity.id!!)
+            val i = menuDao.deleteById(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }

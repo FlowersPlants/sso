@@ -1,5 +1,8 @@
 package com.wang.sso.modules.sys.service.impl
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.wang.sso.core.annotations.Log
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
@@ -17,16 +20,23 @@ open class UserServiceImpl : UserService {
     @Autowired
     private lateinit var userDao: IUserDao
 
+    override fun findPage(user: User, page: Page<User>): IPage<User> {
+        return userDao.selectPage(page, QueryWrapper<User>().apply {
+            like("account", "${user.account}")
+            orderByDesc("create_at")
+        })
+    }
+
     @Log("获取用户列表")
     override fun findList(entity: User): MutableList<User> {
-        entity.status = "0" // 设置查询"0"状态下的所有用户
-        return userDao.findList(entity)
+        return userDao.selectList(QueryWrapper<User>().apply {
+            eq("status", "0") // 设置查询"0"状态下的所有用户
+        })
     }
 
     @Transactional
     override fun insert(entity: User?) {
         if (entity != null) {
-            entity.preInsert()
             val i = userDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -38,8 +48,7 @@ open class UserServiceImpl : UserService {
     @Transactional
     override fun update(entity: User?) {
         if (entity != null) {
-            entity.preUpdate()
-            val i = userDao.update(entity)
+            val i = userDao.updateById(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
             }
@@ -49,8 +58,7 @@ open class UserServiceImpl : UserService {
     @Transactional
     override fun delete(entity: User?) {
         if (entity != null) {
-            entity.preLogicDelete()
-            val i = userDao.delete(entity.id!!)
+            val i = userDao.deleteById(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(703, "删除失败")
             }

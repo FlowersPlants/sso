@@ -1,12 +1,14 @@
 package com.wang.sso.modules.sys.entity
 
+import com.baomidou.mybatisplus.annotation.TableName
 import com.wang.sso.core.support.BaseModel
 import java.util.*
 
 /**
  * @author wzj
  */
-open class User() : BaseModel<User>() {
+@TableName("sys_user")
+open class User() : BaseModel() {
     companion object {
         private const val serialVersionUID = 104343L
     }
@@ -19,7 +21,7 @@ open class User() : BaseModel<User>() {
 
     var password: String? = null
 
-    var enail: String? = null
+    var email: String? = null
 
     var gender: Boolean? = null
 

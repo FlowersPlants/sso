@@ -16,13 +16,12 @@ open class RoleServiceImpl : RoleService {
     private lateinit var roleDao: IRoleDao
 
     override fun findList(entity: Role): MutableList<Role> {
-        return roleDao.findList(entity)
+        return roleDao.selectList(null)
     }
 
     @Transactional
     override fun insert(entity: Role?) {
         if (entity != null) {
-            entity.preInsert()
             val i = roleDao.insert(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
@@ -33,8 +32,7 @@ open class RoleServiceImpl : RoleService {
     @Transactional
     override fun update(entity: Role?) {
         if (entity != null) {
-            entity.preUpdate()
-            val i = roleDao.update(entity)
+            val i = roleDao.updateById(entity)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
             }
@@ -44,8 +42,7 @@ open class RoleServiceImpl : RoleService {
     @Transactional
     override fun delete(entity: Role?) {
         if (entity != null) {
-            entity.preLogicDelete()
-            val i = roleDao.delete(entity.id!!)
+            val i = roleDao.deleteById(entity.id!!)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }

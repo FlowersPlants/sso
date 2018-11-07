@@ -6,7 +6,7 @@ import java.util.*
 /**
  * 保存到数据库的token
  */
-class Token : BaseModel<Token>() {
+class Token : BaseModel() {
     companion object {
         private const val serialVersionUID = 4566334160572911795L
     }

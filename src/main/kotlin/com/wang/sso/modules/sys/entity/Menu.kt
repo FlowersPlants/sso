@@ -1,14 +1,13 @@
 package com.wang.sso.modules.sys.entity
 
+import com.baomidou.mybatisplus.annotation.TableName
 import com.wang.sso.core.support.BaseModel
 
 /**
  * @author wzj
  */
-class Menu() : BaseModel<Menu>() {
-    init {
-        println("init.")
-    }
+@TableName("sys_menu")
+class Menu() : BaseModel() {
 
     constructor(id: String) : this() {
         this.id = id
@@ -34,6 +33,4 @@ class Menu() : BaseModel<Menu>() {
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
     }
-
-
 }

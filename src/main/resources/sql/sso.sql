@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.23, for macos10.13 (x86_64)
 --
--- Host: localhost    Database: ssms_sso
+-- Host: localhost    Database: ssms_sso_auth
 -- ------------------------------------------------------
 -- Server version	5.7.23
 
@@ -25,6 +25,13 @@ CREATE TABLE `sys_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `sys_menu`
+--
+
+LOCK TABLES `sys_menu` WRITE;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sys_role`
 --
 
@@ -43,18 +50,46 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `sys_role`
+--
+
+LOCK TABLES `sys_role` WRITE;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_menu`
+--
+
 DROP TABLE IF EXISTS `sys_role_menu`;
-CREATE TABLE `sys_role_menu`(
+CREATE TABLE `sys_role_menu` (
   `role_id` varchar(64) NOT NULL COMMENT '角色ID',
   `menu_id` varchar(64) NOT NULL COMMENT '菜单ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `sys_role_menu`
+--
+
+LOCK TABLES `sys_role_menu` WRITE;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_user`
+--
 
 DROP TABLE IF EXISTS `sys_role_user`;
-CREATE TABLE `sys_role_user`(
+CREATE TABLE `sys_role_user` (
   `role_id` varchar(64) NOT NULL COMMENT '角色ID',
   `user_id` varchar(64) NOT NULL COMMENT '用户ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sys_role_user`
+--
+
+LOCK TABLES `sys_role_user` WRITE;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_user`
@@ -63,14 +98,14 @@ CREATE TABLE `sys_role_user`(
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` varchar(64) NOT NULL COMMENT '主键ID',
-  `username` varchar(30) NOT NULL COMMENT '用户账号',
+  `account` varchar(30) NOT NULL COMMENT '用户账号',
   `password` varchar(64) NOT NULL COMMENT '密码',
-  `name` varchar(20) NOT NULL COMMENT '名称',
+  `name` varchar(20) DEFAULT NULL COMMENT '名称',
   `email` varchar(30) DEFAULT NULL COMMENT '邮箱',
   `gender` tinyint(1) DEFAULT '1' COMMENT '性别',
-  `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
+  `birthday` datetime DEFAULT NULL COMMENT '生日',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
-  `create_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT NULL COMMENT '更新者',
   `update_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   `status` varchar(10) NOT NULL COMMENT '状态，推荐状态（0-正常；1-删除；2-停用；3-冻结）',
@@ -78,4 +113,12 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dump completed on 2018-10-27 23:17:10
+--
+-- Dumping data for table `sys_user`
+--
+
+LOCK TABLES `sys_user` WRITE;
+INSERT INTO `sys_user` VALUES ('1','admin','$2a$10$g6viskarc823RbgwoHc/ZOLsBmq5UHqYQu4tw0iVIIod4Xoc7sRCm','wzj',NULL,1,NULL,NULL,NULL,NULL,NULL,'0',NULL);
+UNLOCK TABLES;
+
+-- Dump completed on 2018-11-07 13:03:28

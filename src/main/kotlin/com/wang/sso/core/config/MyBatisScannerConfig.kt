@@ -11,13 +11,20 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 open class MyBatisScannerConfig {
 
-    @Bean
-    open fun mapperScannerConfigurer(): MapperScannerConfigurer {
-        val mapperScannerConfigurer = MapperScannerConfigurer()
-        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory")
+    /**
+     * 此处设置为静态方法的原因如下
+     * Cannot enhance @Configuration bean definition 'myBatisScannerConfig' since its singleton instance has been created too early.
+     * The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+     */
+    companion object {
+        @Bean
+        fun mapperScannerConfigurer(): MapperScannerConfigurer {
+            val msc = MapperScannerConfigurer()
+            msc.setSqlSessionFactoryBeanName("sqlSessionFactory")
 
-        mapperScannerConfigurer.setBasePackage("com.wang.sso.modules.**.dao")
-        mapperScannerConfigurer.setAnnotationClass(MyBatisDao::class.java)//设置扫描基础包，被某个注解类标注的dao
-        return mapperScannerConfigurer
+            msc.setBasePackage("com.wang.sso.modules.*.dao")
+            msc.setAnnotationClass(MyBatisDao::class.java)//设置扫描基础包，被某个注解类标注的dao
+            return msc
+        }
     }
 }

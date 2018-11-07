@@ -1,5 +1,6 @@
 package com.wang.sso.modules.sys.vo
 
+import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.entity.Role
 import java.util.*
 
@@ -12,8 +13,6 @@ class UserVo {
 
     var username: String? = null
 
-    var passwod: String? = null
-
     var enail: String? = null
 
     var gender: Boolean? = null
@@ -23,4 +22,6 @@ class UserVo {
     var status: String? = null
 
     var roles: MutableList<Role>? = null
+
+    var menus: MutableList<Menu>? = null
 }

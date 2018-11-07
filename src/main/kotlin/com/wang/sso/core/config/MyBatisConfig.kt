@@ -1,29 +1,55 @@
 package com.wang.sso.core.config
 
+import com.baomidou.mybatisplus.core.injector.ISqlInjector
+import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
 import com.wang.sso.core.support.BaseModel
-import org.mybatis.spring.SqlSessionFactoryBean
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import javax.annotation.Resource
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.sql.DataSource
+
 
 /**
  * mapper.xml扫描器
  */
+@EnableTransactionManagement
 @Configuration
 open class MyBatisConfig {
 
-    @Resource
+    @Autowired
     private lateinit var dataSource: DataSource
 
+    /**
+     * 逻辑删除时注入Bean
+     */
+    @Bean
+    open fun sqlInjector(): ISqlInjector {
+        return LogicSqlInjector()
+    }
+
+    /**
+     * 注入分页拦截器
+     */
+    @Bean
+    open fun paginationInterceptor(): PaginationInterceptor {
+        return PaginationInterceptor()
+    }
+
+    /**
+     * 用MybatisSqlSessionFactoryBean来替换SqlSessionFactoryBean
+     * 解决MP Invalid bound statement (not found)异常
+     */
     @Bean
     @Throws(Exception::class)
-    open fun sqlSessionFactory(applicationContext: ApplicationContext): SqlSessionFactoryBean {
-        val sessionFactory = SqlSessionFactoryBean()
+    open fun sqlSessionFactory(applicationContext: ApplicationContext): MybatisSqlSessionFactoryBean {
+        val sessionFactory = MybatisSqlSessionFactoryBean()
         sessionFactory.setDataSource(dataSource)
 
-        sessionFactory.setTypeAliasesPackage("com.wang.sso.modules")
+        sessionFactory.setTypeAliasesPackage("com.wang.sso.modules.*.entity")
         sessionFactory.setTypeAliasesSuperType(BaseModel::class.java)
 
         sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mappings/*/*.xml"))
