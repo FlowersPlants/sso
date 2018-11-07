@@ -1,9 +1,11 @@
 package com.wang.sso.core.config
 
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import com.baomidou.mybatisplus.core.injector.ISqlInjector
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
+import com.wang.sso.core.handler.MyBatisPlusMetaObjectHandler
 import com.wang.sso.core.support.BaseModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
@@ -37,6 +39,14 @@ open class MyBatisConfig {
     @Bean
     open fun paginationInterceptor(): PaginationInterceptor {
         return PaginationInterceptor()
+    }
+
+    /**
+     * mp字段自动填充Bean
+     */
+    @Bean
+    open fun metaObjectHandler(): MetaObjectHandler {
+        return MyBatisPlusMetaObjectHandler()
     }
 
     /**

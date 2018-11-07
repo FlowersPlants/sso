@@ -1,5 +1,6 @@
 package com.wang.sso.modules.sys.dao
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.wang.sso.SsoApplicationTests
 import com.wang.sso.core.config.WebSecurityConfig
@@ -17,10 +18,19 @@ class UserDaoTest : SsoApplicationTests() {
     @Test
     fun insertTest() {
         val user = User()
-        user.account = "admin"
+        user.account = "system"
         user.password = WebSecurityConfig().passwordEncoder().encode("admin")
-        user.name = "wzj"
+        user.name = "系统管理员"
         userDao.insert(user)
+    }
+
+    @Test
+    fun batchDeleteTest() {
+        userDao.selectList(QueryWrapper<User>().apply {
+            eq("account", "system")
+        }).forEach {
+            userDao.deleteById(it.id)
+        }
     }
 
     @Test

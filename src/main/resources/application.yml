@@ -34,7 +34,7 @@ logging:
 
 mybatis-plus:
   #  mapper-locations: classpath*:mappings/*/*.xml # xml文件配置，已在MyBatisConfig中配置
-  check-config-location: false # 启动时检查mybatis xml文件是否存在，默认不检查
+  check-config-location: true # 启动时是否检查mybatis xml文件存在，默认不检查
   configuration:
     map-underscore-to-camel-case: true # 下划线转驼峰
   global-config:

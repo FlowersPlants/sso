@@ -1,6 +1,8 @@
 package com.wang.sso.modules.sys.utils
 
 import com.wang.sso.core.security.SecurityUser
+import com.wang.sso.core.security.SecurityUserFactory
+import com.wang.sso.modules.sys.entity.User
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 
@@ -35,6 +37,17 @@ object UserUtils {
             getPrincipal() as SecurityUser
         } else {
             null
+        }
+    }
+
+    /**
+     * 获取当前登录用户（User）
+     */
+    fun getCurrentUser(): User {
+        return if (getSecurityUser() == null) {
+            User()
+        } else {
+            SecurityUserFactory().create(getSecurityUser()!!)
         }
     }
 }

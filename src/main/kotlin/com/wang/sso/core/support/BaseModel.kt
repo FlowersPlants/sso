@@ -27,21 +27,19 @@ abstract class BaseModel() : Serializable {
 
     var name: String? = null                  //名称
 
-    var currentUser: User? = null             //当前用户
-
     @TableField(fill = FieldFill.INSERT)
-    var createBy: User? = null                //创建者
+    var createBy: String? = null              //创建者
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    var createAt: Date? = null               //创建时间
+    var createAt: Date? = null                //创建时间
 
     @TableField(fill = FieldFill.UPDATE)
-    var updateBy: User? = null                //更新者
+    var updateBy: String? = null              //更新者
 
     @TableField(fill = FieldFill.UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    var updateAt: Date? = null               //更新时间
+    var updateAt: Date? = null                //更新时间
 
     //状态，推荐状态（0-正常；1-删除；2-停用；3-冻结）
     @TableLogic
