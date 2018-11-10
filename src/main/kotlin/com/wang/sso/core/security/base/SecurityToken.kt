@@ -1,4 +1,4 @@
-package com.wang.sso.core.security
+package com.wang.sso.core.security.base
 
 import java.io.Serializable
 

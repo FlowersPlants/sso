@@ -1,4 +1,4 @@
-package com.wang.sso.core.security
+package com.wang.sso.core.security.base
 
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.SsoSecurityException

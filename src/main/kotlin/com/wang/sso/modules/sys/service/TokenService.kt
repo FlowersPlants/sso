@@ -1,7 +1,7 @@
 package com.wang.sso.modules.sys.service
 
-import com.wang.sso.core.security.SecurityToken
-import com.wang.sso.core.security.SecurityUser
+import com.wang.sso.core.security.base.SecurityToken
+import com.wang.sso.core.security.base.SecurityUser
 
 /**
  * token管理器

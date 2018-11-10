@@ -1,6 +1,7 @@
-package com.wang.sso.core.filter
+package com.wang.sso.core.security.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.SsoException
 import org.springframework.http.MediaType
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * 自定义登录参数，获取json格式上传的数据（这种数据在request.getParameter方法中获取不到）
+ * 自定义登录过滤器，只管登录；获取json格式上传的数据（这种数据在request.getParameter方法中获取不到）
  * 可获取的参数包括：json格式和url拼接方式；优先取json格式的参数。
  * 可看 https://blog.csdn.net/mushuntaosama/article/details/78904863
  *
@@ -24,16 +25,18 @@ import javax.servlet.http.HttpServletResponse
  * 1、代码仿照UsernamePasswordAuthenticationFilter来写，完善类中的代码
  * 1、建议继承AbstractAuthenticationProcessingFilter重写方法，自定义token来保存认证信息
  */
-class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
+class SecurityLoginFilter : UsernamePasswordAuthenticationFilter() {
     @Throws(AuthenticationException::class)
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         return if (request!!.contentType == MediaType.APPLICATION_JSON_VALUE || request.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE) {
             getParameters(request)
-
-            System.err.println("obtainParameterValue方法执行结果：" + obtainParameterValue(request, PARAMETER_REMEMBER_ME))
-            val username = this.obtainParameterValue(request, PARAMETER_USERNAME)
-            val password = this.obtainParameterValue(request, PARAMETER_PASSWORD)
+            val username = this.obtainParameterValue(request, CommonConstant.PARAMETER_USERNAME)
+            val password = this.obtainParameterValue(request, CommonConstant.PARAMETER_PASSWORD)
             val authRequest = UsernamePasswordAuthenticationToken(username, password)
+
+//            // 或者，这种方式需要注意自定义参数的名称
+//            val securityUser = ObjectMapper().readValue(request.inputStream, SecurityUser::class.java)
+//            val authRequest = UsernamePasswordAuthenticationToken(securityUser.account,securityUser.password)
             setDetails(request, authRequest)
             this.authenticationManager.authenticate(authRequest)
         } else {
@@ -41,24 +44,8 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
         }
     }
 
-//    override fun obtainUsername(request: HttpServletRequest): String {
-//        return if (paramsMap.isNotEmpty()) {
-//            paramsMap.getValue(PARAMETER_USERNAME).toString()
-//        } else {
-//            request.getParameter(PARAMETER_USERNAME)
-//        }
-//    }
-//
-//    override fun obtainPassword(request: HttpServletRequest): String {
-//        return if (paramsMap.isNotEmpty()) {
-//            paramsMap.getValue(PARAMETER_PASSWORD).toString()
-//        } else {
-//            request.getParameter(PARAMETER_PASSWORD)
-//        }
-//    }
-
     /**
-     * 获取参数值，有很多自定义参数时，可重构原获取方式
+     * 获取参数值，有很多自定义参数时
      */
     private fun obtainParameterValue(request: HttpServletRequest, paramKey: String): String {
         return if (paramsMap.isNotEmpty()) {
@@ -66,18 +53,6 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
         } else {
             request.getParameter(paramKey)
         }
-    }
-
-    /**
-     * 自定义登录参数名称
-     * <p>account：登录账号，pwd：登录密码，rememberMe：记住我，validateCode：验证码，mobile：手机号</p>
-     */
-    companion object {
-        private const val PARAMETER_USERNAME = "account"
-        private const val PARAMETER_PASSWORD = "pwd"
-        private const val PARAMETER_REMEMBER_ME = "rememberMe" // 暂时没有使用
-//        private const val PARAMETER_VALIDATE_CODE = "validateCode"
-//        private const val PARAMETER_MOBILE = "mobile"
     }
 
     /**
@@ -99,7 +74,7 @@ class SecurityAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
                 inputStr = streamReader.readLine()
             }
 
-            val json = ObjectMapper().readValue(responseStrBuilder.toString(),Map::class.java)
+            val json = ObjectMapper().readValue(responseStrBuilder.toString(), Map::class.java)
             paramsMap.putAll(json as Map<out String, Any>)
         } catch (e: IOException) {
             throw SsoException(ExceptionEnum.SERVICE_EXCEPTION)

@@ -20,7 +20,7 @@ spring:
 # 日志输出sql语句
 logging:
   level:
-#    org.springframework.security: debug
+    #    org.springframework.security: debug
     com.baomidou.mybatisplus.core: info
     com:
       wang:

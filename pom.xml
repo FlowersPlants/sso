@@ -22,7 +22,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <fastjson.version>1.2.41</fastjson.version>
         <fackson.version>2.9.7</fackson.version>
         <kotlin.version>1.2.71</kotlin.version>
     </properties>
@@ -95,6 +94,13 @@
             <!--<version>${fastjson.version}</version>-->
         <!--</dependency>-->
 
+        <!-- jjwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+
         <!-- WARN：For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath -->
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin -->
         <dependency>
@@ -102,9 +108,6 @@
             <artifactId>jackson-module-kotlin</artifactId>
             <version>${fackson.version}</version>
         </dependency>
-
-        <!--apache common-->
-
     </dependencies>
 
     <build>

@@ -1,14 +1,17 @@
 package com.wang.sso.modules.sys.service.impl
 
-import com.wang.sso.core.security.SecurityToken
-import com.wang.sso.core.security.SecurityUser
+import com.wang.sso.core.security.base.SecurityToken
+import com.wang.sso.core.security.base.SecurityUser
 import com.wang.sso.modules.sys.service.TokenService
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
 /**
- * jwt方式token
+ * jwt方式token，默认
+ * https://www.jb51.net/article/112146.htm
  */
 @Service
+@Primary
 class TokenServiceJwtImpl : TokenService {
     override fun saveToken(securityUser: SecurityUser): SecurityToken {
         return SecurityToken()

@@ -1,7 +1,8 @@
-package com.wang.sso.core.handler
+package com.wang.sso.core.security.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.common.dto.ResponseDto
+import com.wang.sso.common.utils.TokenUtils
 import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
@@ -28,11 +29,9 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         authentication: Authentication
     ) {
         val user = UserUtils.getSecurityUser()
-        System.err.println("用户：" + user!!.account + " 登录成功.")
-
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val body = ResponseDto().apply {
-            data = user
+            data = TokenUtils.generateToken(ObjectMapper().writeValueAsString(user))
         }
         val out: PrintWriter = response.writer
         out.write(ObjectMapper().writeValueAsString(body))

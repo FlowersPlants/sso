@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.injector.ISqlInjector
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
-import com.wang.sso.core.handler.MyBatisPlusMetaObjectHandler
+import com.wang.sso.core.mybatis.MyBatisPlusMetaObjectHandler
 import com.wang.sso.core.support.BaseModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext

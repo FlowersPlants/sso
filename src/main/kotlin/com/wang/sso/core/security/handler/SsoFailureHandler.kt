@@ -1,4 +1,4 @@
-package com.wang.sso.core.handler
+package com.wang.sso.core.security.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.common.dto.ResponseDto

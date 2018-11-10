@@ -1,18 +1,21 @@
 package com.wang.sso.core.config
 
-import com.wang.sso.core.filter.SecurityAuthenticationFilter
-import com.wang.sso.core.handler.SsoFailureHandler
-import com.wang.sso.core.handler.SsoLoginSuccessHandler
-import com.wang.sso.core.security.SecurityUserService
+import com.wang.sso.core.security.filter.SecurityLoginFilter
+import com.wang.sso.core.security.handler.SsoFailureHandler
+import com.wang.sso.core.security.handler.SsoLoginSuccessHandler
+import com.wang.sso.core.security.base.SecurityUserService
+import com.wang.sso.core.security.filter.SecurityAuthorizationFilter
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -28,6 +31,7 @@ import javax.servlet.Filter
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 使PreAuthorize注解生效
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     /**
@@ -69,14 +73,14 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     /**
-     * 自定义登录认证过滤器
+     * 自定义登录过滤器
      * 自定义之后登录失败和成功处理都不能使用Bean的方式
      * AntPathRequestMatcher设置登录处理URL(loginProcessingUrl)和有效的http method
      * 在这里搞来好久，直到设置（setRequiresAuthenticationRequestMatcher）之后此过滤器才生效
      */
     @Bean
-    open fun securityAuthenticationFilter(): SecurityAuthenticationFilter {
-        val filter = SecurityAuthenticationFilter()
+    open fun securityLoginFilter(): SecurityLoginFilter {
+        val filter = SecurityLoginFilter()
         filter.setAuthenticationManager(authenticationManagerBean())
         filter.setRequiresAuthenticationRequestMatcher(AntPathRequestMatcher("/auth/login", "POST"))
         filter.setAuthenticationSuccessHandler(SsoLoginSuccessHandler())
@@ -85,6 +89,14 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         filter.passwordParameter = "pwd"
         return filter
     }
+
+//    /**
+//     * 自定义鉴权过滤器
+//     */
+//    @Bean
+//    open fun securityAuthorizationFilter() :SecurityAuthorizationFilter {
+//        return SecurityAuthorizationFilter(authenticationManagerBean())
+//    }
 
     /**
      * 注入userDetailsService
@@ -115,7 +127,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers("/register")
+            .antMatchers("/auth/register")
             .permitAll() // 配置可匿名访问的URL
 
             .anyRequest()
@@ -123,13 +135,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .and() // 其他任何请求，登录后可访问
 
             .formLogin()
-//            .loginPage("/login_page") // 这个可以不要
-//            .loginProcessingUrl("/auth/login")
             .permitAll()
-//            .successHandler(loginSuccessHandler()) // 登录成功处理
-//            .failureHandler(failureHandler()) // 登录失败处理
-//            .usernameParameter("account")
-//            .passwordParameter("pwd")
             .and() // 配置表单登录相关
 
             .logout()
@@ -141,8 +147,13 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .csrf()
             .disable() // 关闭csrf
 
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and() // 基于token，所以不需要session
+
+            .addFilter(SecurityAuthorizationFilter(authenticationManagerBean()))
             .addFilterBefore(
-                securityAuthenticationFilter(),
+                securityLoginFilter(),
                 UsernamePasswordAuthenticationFilter::class.java
             ) // 自定义登录参数过滤器，加入到过滤器链
     }

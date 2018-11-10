@@ -1,4 +1,4 @@
-package com.wang.sso.core.handler
+package com.wang.sso.core.mybatis
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import com.wang.sso.modules.sys.utils.UserUtils

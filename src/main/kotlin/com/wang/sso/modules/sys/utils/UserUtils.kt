@@ -1,7 +1,7 @@
 package com.wang.sso.modules.sys.utils
 
-import com.wang.sso.core.security.SecurityUser
-import com.wang.sso.core.security.SecurityUserFactory
+import com.wang.sso.core.security.base.SecurityUser
+import com.wang.sso.core.security.base.SecurityUserFactory
 import com.wang.sso.modules.sys.entity.User
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails

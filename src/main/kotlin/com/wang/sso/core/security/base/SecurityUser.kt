@@ -1,6 +1,5 @@
-package com.wang.sso.core.security
+package com.wang.sso.core.security.base
 
-import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.entity.Role
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -20,10 +19,10 @@ class SecurityUser : UserDetails {
      */
     var id: String? = null
 
-    /**
-     * 状态
-     */
-    var status: String? = null
+//    /**
+//     * 状态
+//     */
+//    var status: String? = null
 
     /**
      * 账号，kotlin方式用username报错
@@ -40,29 +39,20 @@ class SecurityUser : UserDetails {
      */
     var token: String? = null
 
-    /**
-     * 登陆时间戳（毫秒）
-     */
-    var loginTime: Long? = null
+//    /**
+//     * 登陆时间戳（毫秒）
+//     */
+//    var loginTime: Long? = null
+//
+//    /**
+//     * 过期时间戳
+//     */
+//    var expireTime: Long? = null
 
-    /**
-     * 过期时间戳
-     */
-    var expireTime: Long? = null
-
-    /**
-     * 最好的方式是：获取所有菜单还是获取所有角色？
-     */
     /**
      * 所有角色
      */
     var roles: MutableList<Role>? = null
-
-    /**
-     * 所有权限
-     */
-    var menus: List<Menu>? = null
-
 
     override fun getUsername(): String {
         return this.account!!
@@ -82,9 +72,9 @@ class SecurityUser : UserDetails {
             .collect(Collectors.toSet()) // 此处类型推断失败？
     }
 
+    // -----------     以下方法目前直接返回，后期添加逻辑        --------------
     /**
      * 判断账号是否已经过期
-     *
      * @return 默认没有过期
      */
     override fun isAccountNonExpired(): Boolean {
@@ -93,7 +83,6 @@ class SecurityUser : UserDetails {
 
     /**
      * 判断账号是否被锁定
-     *
      * @return 默认没有锁定
      */
     override fun isAccountNonLocked(): Boolean {
@@ -102,7 +91,6 @@ class SecurityUser : UserDetails {
 
     /**
      * 判断信用凭证是否过期
-     *
      * @return 默认没有过期
      */
     override fun isCredentialsNonExpired(): Boolean {
@@ -111,21 +99,9 @@ class SecurityUser : UserDetails {
 
     /**
      * 判断账号是否可用
-     *
      * @return 默认可用
      */
     override fun isEnabled(): Boolean {
         return true
-    }
-
-    override fun toString(): String {
-        return "SecurityUser{" +
-                "account='" + account + '\''.toString() +
-                ", username='" + username + '\''.toString() +
-                ", token='" + token + '\''.toString() +
-                ", loginTime=" + loginTime + '\''.toString() +
-                ", expireTime=" + expireTime + '\''.toString() +
-                ", status=" + status + '\''.toString() +
-                '}'.toString()
     }
 }

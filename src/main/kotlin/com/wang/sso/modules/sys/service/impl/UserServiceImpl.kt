@@ -34,6 +34,9 @@ open class UserServiceImpl : UserService {
         })
     }
 
+    /**
+     * 新增用户时应该在注册之前异步验证账号是否已存在
+     */
     @Transactional
     override fun insert(entity: User?) {
         if (entity != null) {
@@ -41,8 +44,7 @@ open class UserServiceImpl : UserService {
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
             }
-        }
-        throw SsoException(501, "$entity", "不能为null")
+        } else throw SsoException(501, "$entity", "不能为null")
     }
 
     @Transactional
