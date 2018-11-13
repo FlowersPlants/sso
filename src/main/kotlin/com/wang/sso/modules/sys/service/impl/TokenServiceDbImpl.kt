@@ -1,8 +1,8 @@
 package com.wang.sso.modules.sys.service.impl
 
 import com.wang.sso.common.idgen.IdGenerate
-import com.wang.sso.core.security.base.SecurityToken
-import com.wang.sso.core.security.base.SecurityUser
+import com.wang.sso.core.security.user.SecurityToken
+import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.modules.sys.dao.ITokenDao
 import com.wang.sso.modules.sys.service.TokenService
 import org.springframework.beans.factory.annotation.Autowired

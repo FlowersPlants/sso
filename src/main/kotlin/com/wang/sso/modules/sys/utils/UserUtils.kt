@@ -1,10 +1,12 @@
 package com.wang.sso.modules.sys.utils
 
-import com.wang.sso.core.security.base.SecurityUser
-import com.wang.sso.core.security.base.SecurityUserFactory
+import com.wang.sso.common.utils.JsonUtils
+import com.wang.sso.core.security.user.SecurityUser
+import com.wang.sso.core.security.user.SecurityUserFactory
 import com.wang.sso.modules.sys.entity.User
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
+import java.util.*
 
 /**
  * user相关工具类
@@ -18,14 +20,7 @@ object UserUtils {
         val authentication = SecurityContextHolder.getContext().authentication
         return when (authentication) {
             null -> null
-            else -> {
-                when (authentication.principal) {
-                    is UserDetails -> {
-                        authentication.principal
-                    }
-                    else -> authentication.principal.toString()
-                }
-            }
+            else -> authentication.principal
         }
     }
 
@@ -33,11 +28,16 @@ object UserUtils {
      * 获取当前登录用户（SecurityUser）
      */
     fun getSecurityUser(): SecurityUser? {
-        return if (getPrincipal() != null && getPrincipal() is UserDetails) {
-            getPrincipal() as SecurityUser
-        } else {
-            null
+        val principal = getPrincipal()
+        when (Objects.isNull(principal)) {
+            false -> {
+                when (principal) {
+                    is UserDetails -> principal as SecurityUser
+                    is String -> JsonUtils.readValue(principal, SecurityUser::class.java)// 鉴权时此处被调用
+                }
+            }
         }
+        return null
     }
 
     /**
@@ -47,7 +47,7 @@ object UserUtils {
         return if (getSecurityUser() == null) {
             User()
         } else {
-            SecurityUserFactory().create(getSecurityUser()!!)
+            SecurityUserFactory.create(getSecurityUser() ?: SecurityUser())
         }
     }
 }

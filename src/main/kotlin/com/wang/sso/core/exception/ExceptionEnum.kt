@@ -19,5 +19,7 @@ enum class ExceptionEnum(val code: Int, val message: String) {
      */
     USERNAME_OR_PASSWORD_INCORRECT(601, "用户名或密码不正确"),
     ACCOUNT_LOCKED(602, "账号被锁定"),
-    ACCOUNT_DISABLED(603, "账号被锁定")
+    ACCOUNT_DISABLED(603, "账号被锁定"),
+    CREDENTIALS_EXPIRED(604, "凭证过期"),
+    ACCOUNT_EXPIRED(605, "账号过期")
 }

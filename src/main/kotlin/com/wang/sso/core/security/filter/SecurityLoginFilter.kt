@@ -1,6 +1,6 @@
 package com.wang.sso.core.security.filter
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.SsoException
@@ -61,7 +61,8 @@ class SecurityLoginFilter : UsernamePasswordAuthenticationFilter() {
     private val paramsMap = HashMap<String, Any>()
 
     /**
-     * 获取json提交的参数的值
+     * 获取json提交的参数的值，
+     * 从输入流获取登录参数
      */
     @Suppress("UNCHECKED_CAST")
     private fun getParameters(request: HttpServletRequest) {
@@ -74,7 +75,7 @@ class SecurityLoginFilter : UsernamePasswordAuthenticationFilter() {
                 inputStr = streamReader.readLine()
             }
 
-            val json = ObjectMapper().readValue(responseStrBuilder.toString(), Map::class.java)
+            val json = JsonUtils.readValue(responseStrBuilder.toString(), Map::class.java)
             paramsMap.putAll(json as Map<out String, Any>)
         } catch (e: IOException) {
             throw SsoException(ExceptionEnum.SERVICE_EXCEPTION)

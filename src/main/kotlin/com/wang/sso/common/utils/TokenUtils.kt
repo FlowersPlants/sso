@@ -1,7 +1,6 @@
 package com.wang.sso.common.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.wang.sso.core.security.base.SecurityUser
+import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.modules.sys.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -13,16 +12,15 @@ import kotlin.collections.HashMap
  * token工具，常量可配置到配置文件
  */
 object TokenUtils {
-    private const val CLAIM_KEY_CREATED = "created"
-    private const val CLAIM_KEY_SUBJECT = "subject"
-
     private const val DEFAULT_ALGORITHM = "hs256"
     private const val DEFAULT_SECRET = "wang@+!secret"
-
     // 过期时间 1800s，即30分钟
     private const val DEFAULT_EXPIRATION = 1800L
     // 设置类记住我的过期时间是 604800s，即7天
     private const val DEFAULT_EXPIRATION_REMEMBER_ME = 604800L
+
+    private const val CLAIM_KEY_CREATED = "created"
+    private const val CLAIM_KEY_SUBJECT = "subject"
 
     private const val ALGORITHM = DEFAULT_ALGORITHM
     private const val SECRET = DEFAULT_SECRET
@@ -65,15 +63,15 @@ object TokenUtils {
     /**
      * 返回security user
      */
-    fun getUserBySubject(subject: String): SecurityUser {
-        return ObjectMapper().readValue(subject, SecurityUser::class.java)
+    fun getUserBySubject(subject: String): SecurityUser? {
+        return JsonUtils.readValue(subject, SecurityUser::class.java)
     }
 
     /**
      * 是否已过期
      */
     fun isExpiration(token: String): Boolean {
-        return getClaimFormToken(token)!!.expiration.before(Date())
+        return getClaimFormToken(token)?.expiration?.before(Date()) ?: true
     }
 
     /**
@@ -114,6 +112,6 @@ object TokenUtils {
             account = "admin"
             password = "admin"
         }
-        println(generateToken(ObjectMapper().writeValueAsString(user)))
+        println(generateToken(JsonUtils.toJson(user)))
     }
 }

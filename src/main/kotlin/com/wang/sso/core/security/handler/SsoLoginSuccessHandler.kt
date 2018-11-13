@@ -1,7 +1,7 @@
 package com.wang.sso.core.security.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.common.dto.ResponseDto
+import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.common.utils.TokenUtils
 import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.http.MediaType
@@ -28,13 +28,13 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         response: HttpServletResponse,
         authentication: Authentication
     ) {
-        val user = UserUtils.getSecurityUser()
+        val principal = UserUtils.getSecurityUser()
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val body = ResponseDto().apply {
-            data = TokenUtils.generateToken(ObjectMapper().writeValueAsString(user))
+            data = TokenUtils.generateToken(JsonUtils.toJson(principal))
         }
         val out: PrintWriter = response.writer
-        out.write(ObjectMapper().writeValueAsString(body))
+        out.write(JsonUtils.toJson(body))
 
         // 调用父类的方法会默认跳转，来自：https://blog.csdn.net/qq_37502106/article/details/81045773
         // super.onAuthenticationSuccess(request, response, authentication)

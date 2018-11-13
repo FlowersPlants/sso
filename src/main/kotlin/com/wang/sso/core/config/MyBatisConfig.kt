@@ -1,5 +1,6 @@
 package com.wang.sso.core.config
 
+import com.baomidou.mybatisplus.core.config.GlobalConfig
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import com.baomidou.mybatisplus.core.injector.ISqlInjector
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
@@ -64,11 +65,22 @@ open class MyBatisConfig {
 
         sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mappings/*/*.xml"))
 
+        sessionFactory.setGlobalConfig(globalConfig())
         //设置插件，比如分页插件
-        //sessionFactory.setPlugins();
+        //sessionFactory.setPlugins()
 
         //下划线转驼峰配置，可直接在application.yml中进行配置
         //sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
         return sessionFactory
+    }
+
+    /**
+     * 全局自动注入插件，逻辑删除插件
+     */
+    @Bean
+    open fun globalConfig() :GlobalConfig{
+        return GlobalConfig()
+            .setMetaObjectHandler(metaObjectHandler())
+            .setSqlInjector(sqlInjector())
     }
 }

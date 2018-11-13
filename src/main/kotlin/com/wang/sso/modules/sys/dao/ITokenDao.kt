@@ -1,8 +1,8 @@
 package com.wang.sso.modules.sys.dao
 
 import com.wang.sso.core.annotations.MyBatisDao
-import com.wang.sso.core.security.base.SecurityToken
-import com.wang.sso.core.security.base.SecurityUser
+import com.wang.sso.core.security.user.SecurityToken
+import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.core.support.BaseDao
 import com.wang.sso.modules.sys.entity.Token
 

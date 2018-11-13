@@ -3,7 +3,7 @@ package com.wang.sso.core.config
 import com.wang.sso.core.security.filter.SecurityLoginFilter
 import com.wang.sso.core.security.handler.SsoFailureHandler
 import com.wang.sso.core.security.handler.SsoLoginSuccessHandler
-import com.wang.sso.core.security.base.SecurityUserService
+import com.wang.sso.core.security.user.SecurityUserService
 import com.wang.sso.core.security.filter.SecurityAuthorizationFilter
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean

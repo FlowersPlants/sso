@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * {@link com.wang.sso.core.security.base.SecurityUser}
+ * {@link com.wang.sso.core.security.user.SecurityUser}
  * @deprecated 使用kotlin包下的同名类代替
  */
 public class SecurityUser extends User implements UserDetails {

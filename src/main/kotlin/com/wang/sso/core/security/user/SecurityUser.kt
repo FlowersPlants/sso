@@ -1,5 +1,7 @@
-package com.wang.sso.core.security.base
+package com.wang.sso.core.security.user
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.wang.sso.core.support.BaseModel
 import com.wang.sso.modules.sys.entity.Role
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -19,10 +21,10 @@ class SecurityUser : UserDetails {
      */
     var id: String? = null
 
-//    /**
-//     * 状态
-//     */
-//    var status: String? = null
+    /**
+     * 状态
+     */
+    var status: String? = null
 
     /**
      * 账号，kotlin方式用username报错
@@ -54,10 +56,12 @@ class SecurityUser : UserDetails {
      */
     var roles: MutableList<Role>? = null
 
+    @JsonIgnore
     override fun getUsername(): String {
         return this.account!!
     }
 
+    @JsonIgnore
     override fun getPassword(): String {
         return this.pwd!!
     }
@@ -65,6 +69,7 @@ class SecurityUser : UserDetails {
     /**
      * @return 所有权限
      */
+    @JsonIgnore
     override fun getAuthorities(): Collection<GrantedAuthority> {
         return roles!!.parallelStream()
             .filter { p -> !p.enname.isNullOrEmpty() }
@@ -77,31 +82,35 @@ class SecurityUser : UserDetails {
      * 判断账号是否已经过期
      * @return 默认没有过期
      */
+    @JsonIgnore
     override fun isAccountNonExpired(): Boolean {
         return true
     }
 
     /**
      * 判断账号是否被锁定
-     * @return 默认没有锁定
+     * @return 状态是否为冻结
      */
+    @JsonIgnore
     override fun isAccountNonLocked(): Boolean {
-        return true
+        return this.status != BaseModel.FREEZE
     }
 
     /**
      * 判断信用凭证是否过期
      * @return 默认没有过期
      */
+    @JsonIgnore
     override fun isCredentialsNonExpired(): Boolean {
         return true
     }
 
     /**
      * 判断账号是否可用
-     * @return 默认可用
+     * @return 状态是否为正常
      */
+    @JsonIgnore
     override fun isEnabled(): Boolean {
-        return true
+        return this.status == BaseModel.NORMAL
     }
 }
