@@ -69,7 +69,7 @@ class UserController : BaseController() {
     }
 
     /**
-     * 删除接口
+     * 删除接口（逻辑删除）
      */
     @DeleteMapping
 //    @PreAuthorize("hasRole('ADMIN')")

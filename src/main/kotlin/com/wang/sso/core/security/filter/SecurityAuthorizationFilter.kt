@@ -3,6 +3,7 @@ package com.wang.sso.core.security.filter
 import com.wang.sso.common.utils.TokenUtils
 import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
+import com.wang.sso.core.exception.SsoException
 import com.wang.sso.core.exception.SsoSecurityException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -47,13 +48,12 @@ class SecurityAuthorizationFilter(authenticationManager: AuthenticationManager) 
         }
         if (!TokenUtils.isExpiration(token)) {
             val subject = TokenUtils.getSubjectFormToken(token)
-            if (subject != null) {
+            if (subject != null && subject.toLowerCase() != "null") {
                 val securityUser = TokenUtils.getUserBySubject(subject)
                 return UsernamePasswordAuthenticationToken(subject, null, securityUser?.authorities)
             }
-        } else {
-            throw SsoSecurityException(ExceptionEnum.CREDENTIALS_EXPIRED)
+            throw SsoException(611, "凭证错误")
         }
-        return null
+        throw SsoSecurityException(ExceptionEnum.CREDENTIALS_EXPIRED)
     }
 }

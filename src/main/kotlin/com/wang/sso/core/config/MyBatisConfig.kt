@@ -17,7 +17,7 @@ import javax.sql.DataSource
 
 
 /**
- * mapper.xml扫描器
+ * MyBatis Plus插件配置，都从application.yml配置文件中独立出来
  * @author FlowersPlants
  * @since v1
  */
@@ -37,6 +37,14 @@ open class MyBatisConfig {
     }
 
     /**
+     * mp字段自动填充Bean
+     */
+    @Bean
+    open fun metaObjectHandler(): MetaObjectHandler {
+        return MyBatisPlusMetaObjectHandler()
+    }
+
+    /**
      * 注入分页拦截器
      */
     @Bean
@@ -44,13 +52,7 @@ open class MyBatisConfig {
         return PaginationInterceptor()
     }
 
-    /**
-     * mp字段自动填充Bean
-     */
-    @Bean
-    open fun metaObjectHandler(): MetaObjectHandler {
-        return MyBatisPlusMetaObjectHandler()
-    }
+    // 其他比如性能分析插件在开发时可配置
 
     /**
      * 用MybatisSqlSessionFactoryBean来替换SqlSessionFactoryBean
@@ -62,28 +64,32 @@ open class MyBatisConfig {
         val sessionFactory = MybatisSqlSessionFactoryBean()
         sessionFactory.setDataSource(dataSource)
 
+        // 类型别名设置
         sessionFactory.setTypeAliasesPackage("com.wang.sso.modules.*.entity")
         sessionFactory.setTypeAliasesSuperType(BaseModel::class.java)
 
+        // xml文件位置设置，配置在yml文件无效，什么原因呢？
         sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mappings/*/*.xml"))
 
+        // 全局配置
         sessionFactory.setGlobalConfig(globalConfig())
 
-        //设置插件，比如分页插件，必须设置分页插件才会生效
+        // 设置插件，比如分页插件，必须设置分页插件分页功能才会生效
+        // 设置数据库SQL语句格式化拦截器插件
         sessionFactory.setPlugins(arrayOf(paginationInterceptor()))
 
-        //下划线转驼峰配置，可直接在application.yml中进行配置
-        //sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        // 下划线转驼峰配置，可直接在application.yml中进行配置
+        // sessionFactory.getObject()!!.configuration.isMapUnderscoreToCamelCase = true
         return sessionFactory
     }
 
     /**
-     * 全局自动注入插件，逻辑删除插件
+     * 自动填充插件，逻辑删除插件使用全局配置的方式注入
      */
     @Bean
     open fun globalConfig(): GlobalConfig {
         return GlobalConfig()
-            .setMetaObjectHandler(metaObjectHandler())
-            .setSqlInjector(sqlInjector())
+            .setMetaObjectHandler(metaObjectHandler()) // 自动填充插件
+            .setSqlInjector(sqlInjector()) // 逻辑删除插件
     }
 }

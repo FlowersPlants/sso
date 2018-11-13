@@ -25,18 +25,27 @@ open class UserServiceImpl : UserService {
     @Autowired
     private lateinit var userDao: IUserDao
 
-    override fun findPage(user: User, page: Page<User>): IPage<User> {
+    override fun findPage(user: User?, page: Page<User>): IPage<User> {
         return userDao.selectPage(page, QueryWrapper<User>().apply {
-            like("account", "${user.account}")
+            if (user != null) {
+                if (!user.id.isNullOrEmpty()) {
+                    eq("id", "${user.id}")
+                }
+                if (!user.account.isNullOrEmpty()) {
+                    eq("account", "${user.account}")
+                }
+                if (!user.name.isNullOrEmpty()) {
+                    like("name", "${user.name}")
+                }
+            }
+            orderByAsc("sort")
             orderByDesc("create_at")
         })
     }
 
     @Log("获取用户列表")
     override fun findList(entity: User): MutableList<User> {
-        return userDao.selectList(QueryWrapper<User>().apply {
-            eq("status", "0") // 设置查询"0"状态下的所有用户
-        })
+        return userDao.selectList(null)
     }
 
     /**

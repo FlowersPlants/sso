@@ -31,15 +31,15 @@ object UserUtils {
      */
     fun getSecurityUser(): SecurityUser? {
         val principal = getPrincipal()
-        when (Objects.isNull(principal)) {
-            false -> {
-                when (principal) {
-                    is UserDetails -> principal as SecurityUser
-                    is String -> JsonUtils.readValue(principal, SecurityUser::class.java)// 鉴权时此处被调用
-                }
+        return if (!Objects.isNull(principal)) {
+            when (principal) {
+                is UserDetails -> principal as SecurityUser
+                is String -> JsonUtils.readValue(principal, SecurityUser::class.java)// 鉴权时此处被调用
+                else -> SecurityUser()
             }
+        } else {
+            SecurityUser()
         }
-        return null
     }
 
     /**

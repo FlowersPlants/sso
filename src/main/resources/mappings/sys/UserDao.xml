@@ -4,4 +4,18 @@
     <select id="findUserByUsername" resultType="User">
         select * from sys_user where account=#{username}
     </select>
+
+    <!-- 物理删除 -->
+    <delete id="physicalDelete" parameterType="User">
+        delete from sys_user where 1=1
+        <if test="account != null and account != ''">
+            and account=#{account}
+        </if>
+        <if test="id != null and id != ''">
+            and id=#{id}
+        </if>
+        <if test="(id == null or id == '') and (account == null or account == '')">
+            and 1=2 # 当满足此条件时，设置一个必然不会执行的语句，否则会导致全表删除
+        </if>
+    </delete>
 </mapper>

@@ -14,5 +14,5 @@ interface UserService : BaseService<User> {
     /**
      * 分页方法
      */
-    fun findPage(user: User, page: Page<User>): IPage<User>
+    fun findPage(user: User?, page: Page<User>): IPage<User>
 }

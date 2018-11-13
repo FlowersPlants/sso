@@ -15,6 +15,7 @@ CREATE TABLE `sys_menu` (
   `name` varchar(20) NOT NULL COMMENT '名称',
   `url` varchar(50) DEFAULT NULL COMMENT 'URL',
   `icon` varchar(20) DEFAULT NULL COMMENT '图标',
+  `sort` int(11) DEFAULT 10 COMMENT '排序号',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
   `create_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT NULL COMMENT '更新者',
@@ -41,6 +42,7 @@ CREATE TABLE `sys_role` (
   `name` varchar(20) NOT NULL COMMENT '名称',
   `enname` varchar(30) DEFAULT NULL COMMENT '角色英文名称',
   `type` varchar(10) DEFAULT NULL COMMENT '角色类型',
+  `sort` int(11) DEFAULT 10 COMMENT '排序号',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
   `create_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT NULL COMMENT '更新者',
@@ -55,6 +57,10 @@ CREATE TABLE `sys_role` (
 --
 
 LOCK TABLES `sys_role` WRITE;
+INSERT INTO `sys_role` VALUES ('1','超级管理员','ROLE_ADMIN','1','10','1','2018-11-13 05:20:53',NULL,NULL,'0','开发时账号，用哟最高权限'),
+('2','系统管理员','ROLE_SYSTEM','2','20','1','2018-11-13 05:21:40',NULL,NULL,'0','客户使用的最高权限的管理员'),
+('3','普通管理员','ROLE_GENERAL','3','30','1','2018-11-13 05:23:51',NULL,NULL,'0','普通管理员'),
+('4','普通用户','ROLE_USER','4','40','1','2018-11-13 05:24:29',NULL,NULL,'0','普通用户');
 UNLOCK TABLES;
 
 --
@@ -89,6 +95,7 @@ CREATE TABLE `sys_role_user` (
 --
 
 LOCK TABLES `sys_role_user` WRITE;
+INSERT INTO `sys_role_user` VALUES ('1','1'),('4','1062333229627310082');
 UNLOCK TABLES;
 
 --
@@ -104,6 +111,7 @@ CREATE TABLE `sys_user` (
   `email` varchar(30) DEFAULT NULL COMMENT '邮箱',
   `gender` tinyint(1) DEFAULT '1' COMMENT '性别',
   `birthday` datetime DEFAULT NULL COMMENT '生日',
+  `sort` int(11) DEFAULT 10 COMMENT '排序号',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
   `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT NULL COMMENT '更新者',
@@ -118,7 +126,7 @@ CREATE TABLE `sys_user` (
 --
 
 LOCK TABLES `sys_user` WRITE;
-INSERT INTO `sys_user` VALUES ('1','admin','$2a$10$g6viskarc823RbgwoHc/ZOLsBmq5UHqYQu4tw0iVIIod4Xoc7sRCm','wzj',NULL,1,NULL,NULL,NULL,NULL,NULL,'0',NULL);
+INSERT INTO `sys_user` VALUES ('1','admin','$2a$10$g6viskarc823RbgwoHc/ZOLsBmq5UHqYQu4tw0iVIIod4Xoc7sRCm','wzj',NULL,1,NULL,'10','1','2018-11-06 13:14:12',NULL,NULL,'0',NULL),('1062333229627310082','FlowersPlants','$2a$10$EZSQH7QnfYQwiNAvDL33aefwc7nU1MrNpIlKUwXv2zDGK86H2g9Vy','flowersplants',NULL,1,NULL,'20','1','2018-11-13 07:15:54',NULL,NULL,'0',NULL);
 UNLOCK TABLES;
 
--- Dump completed on 2018-11-07 13:03:28
+-- Dump completed on 2018-11-13 21:58:04

@@ -20,4 +20,8 @@ object CommonConstant {
     const val PARAMETER_REMEMBER_ME = "rememberMe"
     const val PARAMETER_VALIDATE_CODE = "validateCode"
     const val PARAMETER_MOBILE = "mobile"
+
+    // other
+    const val DEFAULT_ADMIN_ID = "1" // 默认超级管理员的ID为1
+    const val DEFAULT_SORT = 10 // 默认排序号的值
 }
