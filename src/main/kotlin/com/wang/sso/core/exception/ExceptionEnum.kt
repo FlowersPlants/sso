@@ -2,6 +2,8 @@ package com.wang.sso.core.exception
 
 /**
  * 异常枚举类
+ * @author FlowersPlants
+ * @since v1
  */
 enum class ExceptionEnum(val code: Int, val message: String) {
 

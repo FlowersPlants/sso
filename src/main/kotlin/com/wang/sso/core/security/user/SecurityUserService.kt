@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service
 
 /**
  * 自定义details service对象
+ * @author FlowersPlants
+ * @since v1
  */
 @Service
 class SecurityUserService : UserDetailsService {

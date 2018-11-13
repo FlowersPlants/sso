@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * 用户service实现类
+ * @author FlowersPlants
+ * @since v1
+ */
 @Service
 open class UserServiceImpl : UserService {
 

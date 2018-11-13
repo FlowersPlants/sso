@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse
 /**
  * 自定义登录失败处理器
  * 同样的问题，可以从SsoLoginSuccessHandler类获取解决方案
+ * @author FlowersPlants
+ * @since v1
  */
 @Service
 class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {

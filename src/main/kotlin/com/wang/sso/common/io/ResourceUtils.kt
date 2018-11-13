@@ -11,6 +11,8 @@ import java.io.InputStream
 
 /**
  * 资源工具类
+ * @author FlowersPlants
+ * @since v1
  */
 object ResourceUtils : ResourceUtils() {
     private val resourceLoader = DefaultResourceLoader()

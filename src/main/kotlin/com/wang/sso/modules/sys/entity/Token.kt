@@ -5,6 +5,8 @@ import java.util.*
 
 /**
  * 保存到数据库的token
+ * @author FlowersPlants
+ * @since v2
  */
 class Token : BaseModel() {
     companion object {

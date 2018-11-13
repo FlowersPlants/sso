@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest
 
 /**
  * ip地址工具类，待测试
+ * @author FlowersPlants
+ * @since v1
  */
 object IpUtils {
 

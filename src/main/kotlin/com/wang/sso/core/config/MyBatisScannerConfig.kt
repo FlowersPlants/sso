@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration
 
 /**
  * dao 扫描器
+ * @author FlowersPlants
+ * @since v1
  */
 @Configuration
 open class MyBatisScannerConfig {

@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils
 
 /**
  * securityUser工厂
+ * @author FlowersPlants
+ * @since v1
  */
 object SecurityUserFactory {
     private val roleDao = SpringUtils.getBean(IRoleDao::class.java)

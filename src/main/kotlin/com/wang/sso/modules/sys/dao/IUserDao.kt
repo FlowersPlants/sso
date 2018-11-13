@@ -6,6 +6,8 @@ import com.wang.sso.modules.sys.entity.User
 
 /**
  * 用户管理数据访问接口，可调用xml配置方法，可使用 @see Select注解
+ * @author FlowersPlants
+ * @since v1
  */
 @MyBatisDao(value = "userDao", entity = User::class)
 interface IUserDao : BaseDao<User> {

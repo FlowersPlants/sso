@@ -7,6 +7,8 @@ import java.util.*
 
 /**
  * 统一返回json数据格式的dto对象
+ * @author FlowersPlants
+ * @since v1
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class ResponseDto : Serializable {

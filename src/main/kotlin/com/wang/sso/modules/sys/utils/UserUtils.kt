@@ -10,6 +10,8 @@ import java.util.*
 
 /**
  * user相关工具类
+ * @author FlowersPlants
+ * @since v1
  */
 object UserUtils {
 

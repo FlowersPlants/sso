@@ -26,6 +26,8 @@ import java.util.*
 
 /**
  * jackson json工具类
+ * @author FlowersPlants
+ * @since v1
  */
 object JsonUtils {
     private var objectMapper: ObjectMapper

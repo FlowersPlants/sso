@@ -2,6 +2,8 @@ package com.wang.sso.core.exception
 
 /**
  * 自定义全局异常
+ * @author FlowersPlants
+ * @since v1
  */
 open class SsoException() : RuntimeException() {
 

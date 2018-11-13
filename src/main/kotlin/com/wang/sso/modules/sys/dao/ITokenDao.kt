@@ -8,6 +8,8 @@ import com.wang.sso.modules.sys.entity.Token
 
 /**
  * 保存到数据库的token
+ * @author FlowersPlants
+ * @since v2
  */
 @MyBatisDao(value = "tokenDao")
 interface ITokenDao : BaseDao<Token> {

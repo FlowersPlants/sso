@@ -42,7 +42,7 @@ mybatis-plus:
     db-config:
       db-type: mysql # 数据库类型，不配置时会自动按照url连接获取
       id-type: id_worker_str # 全局主键配置，字符串类型的id_worker
-#      logic-delete-value: 1 # 逻辑删除值，逻辑删除有效，与mp配置一样时，该配置可无
-#      logic-not-delete-value: 0 # 逻辑未删除值，与mp配置一样时，该配置可无
+      #      logic-delete-value: 1 # 逻辑删除值，逻辑删除有效，与mp配置一样时，该配置可无
+      #      logic-not-delete-value: 0 # 逻辑未删除值，与mp配置一样时，该配置可无
       #      table-prefix: sys_ # 表名前缀，配置这个之后可以把项目微服务化，每个模块一个数据库，对应里面的表前缀
       table-underline: true # 表名是否使用下划线命名

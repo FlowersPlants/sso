@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest
 /**
  * 分页工具类
  * 如果需要分页，必须传入参数：current，pageSize
+ * @author FlowersPlants
+ * @since v1
  */
 object PaginationUtil {
     private const val KEY_CURRENT = "current"

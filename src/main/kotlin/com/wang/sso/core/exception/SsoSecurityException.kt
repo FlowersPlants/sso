@@ -4,6 +4,8 @@ import org.springframework.security.core.AuthenticationException
 
 /**
  * 自定义认证相关异常
+ * @author FlowersPlants
+ * @since v1
  */
 class SsoSecurityException(message: String) : AuthenticationException(message) {
     private var code: Int? = null

@@ -9,6 +9,8 @@ import java.util.*
 /**
  * mybatis plus公共字段自动填充处理器
  * 多线程下不适用？
+ * @author FlowersPlants
+ * @since v1
  */
 class MyBatisPlusMetaObjectHandler : MetaObjectHandler {
     companion object {

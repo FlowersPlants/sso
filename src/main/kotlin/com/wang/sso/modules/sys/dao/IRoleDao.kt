@@ -5,6 +5,11 @@ import com.wang.sso.core.support.BaseDao
 import com.wang.sso.modules.sys.entity.Role
 import org.apache.ibatis.annotations.Select
 
+/**
+ * 角色管理数据库操作接口
+ * @author FlowersPlants
+ * @since v1
+ */
 @MyBatisDao(value = "roleDao", entity = Role::class)
 interface IRoleDao : BaseDao<Role> {
 

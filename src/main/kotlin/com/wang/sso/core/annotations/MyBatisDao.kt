@@ -5,6 +5,8 @@ import kotlin.reflect.KClass
 
 /**
  * mybatis注解，标注需要Springboot扫描的dao接口
+ * @author FlowersPlants
+ * @since v1
  */
 @Component
 @Target(AnnotationTarget.CLASS)

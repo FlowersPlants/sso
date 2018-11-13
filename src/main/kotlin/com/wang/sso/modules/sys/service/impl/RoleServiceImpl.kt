@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * 角色service实现类
+ * @author FlowersPlants
+ * @since v1
+ */
 @Service
 open class RoleServiceImpl : RoleService {
 

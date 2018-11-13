@@ -1,6 +1,6 @@
 package com.wang.sso.modules.sys.service.impl
 
-import com.wang.sso.common.idgen.IdGenerate
+import com.baomidou.mybatisplus.core.toolkit.IdWorker
 import com.wang.sso.core.security.user.SecurityToken
 import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.modules.sys.dao.ITokenDao
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service
 
 /**
  * 保存到db数据库的token
+ *
+ * @author FlowersPlants
+ * @since v2
  */
 @Service
 class TokenServiceDbImpl : TokenService {
@@ -17,7 +20,7 @@ class TokenServiceDbImpl : TokenService {
     private lateinit var tokenDao: ITokenDao
 
     override fun saveToken(securityUser: SecurityUser): SecurityToken {
-        securityUser.token=IdGenerate.uuid()
+        securityUser.token=IdWorker.get32UUID()
         return tokenDao.saveToken(securityUser).apply {
             this.token = securityUser.token
         }

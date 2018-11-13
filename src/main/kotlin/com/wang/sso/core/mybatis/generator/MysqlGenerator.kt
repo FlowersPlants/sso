@@ -16,6 +16,8 @@ import java.util.*
 /**
  * MySQL generator
  * 需要vm文件
+ * @author FlowersPlants
+ * @since v1
  */
 object MysqlGenerator {
     fun generator() {
@@ -34,7 +36,7 @@ object MysqlGenerator {
                 .setEnableCache(false)// XML 二级缓存
                 .setBaseResultMap(false)// XML ResultMap
                 .setBaseColumnList(false)// XML columList
-                .setKotlin(false) //是否生成 kotlin 代码
+                .setKotlin(true) //是否生成 kotlin 代码
                 .setAuthor("FlowersPlants") //作者
                 //自定义文件命名，注意 %s 会自动填充表实体属性！
                 .setEntityName("%s")
@@ -76,7 +78,7 @@ object MysqlGenerator {
                 .setCapitalMode(false)// 全局大写命名
                 .setTablePrefix("sys_")// 去除前缀
                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                //.setInclude(new String[] { "user" }) // 需要生成的表
+                //.setInclude(String[] { "user" }) // 需要生成的表
                 //自定义实体父类
                 .setSuperEntityClass("com.wang.sso.core.support.BaseModel")
                 // 自定义实体，公共字段
@@ -103,12 +105,12 @@ object MysqlGenerator {
         ).setPackageInfo(
             // 包配置
             PackageConfig()
-                .setParent("com.wang.sso")
-                .setController("modules.controller")
-                .setEntity("modules.entity")
-                .setMapper("modules.dao")
-                .setService("modules.service")
-                .setServiceImpl("modules.service.impl")
+                .setParent("com.wang.sso.modules")
+                .setController("controller")
+                .setEntity("entity")
+                .setMapper("dao")
+                .setService("service")
+                .setServiceImpl("service.impl")
         ).setCfg(
             // 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
             object : InjectionConfig() {

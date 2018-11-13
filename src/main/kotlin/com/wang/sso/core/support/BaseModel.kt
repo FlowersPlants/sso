@@ -2,14 +2,15 @@ package com.wang.sso.core.support
 
 import com.baomidou.mybatisplus.annotation.*
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.wang.sso.modules.sys.entity.User
 import java.io.Serializable
 import java.util.*
 
 /**
  * 数据库实体基类
+ * @author FlowersPlants
+ * @since v1
  */
-abstract class BaseModel() : Serializable {
+open class BaseModel : Serializable {
     companion object {
         private const val serialVersionUID = 1L
 
@@ -49,9 +50,5 @@ abstract class BaseModel() : Serializable {
 
     init {
         this.status = BaseModel.NORMAL
-    }
-
-    constructor(id: String) : this() {
-        this.id = id
     }
 }

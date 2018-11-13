@@ -2,6 +2,8 @@ package com.wang.sso.core.exception
 
 /**
  * 自定义业务异常
+ * @author FlowersPlants
+ * @since v1
  */
 class ServiceException() : SsoException() {
     private var code: Int? = null

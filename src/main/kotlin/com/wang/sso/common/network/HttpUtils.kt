@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse
 
 /**
  * http 工具类
+ * @author FlowersPlants
+ * @since v1
  */
 object HttpUtils {
 
@@ -19,6 +21,6 @@ object HttpUtils {
     }
 
     fun getIp(): String {
-        return getRequest().remoteHost
+        return IpUtils.getRemoteAddr(getRequest())
     }
 }

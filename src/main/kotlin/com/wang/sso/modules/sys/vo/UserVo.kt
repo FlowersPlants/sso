@@ -5,8 +5,9 @@ import com.wang.sso.modules.sys.entity.Role
 import java.util.*
 
 /**
- * user vo
- * 值对象
+ * user vo 值对象
+ * @author FlowersPlants
+ * @since v2
  */
 class UserVo {
     var id: String? = null

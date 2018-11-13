@@ -18,9 +18,11 @@ import javax.sql.DataSource
 
 /**
  * mapper.xml扫描器
+ * @author FlowersPlants
+ * @since v1
  */
-@EnableTransactionManagement
 @Configuration
+@EnableTransactionManagement
 open class MyBatisConfig {
 
     @Autowired
@@ -66,8 +68,9 @@ open class MyBatisConfig {
         sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mappings/*/*.xml"))
 
         sessionFactory.setGlobalConfig(globalConfig())
-        //设置插件，比如分页插件
-        //sessionFactory.setPlugins()
+
+        //设置插件，比如分页插件，必须设置分页插件才会生效
+        sessionFactory.setPlugins(arrayOf(paginationInterceptor()))
 
         //下划线转驼峰配置，可直接在application.yml中进行配置
         //sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
@@ -78,7 +81,7 @@ open class MyBatisConfig {
      * 全局自动注入插件，逻辑删除插件
      */
     @Bean
-    open fun globalConfig() :GlobalConfig{
+    open fun globalConfig(): GlobalConfig {
         return GlobalConfig()
             .setMetaObjectHandler(metaObjectHandler())
             .setSqlInjector(sqlInjector())

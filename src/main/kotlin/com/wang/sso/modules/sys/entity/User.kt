@@ -5,7 +5,9 @@ import com.wang.sso.core.support.BaseModel
 import java.util.*
 
 /**
- * @author wzj
+ * 用户实体
+ * @author FlowersPlants
+ * @since v1
  */
 @TableName("sys_user")
 open class User() : BaseModel() {

@@ -4,6 +4,8 @@ import java.io.Serializable
 
 /**
  * 树节点，树结构的模型需要继承此类
+ * @author FlowersPlants
+ * @since v1
  */
 open class TreeNode : Serializable {
     companion object {

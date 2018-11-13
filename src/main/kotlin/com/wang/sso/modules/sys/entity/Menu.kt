@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableName
 import com.wang.sso.core.support.BaseModel
 
 /**
- * @author wzj
+ * 菜单实体
+ * @author FlowersPlants
+ * @since v1
  */
 @TableName("sys_menu")
 class Menu() : BaseModel() {

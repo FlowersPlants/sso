@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * 权限认证
+ * @author FlowersPlants
+ * @since v1
  */
 @RestController
 class AuthController {

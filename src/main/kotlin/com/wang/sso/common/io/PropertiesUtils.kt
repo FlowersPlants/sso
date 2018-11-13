@@ -12,6 +12,8 @@ import java.util.regex.Pattern
  * Properties工具类， 可载入多个properties、yml文件，
  * 相同的属性在最后载入的文件中的值将会覆盖之前的值，
  * 取不到从System.getProperty()获取。
+ * @author FlowersPlants
+ * @since v1
  */
 class PropertiesUtils {
     companion object {

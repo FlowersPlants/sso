@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service
 
 /**
  * 一般的token，spring框架的token
+ * @author FlowersPlants
+ * @since v2
  */
 @Service
 class TokenServiceImpl : TokenService {

@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse
 /**
  * 自定义鉴权过滤器
  * https://blog.csdn.net/ech13an/article/details/80779973
+ *
+ * @author FlowersPlants
+ * @since v1
  */
 class SecurityAuthorizationFilter(authenticationManager: AuthenticationManager) :
     BasicAuthenticationFilter(authenticationManager) {

@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 /**
  * {@link com.wang.sso.core.security.user.SecurityUser}
  * @deprecated 使用kotlin包下的同名类代替
+ *
+ * @author FlowersPlants
+ * @since v1
  */
 public class SecurityUser extends User implements UserDetails {
     private static final long serialVersionUID = 1020034243435L;

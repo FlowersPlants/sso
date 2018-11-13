@@ -10,6 +10,8 @@ import kotlin.test.Test
 
 /**
  * user相关测试，OK
+ * @author FlowersPlants
+ * @since v1
  */
 class UserDaoTest : SsoApplicationTests() {
     @Autowired

@@ -10,6 +10,8 @@ import java.util.stream.Collectors
 
 /**
  * 系统安全认证用户
+ * @author FlowersPlants
+ * @since v1
  */
 class SecurityUser : UserDetails {
     companion object {

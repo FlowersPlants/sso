@@ -7,6 +7,8 @@ import com.wang.sso.modules.sys.entity.User
 
 /**
  * 用户相关接口
+ * @author FlowersPlants
+ * @since v1
  */
 interface UserService : BaseService<User> {
     /**

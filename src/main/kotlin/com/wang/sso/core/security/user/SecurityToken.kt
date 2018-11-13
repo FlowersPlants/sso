@@ -4,6 +4,8 @@ import java.io.Serializable
 
 /**
  * 登录令牌
+ * @author FlowersPlants
+ * @since v1
  */
 class SecurityToken() : Serializable {
 

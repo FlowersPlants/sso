@@ -10,6 +10,8 @@ import kotlin.collections.HashMap
 
 /**
  * token工具，常量可配置到配置文件
+ * @author FlowersPlants
+ * @since v1
  */
 object TokenUtils {
     private const val DEFAULT_ALGORITHM = "hs256"

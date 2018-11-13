@@ -2,6 +2,8 @@ package com.wang.sso.common.io
 
 /**
  * 文件管理工具类
+ * @author FlowersPlants
+ * @since v1
  */
 object FileUtils {
 

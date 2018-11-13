@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service
 
 /**
  * jwt方式token，默认
- * https://www.jb51.net/article/112146.htm
+ * https://www.jb51.net/article/112146.html
+ * @author FlowersPlants
+ * @since v2
  */
 @Service
 @Primary

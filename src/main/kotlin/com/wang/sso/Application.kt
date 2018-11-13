@@ -7,6 +7,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * kotlin方式启动类
+ * @author FlowersPlants
+ * @since v1
  */
 @SpringBootApplication
 open class Application : SpringBootServletInitializer() {

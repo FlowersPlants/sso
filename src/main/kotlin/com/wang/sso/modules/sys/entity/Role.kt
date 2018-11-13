@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableName
 import com.wang.sso.core.support.BaseModel
 
 /**
- * @author wzj
+ * 角色实体
+ * @author FlowersPlants
+ * @since v1
  */
 @TableName("sys_role")
 class Role() : BaseModel() {

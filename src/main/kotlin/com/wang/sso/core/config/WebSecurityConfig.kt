@@ -28,6 +28,8 @@ import javax.servlet.Filter
 
 /**
  * spring security 安全配置
+ * @author FlowersPlants
+ * @since v1
  */
 @Configuration
 @EnableWebSecurity

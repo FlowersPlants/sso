@@ -1,7 +1,8 @@
 ### 简介
 * 项目说明：
 * 项目前端[sso-front](https://github.com/FlowersPlants/sso-front)
-* 目前待解决问题：统一异常处理，因为登录失败时前端没有正确的提示
+* 目前待解决问题：统一异常处理，因为登录失败时前端没有正确的提示，已解决；
+token部分的功能可能需要优化，生成token的几种方式目前无效，修改token相关配置在yml文件中
 
 ### 规划功能
 * 基于Spring Security的权限控制
@@ -34,6 +35,11 @@
 * 可以浏览[MP文档](https://blog.csdn.net/helloPurple/article/details/78715508)的优秀案例
 * 也可以浏览[优秀案例](http://mp.baomidou.com/guide/#优秀案例)
 
+
+# 2018-11-13
+> jwt token登录和鉴权完成
+
 # 2018-11-07 
 > 添加mybatis plus插件，修改代码实现方式
+
 > 目前该插件有如下问题未解决：字段自动填充失败；逻辑删除无效（junit测试）

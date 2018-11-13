@@ -2,6 +2,8 @@ package com.wang.sso.core.consts
 
 /**
  * 公共常量
+ * @author FlowersPlants
+ * @since v1
  */
 object CommonConstant {
 

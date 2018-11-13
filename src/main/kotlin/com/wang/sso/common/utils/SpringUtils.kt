@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component
 
 /**
  * Spring工具类，获取bean对象
+ * @author FlowersPlants
+ * @since v1
  */
 @Component
 class SpringUtils : ApplicationContextAware {
