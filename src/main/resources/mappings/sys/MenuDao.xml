@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.sso.modules.sys.dao.IMenuDao">
+    <select id="findListByRoleIds" parameterType="java.util.List" resultType="Menu">
+        select a.*
+        from sys_menu a
+        left join sys_menu b on (b.id = a.parent_id or a.id = b.id)
+        left join sys_role_menu rm on rm.menu_id = a.id
+        left join sys_role r on r.id = rm.role_id
+        where 1=1
+        <if test="roleIds != null">
+            and r.id in
+            <foreach collection="list" index="index" item="e" open="(" separator="," close=")">
+                #{e}
+            </foreach>
+        </if>
+    </select>
+</mapper>

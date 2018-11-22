@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse
  * @author FlowersPlants
  * @since v1
  */
-open class BaseController {
+abstract class BaseController {
 
     fun getRequest(): HttpServletRequest {
         return HttpUtils.getRequest()

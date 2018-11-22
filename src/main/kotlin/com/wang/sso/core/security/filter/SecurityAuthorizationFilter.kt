@@ -30,7 +30,8 @@ class SecurityAuthorizationFilter(authenticationManager: AuthenticationManager) 
         val tokenHeader = request.getHeader(CommonConstant.JWT_TOKEN_HEADER)
         if (tokenHeader == null) { // 先取消 || !tokenHeader.startsWith(CommonConstant.JWT_TOKEN_HEAD)) {
             chain.doFilter(request, response)
-            return // 没有token，直接pass
+            throw SsoSecurityException(ExceptionEnum.AUTHORIZATION_FAIL)
+            // return // 没有token，直接pass
         }
         SecurityContextHolder.getContext().authentication = getAuthentication(tokenHeader)
         super.doFilterInternal(request, response, chain)

@@ -19,6 +19,7 @@ enum class ExceptionEnum(val code: Int, val message: String) {
     /**
      * 系统认证枚举
      */
+    AUTHORIZATION_FAIL(600, "认证失败，无效或没有token"),
     USERNAME_OR_PASSWORD_INCORRECT(601, "用户名或密码不正确"),
     ACCOUNT_LOCKED(602, "账号被锁定"),
     ACCOUNT_DISABLED(603, "账号被锁定"),

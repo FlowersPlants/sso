@@ -1,4 +1,4 @@
-package com.wang.sso.core.annotations
+package com.wang.sso.core.mybatis.annotation
 
 import org.springframework.stereotype.Component
 import kotlin.reflect.KClass

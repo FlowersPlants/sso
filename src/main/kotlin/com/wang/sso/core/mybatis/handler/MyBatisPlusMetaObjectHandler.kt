@@ -1,4 +1,4 @@
-package com.wang.sso.core.mybatis
+package com.wang.sso.core.mybatis.handler
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import com.wang.sso.core.consts.CommonConstant

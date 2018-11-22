@@ -3,7 +3,9 @@ package com.wang.sso.modules.sys.utils
 import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.core.security.user.SecurityUserFactory
+import com.wang.sso.modules.sys.entity.Role
 import com.wang.sso.modules.sys.entity.User
+import com.wang.sso.modules.sys.vo.MenuTree
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
@@ -51,5 +53,19 @@ object UserUtils {
         } else {
             SecurityUserFactory.create(getSecurityUser() ?: SecurityUser())
         }
+    }
+
+    /**
+     * 当前用户的所有角色，从session获取？
+     */
+    fun getCurrentUserRoles(): MutableList<Role>? {
+        TODO("not impl")
+    }
+
+    /**
+     * 当前用户的所有菜单
+     */
+    fun getCurrentUserMenuTree(): MutableList<MenuTree>? {
+        TODO("not impl")
     }
 }

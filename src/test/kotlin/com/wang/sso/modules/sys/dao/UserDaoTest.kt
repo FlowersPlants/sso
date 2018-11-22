@@ -3,7 +3,7 @@ package com.wang.sso.modules.sys.dao
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.wang.sso.SsoApplicationTests
 import com.wang.sso.common.utils.JsonUtils
-import com.wang.sso.core.config.WebSecurityConfig
+import com.wang.sso.core.security.config.WebSecurityConfig
 import com.wang.sso.modules.sys.entity.User
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.Test

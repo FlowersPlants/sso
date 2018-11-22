@@ -1,4 +1,4 @@
-package com.wang.sso.core.annotations
+package com.wang.sso.core.logging.annotation
 
 /**
  * 系统日志注解,逻辑待实现

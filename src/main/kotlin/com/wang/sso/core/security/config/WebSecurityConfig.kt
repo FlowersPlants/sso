@@ -1,4 +1,4 @@
-package com.wang.sso.core.config
+package com.wang.sso.core.security.config
 
 import com.wang.sso.core.security.filter.SecurityLoginFilter
 import com.wang.sso.core.security.handler.SsoFailureHandler

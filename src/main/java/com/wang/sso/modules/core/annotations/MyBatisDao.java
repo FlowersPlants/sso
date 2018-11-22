@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * mybatis注解，标注需要Springboot扫描的dao接口
- * @deprecated 不建议使用此注解，可用kotlin下的{@link com.wang.sso.core.annotations.MyBatisDao}代替
+ * @deprecated 不建议使用此注解，可用kotlin下的{@link com.wang.sso.core.mybatis.annotation.MyBatisDao}代替
  * @author FlowersPlants
  * @since v0
  */

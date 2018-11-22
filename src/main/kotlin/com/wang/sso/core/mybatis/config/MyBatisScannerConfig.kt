@@ -1,6 +1,6 @@
-package com.wang.sso.core.config
+package com.wang.sso.core.mybatis.config
 
-import com.wang.sso.core.annotations.MyBatisDao
+import com.wang.sso.core.mybatis.annotation.MyBatisDao
 import org.mybatis.spring.mapper.MapperScannerConfigurer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

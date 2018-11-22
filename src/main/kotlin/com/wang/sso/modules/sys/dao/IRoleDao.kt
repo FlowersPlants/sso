@@ -1,6 +1,6 @@
 package com.wang.sso.modules.sys.dao
 
-import com.wang.sso.core.annotations.MyBatisDao
+import com.wang.sso.core.mybatis.annotation.MyBatisDao
 import com.wang.sso.core.support.BaseDao
 import com.wang.sso.modules.sys.entity.Role
 import org.apache.ibatis.annotations.Select

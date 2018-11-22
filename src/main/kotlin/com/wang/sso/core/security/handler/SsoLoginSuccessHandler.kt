@@ -30,9 +30,10 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         response: HttpServletResponse,
         authentication: Authentication
     ) {
+        val token = TokenUtils.generateToken(JsonUtils.toJson(UserUtils.getSecurityUser()))
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         response.writer.write(JsonUtils.toJson(ResponseDto().apply {
-            data = TokenUtils.generateToken(JsonUtils.toJson(UserUtils.getSecurityUser()))
+            data = token
         }))
         // 调用父类的方法会默认跳转，来自：https://blog.csdn.net/qq_37502106/article/details/81045773
         // super.onAuthenticationSuccess(request, response, authentication)

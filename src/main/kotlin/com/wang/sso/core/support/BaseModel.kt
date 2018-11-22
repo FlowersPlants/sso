@@ -11,7 +11,7 @@ import java.util.*
  * @author FlowersPlants
  * @since v1
  */
-open class BaseModel : Serializable {
+abstract class BaseModel : Serializable {
     companion object {
         private const val serialVersionUID = 1L
 
