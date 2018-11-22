@@ -35,6 +35,8 @@ token部分的功能可能需要优化，生成token的几种方式目前无效�
 * 可以浏览[MP文档](https://blog.csdn.net/helloPurple/article/details/78715508)的优秀案例
 * 也可以浏览[优秀案例](http://mp.baomidou.com/guide/#优秀案例)
 
+# 2018-11-22
+> redis缓存功能待实现，获取权限正在实现中
 
 # 2018-11-13
 > jwt token登录和鉴权完成
