@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -37,10 +38,8 @@ class SecurityLoginFilter : UsernamePasswordAuthenticationFilter() {
             val password = this.obtainParameterValue(request, CommonConstant.PARAMETER_PASSWORD)
             val authRequest = UsernamePasswordAuthenticationToken(username, password)
 
-//            // 或者，这种方式需要注意自定义参数的名称
-//            val securityUser = ObjectMapper().readValue(request.inputStream, SecurityUser::class.java)
-//            val authRequest = UsernamePasswordAuthenticationToken(securityUser.account,securityUser.password)
             setDetails(request, authRequest)
+//            authRequest.details = WebAuthenticationDetailsSource().buildDetails(request)
             this.authenticationManager.authenticate(authRequest)
         } else {
             super.attemptAuthentication(request, response)

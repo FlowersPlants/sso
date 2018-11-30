@@ -14,7 +14,9 @@ import kotlin.collections.HashMap
  * @since v1
  */
 object TokenUtils {
+    // 算法
     private const val DEFAULT_ALGORITHM = "hs256"
+    // 密钥
     private const val DEFAULT_SECRET = "wang@+!secret"
     // 过期时间 1800s，即30分钟
     private const val DEFAULT_EXPIRATION = 1800L
@@ -28,6 +30,45 @@ object TokenUtils {
     private const val SECRET = DEFAULT_SECRET
     private const val EXPIRATION = DEFAULT_EXPIRATION
     private const val EXPIRATION_REMEMBER_ME = DEFAULT_EXPIRATION_REMEMBER_ME
+
+    /**
+     * token 解析
+     * 从令牌中获取数据声明
+     */
+    private fun getClaimFormToken(token: String): Claims? {
+        return try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).body
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * token解析，获取主体
+     * 主体里面是session还是user的唯一标识？或者直接是用户的所有信息？
+     */
+    fun getSubjectFormToken(token: String): String? {
+        return try {
+            getClaimFormToken(token)?.get(CLAIM_KEY_SUBJECT).toString()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * 返回security user
+     */
+    fun getUserBySubject(subject: String): SecurityUser? {
+        return JsonUtils.readValue(subject, SecurityUser::class.java)
+    }
+
+    /**
+     * 是否已过期
+     */
+    fun isExpiration(token: String): Boolean {
+        return getClaimFormToken(token)?.expiration?.before(Date()) ?: true
+    }
+
 
     /**
      * 生成token，不记住我
@@ -52,31 +93,6 @@ object TokenUtils {
     }
 
     /**
-     * token解析，获取主体（用户信息，包括角色）
-     */
-    fun getSubjectFormToken(token: String): String? {
-        return try {
-            getClaimFormToken(token)?.get(CLAIM_KEY_SUBJECT).toString()
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    /**
-     * 返回security user
-     */
-    fun getUserBySubject(subject: String): SecurityUser? {
-        return JsonUtils.readValue(subject, SecurityUser::class.java)
-    }
-
-    /**
-     * 是否已过期
-     */
-    fun isExpiration(token: String): Boolean {
-        return getClaimFormToken(token)?.expiration?.before(Date()) ?: true
-    }
-
-    /**
      * 生成token
      */
     private fun generateToken(claims: Map<String, Any>): String {
@@ -91,17 +107,6 @@ object TokenUtils {
             .setExpiration(generateExpireDate(expiration))
             .signWith(SignatureAlgorithm.forName(ALGORITHM), SECRET)
             .compact()
-    }
-
-    /**
-     * token 解析
-     */
-    private fun getClaimFormToken(token: String): Claims? {
-        return try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).body
-        } catch (e: Exception) {
-            null
-        }
     }
 
     private fun generateExpireDate(expiration: Long): Date {

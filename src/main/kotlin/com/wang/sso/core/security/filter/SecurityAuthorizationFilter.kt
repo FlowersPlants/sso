@@ -42,13 +42,13 @@ class SecurityAuthorizationFilter(authenticationManager: AuthenticationManager) 
      * 返回的不是一个SecurityUser对象，导致UserUtils中只能从json转化
      */
     private fun getAuthentication(tokenHeader: String): UsernamePasswordAuthenticationToken? {
-        val token = if (tokenHeader.contains(CommonConstant.JWT_TOKEN_HEAD)) {
-            tokenHeader.replace(CommonConstant.JWT_TOKEN_HEAD, "")
-        } else {
-            tokenHeader
-        }
-        if (!TokenUtils.isExpiration(token)) {
-            val subject = TokenUtils.getSubjectFormToken(token)
+//        val token = if (tokenHeader.contains(CommonConstant.JWT_TOKEN_HEAD)) {
+//            tokenHeader.replace(CommonConstant.JWT_TOKEN_HEAD, "")
+//        } else {
+//            tokenHeader
+//        }
+        if (!TokenUtils.isExpiration(tokenHeader)) {
+            val subject = TokenUtils.getSubjectFormToken(tokenHeader)
             if (subject != null && subject.toLowerCase() != "null") {
                 val securityUser = TokenUtils.getUserBySubject(subject)
                 return UsernamePasswordAuthenticationToken(subject, null, securityUser?.authorities)

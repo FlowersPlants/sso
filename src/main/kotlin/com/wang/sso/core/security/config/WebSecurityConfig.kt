@@ -5,6 +5,7 @@ import com.wang.sso.core.security.handler.SsoFailureHandler
 import com.wang.sso.core.security.handler.SsoLoginSuccessHandler
 import com.wang.sso.core.security.user.SecurityUserService
 import com.wang.sso.core.security.filter.SecurityAuthorizationFilter
+import com.wang.sso.core.security.handler.SsoLogoutSuccessHandler
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -61,7 +62,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         config.allowCredentials = true // 设置携带令牌
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
-        config.addAllowedOrigin("http://localhost:8080") // 设置允许跨域的域
+        config.addAllowedOrigin("http://localhost:8080") // 设置允许跨域的域，此域为前端框架的域
         source.registerCorsConfiguration("/**", config) // 对所有接口有效
 
         val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
@@ -92,14 +93,6 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return filter
     }
 
-//    /**
-//     * 自定义鉴权过滤器
-//     */
-//    @Bean
-//    open fun securityAuthorizationFilter() :SecurityAuthorizationFilter {
-//        return SecurityAuthorizationFilter(authenticationManagerBean())
-//    }
-
     /**
      * 注入userDetailsService
      */
@@ -124,6 +117,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     /**
      * http访问配置，配置各个路径的访问权限
+     * 登录和登出都是覆盖默认的
      */
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -141,8 +135,8 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .and() // 配置表单登录相关
 
             .logout()
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/auth/login")
+            .logoutUrl("/auth/logout")
+            .logoutSuccessHandler(SsoLogoutSuccessHandler())
             .permitAll()
             .and() // 配置登出相关
 

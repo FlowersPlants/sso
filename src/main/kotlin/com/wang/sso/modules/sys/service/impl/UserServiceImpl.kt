@@ -3,7 +3,6 @@ package com.wang.sso.modules.sys.service.impl
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import com.wang.sso.core.cache.redis.annotation.RedisCache
 import com.wang.sso.core.logging.annotation.Log
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
@@ -45,7 +44,6 @@ open class UserServiceImpl : UserService {
     }
 
     @Log("获取用户列表")
-    @RedisCache("CACHE_USER_LIST")
     override fun findList(entity: User): MutableList<User> {
         return userDao.selectList(null)
     }

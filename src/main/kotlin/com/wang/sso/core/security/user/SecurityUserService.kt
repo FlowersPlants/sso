@@ -28,7 +28,7 @@ class SecurityUserService : UserDetailsService {
      */
     @Throws(AuthenticationException::class)
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userDao.findUserByUsername(username)
+        val user = userDao.findUserByUsername(username) //先从缓存获取
         return when (user) {
             null -> throw SsoSecurityException(ExceptionEnum.USERNAME_OR_PASSWORD_INCORRECT)
             else -> {
