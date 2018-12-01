@@ -1,8 +1,7 @@
 package com.wang.sso.core.security.user
 
-import com.wang.sso.common.utils.SpringUtils
-import com.wang.sso.modules.sys.dao.IRoleDao
 import com.wang.sso.modules.sys.entity.User
+import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.BeanUtils
 
 /**
@@ -11,8 +10,6 @@ import org.springframework.beans.BeanUtils
  * @since v1
  */
 object SecurityUserFactory {
-    private val roleDao = SpringUtils.getBean(IRoleDao::class.java)
-
     /**
      * create security user by user.
      */
@@ -20,7 +17,7 @@ object SecurityUserFactory {
         return SecurityUser().apply {
             BeanUtils.copyProperties(user, this)
             this.pwd = user.password
-            this.roles = roleDao.findByUserId(user.id)
+            this.roles = UserUtils.findRolesByUserId(user.id)
         }
     }
 

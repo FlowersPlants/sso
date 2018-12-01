@@ -1,7 +1,7 @@
 package com.wang.sso.core.security.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.wang.sso.common.dto.ResponseDto
+import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.core.exception.ExceptionEnum
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -39,7 +39,6 @@ class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {
             data = msg
         }
         val out: PrintWriter = response.writer
-        out.write(ObjectMapper().writeValueAsString(body))
-        // super.onAuthenticationFailure(request, response, exception)
+        out.write(JsonUtils.toJson(body))
     }
 }

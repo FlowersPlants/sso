@@ -50,7 +50,7 @@ object JsonUtils {
         return try {
             getObjectMapper().writeValueAsString(obj)
         } catch (e: JsonProcessingException) {
-            throw SsoException(710, "json转化错误")
+            throw SsoException(710, "json转化错误: " + e.message)
         }
     }
 
@@ -67,12 +67,11 @@ object JsonUtils {
 
     /**
      * Json转换为对象 转换失败返回null
-     *
-     * @param json
-     * @param clazz
-     * @param <T>
-     * @return
-    </T> */
+     * @param json json格式字符串
+     * @param clazz Java class对象
+     * @param <T> class对象的范型
+     * @return T
+     */
     fun <T> readValue(json: String, clazz: Class<T>): T? {
         var t: T? = null
         try {
@@ -85,12 +84,11 @@ object JsonUtils {
 
     /**
      * Json转换为对象 转换失败返回null
-     *
-     * @param json
+     * @param json json格式字符串
      * @param valueTypeRef
      * @param <T>
-     * @return
-    </T> */
+     * @return T
+     */
     fun <T> readValue(json: String, valueTypeRef: TypeReference<T>): T? {
         var t: T? = null
         try {
@@ -138,6 +136,6 @@ object JsonUtils {
      * 判断是否CharSequence对象
      */
     private fun isCharSequence(obj: Any?): Boolean {
-        return !Objects.isNull(obj) && StringUtils.isCharSequence(obj!!::class.java)
+        return Objects.nonNull(obj) && StringUtils.isCharSequence(obj!!::class.java)
     }
 }

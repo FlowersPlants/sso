@@ -11,7 +11,7 @@ import com.wang.sso.modules.sys.entity.User
  */
 @MyBatisDao(value = "userDao", entity = User::class)
 interface IUserDao : BaseDao<User> {
-    fun findUserByUsername(username: String): User?
+    fun findUserByAccount(account: String): User?
 
     /**
      * 物理删除；对象的属性没有值时此方法不会删除任何东西

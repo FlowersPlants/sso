@@ -2,8 +2,8 @@ package com.wang.sso.core.security.handler
 
 import com.wang.sso.common.dto.ResponseDto
 import com.wang.sso.common.utils.JsonUtils
-import com.wang.sso.common.utils.TokenUtils
-import com.wang.sso.modules.sys.utils.UserUtils
+import com.wang.sso.core.security.user.SecurityUser
+import com.wang.sso.core.security.user.TokenUtils
 import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
@@ -30,7 +30,9 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         response: HttpServletResponse,
         authentication: Authentication
     ) {
-        val token = TokenUtils.generateToken(JsonUtils.toJson(UserUtils.getSecurityUser()))
+        val securityUser = authentication.principal as SecurityUser
+        // 把用户账号放在token里面，以后可以保存其他信息，比如session
+        val token = TokenUtils.generateToken(securityUser.username)
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         response.writer.write(JsonUtils.toJson(ResponseDto().apply {
             data = token

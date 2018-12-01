@@ -19,6 +19,9 @@ open class User() : BaseModel() {
         this.id = id
     }
 
+    /**
+     * 用户账号，唯一
+     */
     var account: String? = null
 
     var password: String? = null

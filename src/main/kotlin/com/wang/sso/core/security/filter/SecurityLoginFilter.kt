@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * 自定义登录过滤器，只管登录；获取json格式上传的数据（这种数据在request.getParameter方法中获取不到）
+ * 自定义登录过滤器，只处理登录；获取json格式上传的数据（这种数据在request.getParameter方法中获取不到）
  * 可获取的参数包括：json格式和url拼接方式；优先取json格式的参数。
  * 可看 https://blog.csdn.net/mushuntaosama/article/details/78904863
  *
@@ -39,7 +38,6 @@ class SecurityLoginFilter : UsernamePasswordAuthenticationFilter() {
             val authRequest = UsernamePasswordAuthenticationToken(username, password)
 
             setDetails(request, authRequest)
-//            authRequest.details = WebAuthenticationDetailsSource().buildDetails(request)
             this.authenticationManager.authenticate(authRequest)
         } else {
             super.attemptAuthentication(request, response)

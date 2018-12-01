@@ -12,11 +12,5 @@ import org.apache.ibatis.annotations.Param
  */
 @MyBatisDao(value = "menuDao", entity = Menu::class)
 interface IMenuDao : BaseDao<Menu> {
-
-//    @Select("select a.* " +
-//            "from sys_menu a " +
-//            "left join sys_role_menu rm on rm.menu_id=a.id " +
-//            "left join sys_role r on r.id=rm.role_id " +
-//            "where r.id in #{roleIds}")
     fun findListByRoleIds(@Param("roleIds") roleIds: List<String?>?): MutableList<Menu>
 }

@@ -1,5 +1,6 @@
 package com.wang.sso.core.security.user
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.wang.sso.core.exception.SsoException
 import com.wang.sso.core.support.BaseModel
 import com.wang.sso.modules.sys.entity.Role
@@ -10,6 +11,7 @@ import java.util.stream.Collectors
 
 /**
  * 系统安全认证用户
+ * 返回json是过滤掉无用信息
  * @author FlowersPlants
  * @since v1
  */
@@ -26,6 +28,7 @@ class SecurityUser : UserDetails {
     /**
      * 状态
      */
+    @JsonIgnore
     var status: String? = null
 
     /**
@@ -41,6 +44,7 @@ class SecurityUser : UserDetails {
     /**
      * 所有角色
      */
+    @JsonIgnore
     var roles: MutableList<Role>? = null
 
     override fun getUsername(): String {
@@ -66,6 +70,7 @@ class SecurityUser : UserDetails {
      * 判断账号是否已经过期
      * @return 默认没有过期
      */
+    @JsonIgnore
     override fun isAccountNonExpired(): Boolean {
         return true
     }
@@ -74,6 +79,7 @@ class SecurityUser : UserDetails {
      * 判断账号是否被锁定
      * @return 状态是否为冻结
      */
+    @JsonIgnore
     override fun isAccountNonLocked(): Boolean {
         return this.status != BaseModel.FREEZE
     }
@@ -82,6 +88,7 @@ class SecurityUser : UserDetails {
      * 判断信用凭证是否过期
      * @return 默认没有过期
      */
+    @JsonIgnore
     override fun isCredentialsNonExpired(): Boolean {
         return true
     }
@@ -90,6 +97,7 @@ class SecurityUser : UserDetails {
      * 判断账号是否可用
      * @return 状态是否为正常
      */
+    @JsonIgnore
     override fun isEnabled(): Boolean {
         return this.status == BaseModel.NORMAL
     }

@@ -9,7 +9,7 @@ import com.wang.sso.common.dto.TreeNode
  */
 class MenuTree : TreeNode() {
     companion object {
-        const val serialVersionUID = 5640224091610000005L
+        const val serialVersionUID = 1L
     }
 
     /**

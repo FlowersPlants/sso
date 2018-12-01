@@ -7,7 +7,6 @@ import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IMenuDao
 import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.service.MenuService
-import com.wang.sso.modules.sys.utils.UserUtils
 import com.wang.sso.modules.sys.vo.MenuTree
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,9 +37,11 @@ open class MenuServiceImpl : MenuService {
      * 此处逻辑有点复杂，需要时间
      */
     override fun getUserMenuTree(): MutableList<MenuTree> {
-        var menu = UserUtils.getCurrentUserMenuTree()
-        if (menu == null || menu.isEmpty()) {
-            val roleIds = UserUtils.getCurrentUserRoles()?.map { it.id }
+//        var menu = UserUtils.getCurrentUserMenuTree()
+        var menu = mutableListOf<MenuTree>()
+        if (menu.isEmpty()) {
+//            val roleIds = UserUtils.getCurrentUserRoles()?.map { it.id }
+            val roleIds = mutableListOf<String>()
             menu = getUserMenuTree(roleIds)
             if (menu.isEmpty()) {
                 return mutableListOf()

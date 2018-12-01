@@ -1,6 +1,6 @@
-package com.wang.sso.common.utils
+package com.wang.sso.core.security.user
 
-import com.wang.sso.core.security.user.SecurityUser
+import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.modules.sys.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -20,7 +20,7 @@ object TokenUtils {
     private const val DEFAULT_SECRET = "wang@+!secret"
     // 过期时间 1800s，即30分钟
     private const val DEFAULT_EXPIRATION = 1800L
-    // 设置类记住我的过期时间是 604800s，即7天
+    // 设置了记住我的过期时间是 604800s，即7天
     private const val DEFAULT_EXPIRATION_REMEMBER_ME = 604800L
 
     private const val CLAIM_KEY_CREATED = "created"
@@ -45,7 +45,7 @@ object TokenUtils {
 
     /**
      * token解析，获取主体
-     * 主体里面是session还是user的唯一标识？或者直接是用户的所有信息？
+     * @return 目前返回的是用户的唯一标识（account）
      */
     fun getSubjectFormToken(token: String): String? {
         return try {
@@ -53,13 +53,6 @@ object TokenUtils {
         } catch (e: Exception) {
             null
         }
-    }
-
-    /**
-     * 返回security user
-     */
-    fun getUserBySubject(subject: String): SecurityUser? {
-        return JsonUtils.readValue(subject, SecurityUser::class.java)
     }
 
     /**
@@ -105,7 +98,10 @@ object TokenUtils {
             .builder()
             .setClaims(claims)
             .setExpiration(generateExpireDate(expiration))
-            .signWith(SignatureAlgorithm.forName(ALGORITHM), SECRET)
+            .signWith(
+                SignatureAlgorithm.forName(ALGORITHM),
+                SECRET
+            )
             .compact()
     }
 
