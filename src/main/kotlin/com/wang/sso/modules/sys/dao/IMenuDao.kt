@@ -12,5 +12,10 @@ import org.apache.ibatis.annotations.Param
  */
 @MyBatisDao(value = "menuDao", entity = Menu::class)
 interface IMenuDao : BaseDao<Menu> {
+
+    /**
+     * 根据用户的所有角色ID获取所有菜单
+     * @param roleIds 角色ID集合
+     */
     fun findListByRoleIds(@Param("roleIds") roleIds: List<String?>?): MutableList<Menu>
 }

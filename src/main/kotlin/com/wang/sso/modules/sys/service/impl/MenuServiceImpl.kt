@@ -7,7 +7,7 @@ import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IMenuDao
 import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.service.MenuService
-import com.wang.sso.modules.sys.vo.MenuTree
+import com.wang.sso.modules.sys.dto.MenuTree
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,6 +25,9 @@ open class MenuServiceImpl : MenuService {
     private lateinit var menuDao: IMenuDao
 
     private fun getUserMenuTree(roleIds: List<String?>?): MutableList<MenuTree> {
+        if (roleIds == null || roleIds.isEmpty()) {
+            return mutableListOf()
+        }
         val menus = menuDao.findListByRoleIds(roleIds)
         return menus.map {
             val tree = MenuTree()

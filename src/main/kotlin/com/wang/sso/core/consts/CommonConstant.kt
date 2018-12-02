@@ -9,7 +9,7 @@ object CommonConstant {
 
     // jwt token
     const val JWT_TOKEN_HEADER = "Authorization"
-    const val JWT_TOKEN_HEAD = "Bearer " // 有个空格
+    const val JWT_TOKEN_HEAD = "Bearer " // tip: 有个空格
 
     /**
      * 自定义登录参数名称
@@ -24,4 +24,12 @@ object CommonConstant {
     // other
     const val DEFAULT_ADMIN_ID = "1" // 默认超级管理员的ID为1
     const val DEFAULT_SORT = 10 // 默认排序号的值
+
+    // redis cache
+    const val CACHE_ROLE_LIST = "ROLE_LIST"
+    const val CACHE_MENU_LIST = "MENU_LIST"
+    // 用户信息缓存(hash)
+    const val USER_CACHE = "USER_CACHE"
+    const val USER_CACHE_ID = "id_"
+    const val USER_CACHE_ACCOUNT = "account_"
 }

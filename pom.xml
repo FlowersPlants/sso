@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <!-- 1.5的版本默认采用的连接池技术是jedis  2.0以上版本默认连接池是lettuce, 如果采用jedis，所以需要排除lettuce的jar -->
+            <!-- 1.x的版本默认采用的连接池技术是jedis  2.0以上版本默认连接池是lettuce, 如果采用jedis，需要排除lettuce的jar -->
             <!--<exclusions>-->
                 <!--<exclusion>-->
                     <!--<groupId>redis.clients</groupId>-->

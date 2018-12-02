@@ -15,13 +15,26 @@ spring:
     password: root
     url: jdbc:mysql://localhost:3306/ssms_sso_auth?characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+###############################
+# spring redis缓存配置
+###############################
   redis:
-    cluster:
-      nodes: 127.0.0.1:7001
-    timeout: 2000ms # 连接超时时间
+#    cluster: # 集群
+#      max-redirects: 3
+#      nodes:
+#      - 127.0.0.1:7001
+#      - 127.0.0.1:7002
+    lettuce:
+      pool:
+        max-active: 10 # 最大活跃连接数
+        max-idle: 10 # 最大空闲连接
+        min-idle: 2 # 最小空闲连接
+        max-wait: 6000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      shutdown-timeout: 100
+    timeout: 1000
     host: 127.0.0.1
     port: 6379
-    password:
 
 
 mybatis-plus:

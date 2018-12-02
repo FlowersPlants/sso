@@ -1,4 +1,4 @@
-package com.wang.sso.modules.sys.vo
+package com.wang.sso.modules.sys.dto
 
 import com.wang.sso.common.dto.TreeNode
 

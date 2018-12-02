@@ -11,6 +11,11 @@ open class SsoException() : RuntimeException() {
 
     private var msg: String? = null
 
+    constructor(message: String?):this(){
+        this.code = 500
+        this.msg = message
+    }
+
     constructor(enum: ExceptionEnum) : this() {
         this.code = enum.code
         this.msg = enum.message
