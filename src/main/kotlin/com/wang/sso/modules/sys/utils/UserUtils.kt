@@ -109,6 +109,10 @@ object UserUtils {
      * 清除指定用户缓存
      */
     fun clearCache(user: User) {
-        redisService.delHashMap(CommonConstant.USER_CACHE, "USER_CACHE_ACCOUNT${user.account}, USER_CACHE_ID${user.id}")
+        redisService.delHashMap(
+            CommonConstant.USER_CACHE,
+            CommonConstant.USER_CACHE_ACCOUNT + user.account,
+            CommonConstant.USER_CACHE_ID + user.id
+        )
     }
 }

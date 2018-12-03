@@ -25,20 +25,10 @@ class UserController : BaseController() {
     private lateinit var userService: UserService
 
     /**
-     * 获取列表接口
-     */
-    @GetMapping
-    fun list(user: User): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.findList(user)
-        })
-    }
-
-    /**
      * 分页接口
      */
-    @GetMapping("page")
-    fun page(user: User): ResponseEntity<*> {
+    @GetMapping
+    fun findPage(user: User): ResponseEntity<*> {
         return ResponseEntity.ok(ResponseDto().apply {
             data = userService.findPage(user, PaginationUtil.getRequestPage(getRequest())!!)
         })
