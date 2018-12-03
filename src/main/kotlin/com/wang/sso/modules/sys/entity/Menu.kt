@@ -17,7 +17,7 @@ class Menu() : BaseModel() {
 
     var url: String? = null
 
-    var parent: Menu? = null
+    var parentId: String? = null
 
     var icon: String? = null
 

@@ -5,9 +5,10 @@ import com.wang.sso.common.utils.TreeUtils
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IMenuDao
+import com.wang.sso.modules.sys.dto.MenuTree
 import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.service.MenuService
-import com.wang.sso.modules.sys.dto.MenuTree
+import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,51 +25,56 @@ open class MenuServiceImpl : MenuService {
     @Autowired
     private lateinit var menuDao: IMenuDao
 
-    private fun getUserMenuTree(roleIds: List<String?>?): MutableList<MenuTree> {
-        if (roleIds == null || roleIds.isEmpty()) {
-            return mutableListOf()
-        }
-        val menus = menuDao.findListByRoleIds(roleIds)
-        return menus.map {
+    /**
+     * 获取当前用户的菜单并建树结构
+     */
+    private fun getMenuTree(): MutableList<MenuTree> {
+        val menuList = UserUtils.findMenuList() ?: mutableListOf()
+
+        var menuTree = menuList.map {
             val tree = MenuTree()
             BeanUtils.copyProperties(it, tree)
             tree
         } as MutableList<MenuTree>
-    }
 
-    /**
-     * 此处逻辑有点复杂，需要时间
-     */
-    override fun getUserMenuTree(): MutableList<MenuTree> {
-//        var menu = UserUtils.getCurrentUserMenuTree()
-        var menu = mutableListOf<MenuTree>()
-        if (menu.isEmpty()) {
-//            val roleIds = UserUtils.getCurrentUserRoles()?.map { it.id }
-            val roleIds = mutableListOf<String>()
-            menu = getUserMenuTree(roleIds)
-            if (menu.isEmpty()) {
-                return mutableListOf()
-            } else {
-                // 怎么做？保存到session中？
+        // 两层循环建树，会对每个node都建一棵树（广度优先好像有点问题）
+        TreeUtils.build(menuTree, "0")
+
+        // 去掉多余的node
+        if (menuTree.isNotEmpty()) {
+            val root = menuTree[0]
+            if (root.children != null && root.children!!.isNotEmpty()) {
+                menuTree = mutableListOf()
+                root.children?.forEach {
+                    menuTree.add(it as MenuTree)
+                }
             }
         }
 
-        // 广度优先建树
-        menu = TreeUtils.findBFS(menu) {
-            false // 目前设置为false
-        }
-
         // 排序
-        menu.forEach {
+        menuTree.sortedWith(Comparator { o1, o2 -> o1.sort!! - o2.sort!! })
+        menuTree.forEach {
             it.sortChildren(null)
         }
 
-        return menu
+        return menuTree
     }
 
-    override fun findList(entity: Menu): MutableList<Menu> {
-        return menuDao.selectList(QueryWrapper<Menu>().apply {
+    override fun getUserMenuTree(): MutableList<MenuTree> {
+        return getMenuTree()
+    }
 
+    override fun findList(entity: Menu?): MutableList<Menu>? {
+        return menuDao.selectList(QueryWrapper<Menu>().apply {
+            if (entity != null) {
+                if (!entity.id.isNullOrEmpty()) {
+                    eq("id", "${entity.id}")
+                }
+                if (!entity.name.isNullOrEmpty()) {
+                    like("name", "${entity.name}")
+                }
+                orderByAsc("sort")
+            }
         })
     }
 

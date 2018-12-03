@@ -25,11 +25,11 @@ object CommonConstant {
     const val DEFAULT_ADMIN_ID = "1" // 默认超级管理员的ID为1
     const val DEFAULT_SORT = 10 // 默认排序号的值
 
-    // redis cache
-    const val CACHE_ROLE_LIST = "ROLE_LIST"
-    const val CACHE_MENU_LIST = "MENU_LIST"
-    // 用户信息缓存(hash)
-    const val USER_CACHE = "USER_CACHE"
+    // redis cache (hash数据)
+    const val CACHE_USER_ROLES = "CACHE_USER_ROLES"
+    const val CACHE_USER_MENUS = "CACHE_USER_MENUS"
+    // 用户信息
+    const val CACHE_USERS = "CACHE_USERS"
     const val USER_CACHE_ID = "id_"
     const val USER_CACHE_ACCOUNT = "account_"
 }

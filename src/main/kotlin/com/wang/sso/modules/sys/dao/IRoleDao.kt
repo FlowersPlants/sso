@@ -18,5 +18,5 @@ interface IRoleDao : BaseDao<Role> {
      * @param userId 用户ID
      */
     @Select("select a.* from sys_role a left join sys_role_user ru on ru.role_id=a.id left join sys_user u on u.id=ru.user_id where u.id=#{userId}")
-    fun findByUserId(userId: String): MutableList<Role>
+    fun findByUserId(userId: String): MutableList<Role>?
 }

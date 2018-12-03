@@ -3,9 +3,8 @@ package com.wang.sso.modules.sys.web
 import com.wang.sso.common.dto.ResponseDto
 import com.wang.sso.common.utils.PaginationUtil
 import com.wang.sso.core.support.BaseController
-import com.wang.sso.modules.sys.entity.Menu
-import com.wang.sso.modules.sys.entity.Role
 import com.wang.sso.modules.sys.entity.User
+import com.wang.sso.modules.sys.service.MenuService
 import com.wang.sso.modules.sys.service.UserService
 import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +22,9 @@ class UserController : BaseController() {
 
     @Autowired
     private lateinit var userService: UserService
+
+    @Autowired
+    private lateinit var menuService: MenuService
 
     /**
      * 分页接口
@@ -43,10 +45,8 @@ class UserController : BaseController() {
         return ResponseEntity.ok(ResponseDto().apply {
             data = mutableMapOf(
                 "info" to user,
-//                "menus" to menuService.getUserMenuTree(),
-//                "roles" to UserUtils.getCurrentUserRoles()
-                "menus" to mutableListOf<Menu>(),
-                "roles" to mutableListOf<Role>()
+                "roles" to UserUtils.findRoleList(),
+                "menus" to menuService.getUserMenuTree()
             )
         })
     }

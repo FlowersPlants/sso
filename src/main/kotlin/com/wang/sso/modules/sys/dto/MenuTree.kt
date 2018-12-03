@@ -16,18 +16,22 @@ class MenuTree : TreeNode() {
      * 菜单编码
      */
     var code: String? = null
+
     /**
      * 菜单类型（0:菜单组；1:菜单；）
      */
     var type: Int? = null
+
     /**
-     * 菜单标题
+     * 菜单名称
      */
-    var title: String? = null
+    var name: String? = null
+
     /**
      * 请求地址（前端）
      */
-    var uri: String? = null
+    var url: String? = null
+
     /**
      * 图标名称
      */

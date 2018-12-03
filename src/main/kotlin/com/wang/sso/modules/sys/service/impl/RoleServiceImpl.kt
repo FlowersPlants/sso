@@ -20,7 +20,7 @@ open class RoleServiceImpl : RoleService {
     @Autowired
     private lateinit var roleDao: IRoleDao
 
-    override fun findList(entity: Role): MutableList<Role> {
+    override fun findList(entity: Role?): MutableList<Role>? {
         return roleDao.selectList(null)
     }
 

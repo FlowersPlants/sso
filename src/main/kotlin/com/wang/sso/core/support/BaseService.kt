@@ -10,7 +10,7 @@ package com.wang.sso.core.support
  */
 interface BaseService<T : BaseModel> {
 
-    fun findList(entity: T): MutableList<T>
+    fun findList(entity: T?): MutableList<T>?
 
     fun insert(entity: T?)
 

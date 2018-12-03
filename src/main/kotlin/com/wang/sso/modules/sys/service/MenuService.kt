@@ -10,5 +10,9 @@ import com.wang.sso.modules.sys.dto.MenuTree
  * @since v1
  */
 interface MenuService : BaseService<Menu> {
+
+    /**
+     * 获取当前用户菜单树
+     */
     fun getUserMenuTree(): MutableList<MenuTree>
 }
