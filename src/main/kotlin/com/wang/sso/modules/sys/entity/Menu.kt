@@ -15,11 +15,40 @@ class Menu() : BaseModel() {
         this.id = id
     }
 
+    /**
+     * code
+     */
+    var code: String? = null
+
+    /**
+     * 菜单类型(0 - 菜单组； 1 - 菜单)
+     */
+    var type: String? = null
+
+    /**
+     * 后端请求链接
+     */
     var url: String? = null
 
+    /**
+     * 前端url请求
+     */
+    var href: String? = null
+
+    /**
+     * 父ID
+     */
     var parentId: String? = null
 
+    /**
+     * 图标名称
+     */
     var icon: String? = null
+
+    /**
+     * 是否显示
+     */
+    var show: Boolean? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

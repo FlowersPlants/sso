@@ -27,16 +27,6 @@ class UserController : BaseController() {
     private lateinit var menuService: MenuService
 
     /**
-     * 分页接口
-     */
-    @GetMapping
-    fun findPage(user: User): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.findPage(user, PaginationUtil.getRequestPage(getRequest())!!)
-        })
-    }
-
-    /**
      * 获取用户信息
      */
     @GetMapping("info")
@@ -48,6 +38,16 @@ class UserController : BaseController() {
                 "roles" to UserUtils.findRoleList(),
                 "menus" to menuService.getUserMenuTree()
             )
+        })
+    }
+
+    /**
+     * 分页接口
+     */
+    @GetMapping
+    fun findPage(user: User): ResponseEntity<*> {
+        return ResponseEntity.ok(ResponseDto().apply {
+            data = userService.findPage(user, PaginationUtil.getRequestPage(getRequest())!!)
         })
     }
 
@@ -74,10 +74,10 @@ class UserController : BaseController() {
     /**
      * 删除接口（逻辑删除）
      */
-    @DeleteMapping
-    fun delete(@RequestBody user: User): ResponseEntity<*> {
+    @DeleteMapping("{id}")
+    fun delete(@PathVariable("id") id: String?): ResponseEntity<*> {
         return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.delete(user)
+            data = userService.deleteById(id)
         })
     }
 }

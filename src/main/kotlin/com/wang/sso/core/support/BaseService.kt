@@ -1,5 +1,9 @@
 package com.wang.sso.core.support
 
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import java.io.Serializable
+
 /**
  * 不继承mybatis plus插件的BaseService接口，因为里面的方法太多
  * 很多方法用不到，所以在需要的时候自定义即可
@@ -10,6 +14,8 @@ package com.wang.sso.core.support
  */
 interface BaseService<T : BaseModel> {
 
+    fun findPage(entity: T?, page: Page<T>): IPage<T>?
+
     fun findList(entity: T?): MutableList<T>?
 
     fun insert(entity: T?)
@@ -17,4 +23,6 @@ interface BaseService<T : BaseModel> {
     fun update(entity: T?)
 
     fun delete(entity: T?)
+
+    fun deleteById(id: Serializable?)
 }

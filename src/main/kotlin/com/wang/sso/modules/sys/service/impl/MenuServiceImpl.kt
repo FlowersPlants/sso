@@ -1,6 +1,8 @@
 package com.wang.sso.modules.sys.service.impl
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.wang.sso.common.utils.TreeUtils
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
@@ -13,6 +15,7 @@ import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 
 /**
  * 菜单service实现类
@@ -64,6 +67,13 @@ open class MenuServiceImpl : MenuService {
         return getMenuTree()
     }
 
+    /**
+     * 菜单功能里不实现此方法
+     */
+    override fun findPage(entity: Menu?, page: Page<Menu>): IPage<Menu>? {
+        return null
+    }
+
     override fun findList(entity: Menu?): MutableList<Menu>? {
         return menuDao.selectList(QueryWrapper<Menu>().apply {
             if (entity != null) {
@@ -102,6 +112,16 @@ open class MenuServiceImpl : MenuService {
     override fun delete(entity: Menu?) {
         if (entity != null) {
             val i = menuDao.deleteById(entity.id!!)
+            if (i <= 0) {
+                throw ServiceException(ExceptionEnum.SERVICE_DELETE)
+            }
+        }
+    }
+
+    @Transactional
+    override fun deleteById(id: Serializable?) {
+        if (id != null) {
+            val i = menuDao.deleteById(id)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }

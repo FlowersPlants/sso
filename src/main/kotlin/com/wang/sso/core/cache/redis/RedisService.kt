@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit
+import kotlin.math.log
 
 /**
  * redis操作工具类，只列出常用操作；部分方法名称对应redis命令
@@ -219,7 +220,7 @@ class RedisService {
     fun hset(key: String, field: String, value: Any) {
         try {
             redisTemplate.opsForHash<String, Any>().put(key, field, value)
-            logger.info("保存缓存 {} 成功", key)
+            logger.info("保存缓存 {} : {} 成功", key, field)
         } catch (e: Exception) {
             throw SsoException(e.message)
         }
@@ -244,8 +245,9 @@ class RedisService {
     fun hdel(key: String, vararg fields: String) {
         try {
             redisTemplate.opsForHash<String, Any>().delete(key, fields)
+            logger.info("删除缓存 $key : $fields 成功")
         } catch (e: Exception) {
-            throw SsoException(e.message)
+            // 异常什么也不做
         }
     }
 

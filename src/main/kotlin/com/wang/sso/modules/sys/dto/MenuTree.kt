@@ -18,9 +18,9 @@ class MenuTree : TreeNode() {
     var code: String? = null
 
     /**
-     * 菜单类型（0:菜单组；1:菜单；）
+     * 菜单类型(0 - 菜单组； 1 - 菜单)
      */
-    var type: Int? = null
+    var type: String? = null
 
     /**
      * 菜单名称
@@ -28,9 +28,14 @@ class MenuTree : TreeNode() {
     var name: String? = null
 
     /**
-     * 请求地址（前端）
+     * 请求地址（后端）
      */
     var url: String? = null
+
+    /**
+     * 请求地址（前端）
+     */
+    var href:String? = null
 
     /**
      * 图标名称

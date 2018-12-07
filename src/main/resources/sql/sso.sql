@@ -13,7 +13,11 @@ CREATE TABLE `sys_menu` (
   `id` varchar(64) NOT NULL COMMENT '主键ID',
   `parent_id` bigint(64) DEFAULT NULL COMMENT '父菜单ID',
   `name` varchar(20) NOT NULL COMMENT '名称',
-  `url` varchar(50) DEFAULT NULL COMMENT 'URL',
+  `code` varchar(20) NOT NULL COMMENT '菜单code',
+  `type` varchar(2) NOT NULL DEFAULT '0' COMMENT '菜单类型(0 - 菜单组； 1 - 菜单)',
+  `show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示，1-是，0-否',
+  `url` varchar(50) DEFAULT NULL COMMENT '后端请求URL',
+  `href` varchar(50) DEFAULT 'Layout' COMMENT '前端连接',
   `icon` varchar(20) DEFAULT NULL COMMENT '图标',
   `sort` int(11) DEFAULT '10' COMMENT '排序号',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
@@ -30,7 +34,14 @@ CREATE TABLE `sys_menu` (
 --
 
 LOCK TABLES `sys_menu` WRITE;
-INSERT INTO `sys_menu` VALUES ('1',0,'功能菜单',NULL,NULL,0,'1','2018-12-03 04:44:58',NULL,NULL,'0',NULL),('2',1,'系统管理',NULL,NULL,30,'1','2018-12-03 04:46:00',NULL,NULL,'0',NULL),('3',1,'内容管理',NULL,NULL,60,'1','2018-12-03 04:48:37',NULL,NULL,'0',NULL),('4',2,'用户管理','/sys/user',NULL,30,'1','2018-12-03 04:54:00',NULL,NULL,'0',NULL),('5',2,'菜单管理','/sys/menu',NULL,60,'1','2018-12-03 04:54:30',NULL,NULL,'0',NULL),('6',2,'角色管理','/sys/role',NULL,90,'1','2018-12-03 04:54:54',NULL,NULL,'0',NULL),('7',3,'栏目管理',NULL,NULL,30,'1','2018-12-03 04:55:24',NULL,NULL,'0',NULL);
+INSERT INTO `sys_menu` VALUES
+('1',0,'功能菜单','','0','1',NULL,'Layout',NULL,0,'1','2018-12-03 04:44:58',NULL,NULL,'0',NULL),
+('2',1,'系统管理','sys','0','1','/sys','Layout',NULL,30,'1','2018-12-03 04:46:00',NULL,NULL,'0',NULL),
+('3',1,'内容管理','cms','0','1','/cms','Layout',NULL,60,'1','2018-12-03 04:48:37',NULL,NULL,'0',NULL),
+('4',2,'用户管理','user','1','1','/user','sys/user/index',NULL,30,'1','2018-12-03 04:54:00',NULL,NULL,'0',NULL),
+('5',2,'菜单管理','menu','1','1','/menu','sys/menu/index',NULL,60,'1','2018-12-03 04:54:30',NULL,NULL,'0',NULL),
+('6',2,'角色管理','role','1','1','/role','sys/role/index',NULL,90,'1','2018-12-03 04:54:54',NULL,NULL,'0',NULL),
+('7',3,'栏目管理','col','1','1','/col','cms/col/index',NULL,30,'1','2018-12-03 04:55:24',NULL,NULL,'0',NULL);
 UNLOCK TABLES;
 
 --
