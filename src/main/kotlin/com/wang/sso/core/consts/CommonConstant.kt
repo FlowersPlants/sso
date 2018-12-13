@@ -29,6 +29,7 @@ object CommonConstant {
     // redis cache (hash数据)
     const val CACHE_USER_ROLES = "CACHE_USER_ROLES"
     const val CACHE_USER_MENUS = "CACHE_USER_MENUS"
+    const val CACHE_ALL_MARK = "vla#Wfow9r=roa+}+)_)U(sjf-la2hi><:O%^&If"
     // 用户信息
     const val CACHE_USERS = "CACHE_USERS"
     const val USER_CACHE_ID = "id_"

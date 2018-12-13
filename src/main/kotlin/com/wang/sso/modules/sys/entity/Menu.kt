@@ -26,12 +26,12 @@ class Menu() : BaseModel() {
     var type: String? = null
 
     /**
-     * 后端请求链接
+     * 前端请求路径
      */
     var url: String? = null
 
     /**
-     * 前端url请求
+     * 前端url请求的页面路径
      */
     var href: String? = null
 
@@ -46,9 +46,9 @@ class Menu() : BaseModel() {
     var icon: String? = null
 
     /**
-     * 是否显示
+     * 是否隐藏 0-显示，1-隐藏
      */
-    var show: Boolean? = null
+    var hidden: Boolean? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

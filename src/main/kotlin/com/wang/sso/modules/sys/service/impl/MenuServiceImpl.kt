@@ -1,6 +1,5 @@
 package com.wang.sso.modules.sys.service.impl
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.wang.sso.common.utils.TreeUtils
@@ -9,8 +8,10 @@ import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IMenuDao
 import com.wang.sso.modules.sys.dto.MenuTree
 import com.wang.sso.modules.sys.entity.Menu
+import com.wang.sso.modules.sys.entity.User
 import com.wang.sso.modules.sys.service.MenuService
 import com.wang.sso.modules.sys.utils.UserUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ import java.io.Serializable
  */
 @Service
 open class MenuServiceImpl : MenuService {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
     private lateinit var menuDao: IMenuDao
@@ -31,8 +33,8 @@ open class MenuServiceImpl : MenuService {
     /**
      * 获取当前用户的菜单并建树结构
      */
-    private fun getMenuTree(): MutableList<MenuTree> {
-        val menuList = UserUtils.findMenuList() ?: mutableListOf()
+    private fun getMenu(user: User?): MutableList<MenuTree> {
+        val menuList = UserUtils.findMenuList(user?.id) ?: mutableListOf()
 
         var menuTree = menuList.map {
             val tree = MenuTree()
@@ -63,29 +65,29 @@ open class MenuServiceImpl : MenuService {
         return menuTree
     }
 
+    /**
+     * 获取当前用户的所有菜单
+     * 该用户的菜单建树时可能不完整（没有包含所有父菜单）
+     */
     override fun getUserMenuTree(): MutableList<MenuTree> {
-        return getMenuTree()
+        return getMenu(UserUtils.getCurrentUser()) // 获取当前用户的菜单
     }
 
     /**
      * 菜单功能里不实现此方法
      */
     override fun findPage(entity: Menu?, page: Page<Menu>): IPage<Menu>? {
+        logger.info("findPage方法为空实现")
         return null
     }
 
     override fun findList(entity: Menu?): MutableList<Menu>? {
-        return menuDao.selectList(QueryWrapper<Menu>().apply {
-            if (entity != null) {
-                if (!entity.id.isNullOrEmpty()) {
-                    eq("id", "${entity.id}")
-                }
-                if (!entity.name.isNullOrEmpty()) {
-                    like("name", "${entity.name}")
-                }
-                orderByAsc("sort")
-            }
-        })
+        logger.info("findList方法空实现")
+        return null
+    }
+
+    override fun getMenuTree(): MutableList<MenuTree> {
+        return getMenu(null) // 获取所有菜单
     }
 
     @Transactional

@@ -18,12 +18,12 @@ class MenuController : BaseController() {
     private lateinit var menuService: MenuService
 
     /**
-     * 获取菜单树，未实现
+     * 获取菜单树
      */
-    @GetMapping
+    @GetMapping("tree")
     fun tree(entity: Menu): ResponseEntity<*> {
         return ResponseEntity.ok(ResponseDto().apply {
-            data
+            data = menuService.getMenuTree()
         })
     }
 

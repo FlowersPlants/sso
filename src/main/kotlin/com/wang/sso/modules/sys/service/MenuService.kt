@@ -15,4 +15,9 @@ interface MenuService : BaseService<Menu> {
      * 获取当前用户菜单树
      */
     fun getUserMenuTree(): MutableList<MenuTree>
+
+    /**
+     * 后台管理时的菜单树构建接口
+     */
+    fun getMenuTree(): MutableList<MenuTree>
 }

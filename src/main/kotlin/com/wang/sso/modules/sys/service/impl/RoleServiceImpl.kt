@@ -8,6 +8,7 @@ import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IRoleDao
 import com.wang.sso.modules.sys.entity.Role
 import com.wang.sso.modules.sys.service.RoleService
+import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -44,7 +45,7 @@ open class RoleServiceImpl : RoleService {
     }
 
     override fun findList(entity: Role?): MutableList<Role>? {
-        return roleDao.selectList(null)
+        return UserUtils.findAllRole()
     }
 
     @Transactional

@@ -33,9 +33,10 @@ class UserController : BaseController() {
     fun info(): ResponseEntity<*> {
         val user = UserUtils.getCurrentUser()
         return ResponseEntity.ok(ResponseDto().apply {
+            val currentUser = UserUtils.getCurrentUser()
             data = mutableMapOf(
                 "info" to user,
-                "roles" to UserUtils.findRoleList(),
+                "roles" to UserUtils.findRoleList(currentUser.id),
                 "menus" to menuService.getUserMenuTree()
             )
         })

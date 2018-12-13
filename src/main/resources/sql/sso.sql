@@ -15,7 +15,7 @@ CREATE TABLE `sys_menu` (
   `name` varchar(20) NOT NULL COMMENT '名称',
   `code` varchar(20) NOT NULL COMMENT '菜单code',
   `type` varchar(2) NOT NULL DEFAULT '0' COMMENT '菜单类型(0 - 菜单组； 1 - 菜单)',
-  `show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示，1-是，0-否',
+  `hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否隐藏，0-显示，1-隐藏',
   `url` varchar(50) DEFAULT NULL COMMENT '后端请求URL',
   `href` varchar(50) DEFAULT 'Layout' COMMENT '前端连接',
   `icon` varchar(20) DEFAULT NULL COMMENT '图标',

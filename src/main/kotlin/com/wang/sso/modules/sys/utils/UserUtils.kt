@@ -13,6 +13,7 @@ import com.wang.sso.modules.sys.entity.User
 
 /**
  * user相关工具类
+ * 缓存部分还有一些问题
  * @author FlowersPlants
  * @since v1
  */
@@ -79,6 +80,8 @@ object UserUtils {
         return user
     }
 
+
+    // ----------------------------- role --------------------------------
     /**
      * 根据用户ID获取角色信息；先从缓存获取，没有则从数据库
      */
@@ -99,12 +102,33 @@ object UserUtils {
     }
 
     /**
-     * 获取当前用户所有角色
+     * 获取所有角色列表
      */
-    fun findRoleList(): MutableList<Role>? {
-        return findRolesByUserId(getCurrentUser().id)
+    @Suppress("UNCHECKED_CAST")
+    fun findAllRole(): MutableList<Role>? {
+        var list =
+            redisService.hget(CommonConstant.CACHE_USER_ROLES, CommonConstant.CACHE_ALL_MARK) as? MutableList<Role>
+        if (list == null) {
+            list = roleDao.selectList(null)
+            if (list == null) {
+                return null
+            }
+            redisService.hset(CommonConstant.CACHE_USER_MENUS, CommonConstant.CACHE_ALL_MARK, list)
+        }
+        return list
     }
 
+    /**
+     * 获取当前用户所有角色
+     */
+    fun findRoleList(userId: String?): MutableList<Role>? {
+        return if (userId.isNullOrEmpty()) {
+            findAllRole()
+        } else findRolesByUserId(userId)
+    }
+
+
+    // -------------------- menu -----------------------------
     /**
      * 根据用户ID获取其所有菜单信息
      * 先从缓存获取，没有则从数据库查询，从数据库获取的数据可能需要去重
@@ -136,12 +160,36 @@ object UserUtils {
     }
 
     /**
-     * 获取当前用户的所有菜单
+     * 获取所有菜单
      */
-    fun findMenuList(): MutableList<Menu>? {
-        return findMenusByUserId(getCurrentUser().id)
+    @Suppress("UNCHECKED_CAST")
+    fun findAllMenu(): MutableList<Menu>? {
+        var list =
+            redisService.hget(CommonConstant.CACHE_USER_MENUS, CommonConstant.CACHE_ALL_MARK) as? MutableList<Menu>
+        if (list == null) {
+            list = menuDao.selectList(null)
+            if (list == null) {
+                return null
+            }
+            redisService.hset(CommonConstant.CACHE_USER_MENUS, CommonConstant.CACHE_ALL_MARK, list)
+        }
+        return list
     }
 
+    /**
+     * 获取菜单
+     * @param userId 用户ID，如果ID不为null则获取该用户菜单，否则获取所有菜单
+     */
+    fun findMenuList(userId: String?): MutableList<Menu>? {
+        return if (userId.isNullOrEmpty()) {
+            findAllMenu()
+        } else {
+            findMenusByUserId(userId)
+        }
+    }
+
+
+    // ---------------------------- cache ------------------------------
     /**
      * 清除当前用户缓存
      */

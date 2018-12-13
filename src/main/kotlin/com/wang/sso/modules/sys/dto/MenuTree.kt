@@ -35,10 +35,15 @@ class MenuTree : TreeNode() {
     /**
      * 请求地址（前端）
      */
-    var href:String? = null
+    var href: String? = null
 
     /**
      * 图标名称
      */
     var icon: String? = null
+
+    /**
+     * 是否隐藏 0-显示，1-隐藏
+     */
+    var hidden: Boolean? = null
 }
