@@ -21,10 +21,20 @@ class MenuController : BaseController() {
      * 获取菜单树
      */
     @GetMapping("tree")
-    fun tree(entity: Menu): ResponseEntity<*> {
+    fun tree(): ResponseEntity<*> {
         return ResponseEntity.ok(ResponseDto().apply {
             data = menuService.getMenuTree()
         })
+    }
+
+    /**
+     * 根据角色ID获取该角色下的所有菜单
+     */
+    @GetMapping("{roleId}")
+    fun getByRole(@PathVariable("roleId") roleId: String?): Any? {
+        return ResponseDto().apply {
+            data = menuService.getByRole(roleId)
+        }
     }
 
     /**

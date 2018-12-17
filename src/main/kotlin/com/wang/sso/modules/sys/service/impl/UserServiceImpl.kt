@@ -36,7 +36,7 @@ open class UserServiceImpl : UserService {
     @Autowired
     private lateinit var redisService: RedisService
 
-    override fun findPage(entity: User?, page: Page<User>): IPage<User> {
+    override fun findPage(entity: User?, page: Page<User>?): IPage<User> {
         return userDao.selectPage(page, QueryWrapper<User>().apply {
             if (entity != null) {
                 if (!entity.id.isNullOrEmpty()) {

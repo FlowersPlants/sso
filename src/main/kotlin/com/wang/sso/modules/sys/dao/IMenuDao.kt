@@ -11,7 +11,6 @@ import com.wang.sso.modules.sys.entity.Menu
  */
 @MyBatisDao(value = "menuDao", entity = Menu::class)
 interface IMenuDao : BaseDao<Menu> {
-
     /**
      * 根据用户的所有角色ID获取所有菜单
      * @param list 角色ID集合

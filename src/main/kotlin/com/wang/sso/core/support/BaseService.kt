@@ -1,7 +1,5 @@
 package com.wang.sso.core.support
 
-import com.baomidou.mybatisplus.core.metadata.IPage
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import java.io.Serializable
 
 /**
@@ -13,11 +11,6 @@ import java.io.Serializable
  * @since v1
  */
 interface BaseService<T : BaseModel> {
-
-    fun findPage(entity: T?, page: Page<T>): IPage<T>?
-
-    fun findList(entity: T?): MutableList<T>?
-
     fun insert(entity: T?)
 
     fun update(entity: T?)

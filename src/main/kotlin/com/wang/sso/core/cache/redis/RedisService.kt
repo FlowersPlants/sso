@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 /**
  * redis操作工具类，只列出常用操作；部分方法名称对应redis命令
@@ -114,10 +113,10 @@ class RedisService {
      * 同时设置一个或多个 key-value 对
      * redis: mset key value [ key value ]
      */
-    fun mset( map: MutableMap<String, Any>) {
+    fun mset(map: MutableMap<String, Any>) {
         try {
             redisTemplate.opsForValue().multiSet(map)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw SsoException(e.message)
         }
     }
@@ -129,7 +128,7 @@ class RedisService {
     fun msetnx(map: MutableMap<String, Any>) {
         try {
             redisTemplate.opsForValue().multiSetIfAbsent(map)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw SsoException(e.message)
         }
     }
@@ -165,11 +164,12 @@ class RedisService {
      * redis: hget key field
      */
     fun hget(key: String, field: String): Any? {
-        try {
+        return try {
             val vo = redisTemplate.opsForHash<String, Any>()
-            return vo.get(key, field)
+            vo.get(key, field)
         } catch (e: Exception) {
-            throw SsoException(e.message)
+            e.printStackTrace()
+            null
         }
     }
 
@@ -177,11 +177,12 @@ class RedisService {
      * 获取在哈希表中指定 key 的所有字段和值
      * redis: hgetall key
      */
-    fun hgetall(key: String): MutableMap<String, Any> {
-        try {
-            return redisTemplate.opsForHash<String, Any>().entries(key)
+    fun hgetall(key: String): MutableMap<String, Any>? {
+        return try {
+            redisTemplate.opsForHash<String, Any>().entries(key)
         } catch (e: Exception) {
-            throw SsoException(e.message)
+            e.printStackTrace()
+            null
         }
     }
 

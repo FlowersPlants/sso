@@ -22,6 +22,7 @@ object CommonConstant {
     const val PARAMETER_MOBILE = "mobile"
 
     // other
+    const val DEFAULT_ROOT_MENU_ID = "0" // 默认菜单树的根节点的ID为0
     const val DEFAULT_ADMIN_ID = "1" // 默认超级管理员的ID为1
     const val DEFAULT_SORT = 10 // 默认排序号的值
     const val DEFAULT_PASSWORD = "111111" // 用户新增时的默认密码
