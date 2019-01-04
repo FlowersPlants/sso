@@ -1,6 +1,7 @@
 package com.wang.sso.modules.sys.service.impl
 
 import com.wang.sso.common.utils.TreeUtils
+import com.wang.sso.core.cache.redis.RedisService
 import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
@@ -14,7 +15,6 @@ import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.Serializable
 
 /**
  * 菜单service实现类
@@ -25,6 +25,9 @@ import java.io.Serializable
 open class MenuServiceImpl : MenuService {
     @Autowired
     private lateinit var menuDao: IMenuDao
+
+    @Autowired
+    private lateinit var redisService: RedisService
 
     /**
      * 获取菜单并构建树结构
@@ -49,18 +52,16 @@ open class MenuServiceImpl : MenuService {
 
         // 去掉多余的node
         if (menuTree.isNotEmpty()) {
-            val root = menuTree[0]
+            val root = menuTree.find {
+                it.parentId == CommonConstant.DEFAULT_ROOT_MENU_ID
+            } // 只返回有一个根节点，所以只能有一个根节点
             if (user == null) { // 获取所有菜单时
-                if (root.parentId == CommonConstant.DEFAULT_ROOT_MENU_ID) {
-                    menuTree = mutableListOf()
-                    menuTree.add(root)
-                }
+                menuTree = mutableListOf()
+                menuTree.add(root!!)
             } else {
-                if (root.children != null && root.children!!.isNotEmpty()) {
-                    menuTree = mutableListOf()
-                    root.children?.forEach {
-                        menuTree.add(it as MenuTree)
-                    }
+                menuTree = mutableListOf()
+                root?.children?.forEach {
+                    menuTree.add(it as MenuTree)
                 }
             }
         }
@@ -95,42 +96,33 @@ open class MenuServiceImpl : MenuService {
     }
 
     @Transactional
-    override fun insert(entity: Menu?) {
+    override fun save(entity: Menu?) {
         if (entity != null) {
-            val i = menuDao.insert(entity)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_INSERT)
+            val enum: ExceptionEnum?
+            val i = if (entity.id.isNullOrEmpty()) {
+                enum = ExceptionEnum.SERVICE_INSERT
+                menuDao.insert(entity)
+            } else {
+                enum = ExceptionEnum.SERVICE_UPDATE
+                menuDao.updateById(entity)
             }
+            if (i <= 0) {
+                throw ServiceException(enum)
+            }
+
+            redisService.del(CommonConstant.CACHE_MENUS)
         }
     }
 
     @Transactional
-    override fun update(entity: Menu?) {
-        if (entity != null) {
-            val i = menuDao.updateById(entity)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
-            }
-        }
-    }
-
-    @Transactional
-    override fun delete(entity: Menu?) {
-        if (entity != null) {
-            val i = menuDao.deleteById(entity.id!!)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_DELETE)
-            }
-        }
-    }
-
-    @Transactional
-    override fun deleteById(id: Serializable?) {
+    override fun deleteById(id: String?) {
         if (id != null) {
             val i = menuDao.deleteById(id)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }
+
+            redisService.del(CommonConstant.CACHE_MENUS)
         }
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.sso.modules.sys.dao.IRoleDao">
+    <select id="findByUserId" resultType="Role">
+        select a.*
+        from sys_role a
+                 left join sys_role_user ru on ru.role_id = a.id
+                 left join sys_user u on u.id = ru.user_id
+        where u.id = #{userId}
+    </select>
+
+    <insert id="insertBatchRecord" parameterType="com.wang.sso.modules.sys.dto.RoleDto">
+        insert into sys_role_menu values
+        <foreach collection="menuIds" item="e" separator=",">
+            (#{id}, #{e})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleMenuByRoleId" parameterType="com.wang.sso.modules.sys.dto.RoleDto">
+        delete
+        from sys_role_menu
+        where role_id = #{id}
+    </delete>
+</mapper>

@@ -16,6 +16,11 @@ class Menu() : BaseModel() {
     }
 
     /**
+     * 菜单名称
+     */
+    var name: String? = null
+
+    /**
      * code
      */
     var code: String? = null
@@ -49,6 +54,11 @@ class Menu() : BaseModel() {
      * 是否隐藏 0-显示，1-隐藏
      */
     var hidden: Boolean? = null
+
+    /**
+     * 排序号
+     */
+    var sort: Int? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

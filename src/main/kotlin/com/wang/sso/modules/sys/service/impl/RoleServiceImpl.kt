@@ -3,16 +3,17 @@ package com.wang.sso.modules.sys.service.impl
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import com.wang.sso.core.cache.redis.RedisService
+import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.modules.sys.dao.IRoleDao
+import com.wang.sso.modules.sys.dto.RoleDto
 import com.wang.sso.modules.sys.entity.Role
 import com.wang.sso.modules.sys.service.RoleService
-import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.Serializable
 
 /**
  * 角色service实现类
@@ -21,11 +22,13 @@ import java.io.Serializable
  */
 @Service
 open class RoleServiceImpl : RoleService {
-
     @Autowired
     private lateinit var roleDao: IRoleDao
 
-    override fun findPage(entity: Role?, page: Page<Role>): IPage<Role>? {
+    @Autowired
+    private lateinit var redisService: RedisService
+
+    override fun findPage(entity: Role?, page: Page<Role>?): IPage<Role>? {
         return roleDao.selectPage(page, QueryWrapper<Role>().apply {
             if (entity != null) {
                 if (!entity.id.isNullOrEmpty()) {
@@ -44,47 +47,55 @@ open class RoleServiceImpl : RoleService {
         })
     }
 
-    override fun findList(entity: Role?): MutableList<Role>? {
-        return UserUtils.findAllRole()
+    @Transactional
+    override fun save(entity: Role?) {
+        if (entity != null) {
+            val enum: ExceptionEnum?
+            val i = if (entity.id.isNullOrEmpty()) {
+                enum = ExceptionEnum.SERVICE_INSERT
+                roleDao.insert(entity)
+            } else {
+                enum = ExceptionEnum.SERVICE_UPDATE
+                roleDao.updateById(entity)
+            }
+            if (i <= 0) {
+                throw ServiceException(enum)
+            }
+
+            redisService.del(CommonConstant.CACHE_ROLES)
+        }
     }
 
     @Transactional
-    override fun insert(entity: Role?) {
-        if (entity != null) {
-            val i = roleDao.insert(entity)
-            if (i <= 0) {
+    override fun insertBatchRecord(roleDto: RoleDto?) {
+        if (roleDto != null) {
+            if (roleDto.id != null && !roleDto.id.isNullOrEmpty()) {
+                roleDao.deleteRoleMenuByRoleId(roleDto)
+            }
+
+            val i = roleDao.insertBatchRecord(roleDto)
+            if (i != roleDto.menuIds?.size) {
                 throw ServiceException(ExceptionEnum.SERVICE_INSERT)
             }
+
+            redisService.del(CommonConstant.CACHE_ROLES)
         }
     }
 
+    /**
+     * 注意以下情景：
+     * 1、某个角色有活动用户时（状态为no delete）不能删除
+     * 2、某个角色无有效用户时需删除中间表记录
+     */
     @Transactional
-    override fun update(entity: Role?) {
-        if (entity != null) {
-            val i = roleDao.updateById(entity)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
-            }
-        }
-    }
-
-    @Transactional
-    override fun delete(entity: Role?) {
-        if (entity != null) {
-            val i = roleDao.deleteById(entity.id!!)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_DELETE)
-            }
-        }
-    }
-
-    @Transactional
-    override fun deleteById(id: Serializable?) {
+    override fun deleteById(id: String?) {
         if (id != null) {
             val i = roleDao.deleteById(id)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }
+
+            redisService.del(CommonConstant.CACHE_ROLES)
         }
     }
 }

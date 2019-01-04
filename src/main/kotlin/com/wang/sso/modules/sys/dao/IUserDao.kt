@@ -11,7 +11,6 @@ import com.wang.sso.modules.sys.entity.User
  */
 @MyBatisDao(value = "userDao", entity = User::class)
 interface IUserDao : BaseDao<User> {
-
     /**
      * 根据账号获取user信息
      * @param account 用户账号

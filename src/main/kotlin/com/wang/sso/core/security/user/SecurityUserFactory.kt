@@ -17,7 +17,7 @@ object SecurityUserFactory {
         return SecurityUser().apply {
             BeanUtils.copyProperties(user, this)
             this.pwd = user.password
-            this.roles = UserUtils.findRolesByUserId(user.id)
+            this.roles = UserUtils.findRoleList(user.id)
         }
     }
 

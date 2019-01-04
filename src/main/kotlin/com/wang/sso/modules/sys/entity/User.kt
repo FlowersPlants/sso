@@ -26,9 +26,19 @@ open class User() : BaseModel() {
 
     var password: String? = null
 
+    /**
+     * 姓名
+     */
+    var name: String? = null
+
+    var sort: Int? = null
+
     var email: String? = null
 
-    var gender: Boolean? = null
+    /**
+     * 性别（0-保密，1-男，2-女）
+     */
+    var gender: String? = null
 
     var birthday: Date? = null
 }

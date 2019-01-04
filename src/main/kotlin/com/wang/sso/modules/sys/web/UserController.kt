@@ -8,7 +8,6 @@ import com.wang.sso.modules.sys.service.MenuService
 import com.wang.sso.modules.sys.service.UserService
 import com.wang.sso.modules.sys.utils.UserUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -30,55 +29,55 @@ class UserController : BaseController() {
      * 获取用户信息
      */
     @GetMapping("info")
-    fun info(): ResponseEntity<*> {
+    fun info(): Any? {
         val user = UserUtils.getCurrentUser()
-        return ResponseEntity.ok(ResponseDto().apply {
+        return ResponseDto().apply {
             val currentUser = UserUtils.getCurrentUser()
             data = mutableMapOf(
                 "info" to user,
                 "roles" to UserUtils.findRoleList(currentUser.id),
                 "menus" to menuService.getUserMenuTree()
             )
-        })
+        }
     }
 
     /**
      * 分页接口
      */
     @GetMapping
-    fun findPage(user: User): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.findPage(user, PaginationUtil.getRequestPage(getRequest())!!)
-        })
+    fun findPage(user: User?): Any? {
+        return ResponseDto().apply {
+            data = userService.findPage(user, PaginationUtil.getRequestPage(getRequest()))
+        }
     }
 
     /**
      * 新增接口
      */
     @PostMapping
-    fun insert(@RequestBody user: User): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.insert(user)
-        })
+    fun insert(@RequestBody user: User?): Any? {
+        return ResponseDto().apply {
+            data = userService.save(user)
+        }
     }
 
     /**
      * 修改接口
      */
     @PutMapping
-    fun update(@RequestBody user: User): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.update(user)
-        })
+    fun update(@RequestBody user: User?): Any? {
+        return ResponseDto().apply {
+            data = userService.save(user)
+        }
     }
 
     /**
      * 删除接口（逻辑删除）
      */
     @DeleteMapping("{id}")
-    fun delete(@PathVariable("id") id: String?): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
+    fun delete(@PathVariable("id") id: String?): Any? {
+        return ResponseDto().apply {
             data = userService.deleteById(id)
-        })
+        }
     }
 }

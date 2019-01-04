@@ -3,7 +3,6 @@ package com.wang.sso.modules.sys.service.impl
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import com.wang.sso.core.cache.redis.RedisService
 import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.Serializable
 
 /**
  * 用户service实现类
@@ -32,9 +30,6 @@ open class UserServiceImpl : UserService {
 
     @Autowired
     private lateinit var userDao: IUserDao
-
-    @Autowired
-    private lateinit var redisService: RedisService
 
     override fun findPage(entity: User?, page: Page<User>?): IPage<User> {
         return userDao.selectPage(page, QueryWrapper<User>().apply {
@@ -62,55 +57,38 @@ open class UserServiceImpl : UserService {
      * 新增用户时应该在注册之前异步验证账号是否已存在
      */
     @Transactional
-    override fun insert(entity: User?) {
+    override fun save(entity: User?) {
         if (entity != null) {
             if (entity.password.isNullOrEmpty()) {
-                entity.password = passwordEncoder.encode(CommonConstant.DEFAULT_PASSWORD)
+                entity.password = CommonConstant.DEFAULT_PASSWORD
             }
-            val i = userDao.insert(entity)
+            entity.password = passwordEncoder.encode(entity.password)
+
+            val enum: ExceptionEnum?
+            val i = if (entity.id.isNullOrEmpty()) {
+                enum = ExceptionEnum.SERVICE_INSERT
+                userDao.insert(entity)
+            } else {
+                enum = ExceptionEnum.SERVICE_UPDATE
+                userDao.updateById(entity)
+            }
             if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_INSERT)
+                throw ServiceException(enum)
             }
 
-            redisService.hset(CommonConstant.CACHE_USERS, CommonConstant.USER_CACHE_ID + entity.id, entity)
-            // redisService.hset(CommonConstant.CACHE_USERS, CommonConstant.USER_CACHE_ACCOUNT + entity.account, entity)
+            UserUtils.clearCache(entity)
         } else throw SsoException(501, "$entity", "不能为null")
     }
 
     @Transactional
-    override fun update(entity: User?) {
-        if (entity != null) {
-            val i = userDao.updateById(entity)
-            if (i <= 0) {
-                throw ServiceException(ExceptionEnum.SERVICE_UPDATE)
-            }
-
-            UserUtils.clearCache(entity)
-            redisService.hset(CommonConstant.CACHE_USERS, CommonConstant.USER_CACHE_ID + entity.id, entity)
-        }
-    }
-
-    @Transactional
-    override fun delete(entity: User?) {
-        if (entity != null) {
-            val i = userDao.deleteById(entity.id!!)
-            if (i <= 0) {
-                throw ServiceException(703, "删除失败")
-            }
-
-            UserUtils.clearCache(entity)
-        }
-    }
-
-    @Transactional
-    override fun deleteById(id: Serializable?) {
+    override fun deleteById(id: String?) {
         if (id != null) {
             val i = userDao.deleteById(id)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }
 
-            redisService.hdel(CommonConstant.CACHE_USERS, CommonConstant.USER_CACHE_ID + id)
+            UserUtils.clearCache(UserUtils.findUserById(id)!!)
         }
     }
 }

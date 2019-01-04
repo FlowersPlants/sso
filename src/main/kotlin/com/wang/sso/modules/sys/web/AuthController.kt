@@ -28,7 +28,7 @@ class AuthController {
     @RequestMapping("/auth/register")
     fun register(@RequestBody user: User): ResponseEntity<*> {
         return ResponseEntity.ok(ResponseDto().apply {
-            data = userService.insert(user)
+            data = userService.save(user)
         })
     }
 }

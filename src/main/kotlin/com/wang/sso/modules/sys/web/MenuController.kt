@@ -5,7 +5,6 @@ import com.wang.sso.core.support.BaseController
 import com.wang.sso.modules.sys.entity.Menu
 import com.wang.sso.modules.sys.service.MenuService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -21,10 +20,10 @@ class MenuController : BaseController() {
      * 获取菜单树
      */
     @GetMapping("tree")
-    fun tree(): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
+    fun tree(): Any? {
+        return ResponseDto().apply {
             data = menuService.getMenuTree()
-        })
+        }
     }
 
     /**
@@ -41,29 +40,29 @@ class MenuController : BaseController() {
      * 新增接口
      */
     @PostMapping
-    fun insert(@RequestBody entity: Menu): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = menuService.insert(entity)
-        })
+    fun insert(@RequestBody entity: Menu?): Any? {
+        return ResponseDto().apply {
+            data = menuService.save(entity)
+        }
     }
 
     /**
      * 修改接口
      */
     @PutMapping
-    fun update(@RequestBody entity: Menu): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
-            data = menuService.update(entity)
-        })
+    fun update(@RequestBody entity: Menu?): Any? {
+        return ResponseDto().apply {
+            data = menuService.save(entity)
+        }
     }
 
     /**
      * 删除接口（逻辑删除）
      */
     @DeleteMapping("{id}")
-    fun delete(@PathVariable("id") id: String?): ResponseEntity<*> {
-        return ResponseEntity.ok(ResponseDto().apply {
+    fun delete(@PathVariable("id") id: String?): Any? {
+        return ResponseDto().apply {
             data = menuService.deleteById(id)
-        })
+        }
     }
 }

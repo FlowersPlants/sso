@@ -27,11 +27,10 @@ object CommonConstant {
     const val DEFAULT_SORT = 10 // 默认排序号的值
     const val DEFAULT_PASSWORD = "111111" // 用户新增时的默认密码
 
-    // redis cache (hash数据)
-    const val CACHE_USER_ROLES = "CACHE_USER_ROLES"
-    const val CACHE_USER_MENUS = "CACHE_USER_MENUS"
-    const val CACHE_ALL_MARK = "vla#Wfow9r=roa+}+)_)U(sjf-la2hi><:O%^&If"
-    // 用户信息
+    // redis cache
+    const val CACHE_ROLES = "CACHE_ROLES"
+    const val CACHE_MENUS = "CACHE_MENUS"
+    // 用户信息(hash)
     const val CACHE_USERS = "CACHE_USERS"
     const val USER_CACHE_ID = "id_"
     const val USER_CACHE_ACCOUNT = "account_"
