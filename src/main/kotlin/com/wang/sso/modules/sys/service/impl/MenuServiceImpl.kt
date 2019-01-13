@@ -114,10 +114,14 @@ open class MenuServiceImpl : MenuService {
         }
     }
 
+    /**
+     * 删除接口，删除此菜单和其所有子菜单
+     */
     @Transactional
     override fun deleteById(id: String?) {
         if (id != null) {
-            val i = menuDao.deleteById(id)
+            val ids = menuDao.findChildrenById(id)!!.map { it.id }
+            val i = menuDao.deleteBatchIds(ids)
             if (i <= 0) {
                 throw ServiceException(ExceptionEnum.SERVICE_DELETE)
             }

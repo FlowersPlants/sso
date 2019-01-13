@@ -11,4 +11,10 @@
             #{e}
         </foreach>
     </select>
+
+    <select id="findChildrenById" resultType="Menu">
+        select a.*
+        from sys_menu a
+        where a.id = #{id} or a.parent_ids like concat('%', #{id}, '%')
+    </select>
 </mapper>

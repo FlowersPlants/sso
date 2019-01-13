@@ -6,7 +6,6 @@ package com.wang.sso.core.consts
  * @since v1
  */
 object CommonConstant {
-
     // jwt token
     const val JWT_TOKEN_HEADER = "Authorization"
     const val JWT_TOKEN_HEAD = "Bearer " // tip: 有个空格
@@ -27,11 +26,13 @@ object CommonConstant {
     const val DEFAULT_SORT = 10 // 默认排序号的值
     const val DEFAULT_PASSWORD = "111111" // 用户新增时的默认密码
 
-    // redis cache
+    // redis cache (string)
     const val CACHE_ROLES = "CACHE_ROLES"
     const val CACHE_MENUS = "CACHE_MENUS"
-    // 用户信息(hash)
+    // 用户信息 (hash)
     const val CACHE_USERS = "CACHE_USERS"
     const val USER_CACHE_ID = "id_"
     const val USER_CACHE_ACCOUNT = "account_"
+    // 字典 cache (string)
+    const val CACHE_DICT = "CACHE_DICT"
 }

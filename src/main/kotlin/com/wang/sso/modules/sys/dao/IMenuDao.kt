@@ -16,4 +16,9 @@ interface IMenuDao : BaseDao<Menu> {
      * @param list 角色ID集合
      */
     fun findByRoleIds(list: List<String?>): MutableList<Menu>?
+
+    /**
+     * 根据ID查询其本身和所有子节点
+     */
+    fun findChildrenById(id: String): MutableList<Menu>?
 }

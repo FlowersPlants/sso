@@ -13,5 +13,5 @@ interface DictService : BaseService<Dict> {
     /**
      * 获取所有字典信息，需要放在缓存里面
      */
-    fun findPage(dict: Dict?, page: Page<Dict>?): IPage<Dict>?
+    fun findPage(dict: Dict?, page: Page<Dict>): IPage<Dict>?
 }

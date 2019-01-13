@@ -18,6 +18,11 @@ class MenuTree : TreeNode() {
     var code: String? = null
 
     /**
+     * 所有父ID
+     */
+    var parentIds: String? = null
+
+    /**
      * 菜单类型(0 - 菜单组； 1 - 菜单)
      */
     var type: String? = null

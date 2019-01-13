@@ -46,6 +46,11 @@ class Menu() : BaseModel() {
     var parentId: String? = null
 
     /**
+     * 所有父ID
+     */
+    var parentIds: String? = null
+
+    /**
      * 图标名称
      */
     var icon: String? = null
