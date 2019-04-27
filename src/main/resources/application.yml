@@ -10,7 +10,7 @@ spring:
   datasource:
     username: sso
     password: 111111
-    url: jdbc:mysql://192.168.0.101:3306/sso_sys?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://192.168.0.102:3306/sso_sys?characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   ###############################
@@ -30,21 +30,38 @@ spring:
         max-wait: 6000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
       shutdown-timeout: 100
     timeout: 1000
-    host: 192.168.0.101
+    host: 192.168.0.102
     port: 6379
+
+#  # aop 配置，开启cglib代理方式？
+#  aop:
+#    auto: true
+#    proxy-target-class: true
 
 
 mybatis-plus:
   #  mapper-locations: classpath:mappings/*/*.xml # xml文件配置，配置在这里无效，为何？为何？
   check-config-location: true # 启动时是否检查mybatis xml文件存在，默认不检查
   configuration:
-    map-underscore-to-camel-case: true # 下划线转驼峰
-  global-config:
-    refresh: true # 是否自动刷新 Mapper 对应的 XML 文件，开发时设置为是
-  #    db-config:
-  #      db-type: mysql # 数据库类型，不配置时会自动按照url连接获取
-  #      id-type: id_worker_str # 全局主键配置，字符串类型的id_worker
-  #      logic-delete-value: 1 # 逻辑删除值，逻辑删除有效，与mp配置一样时，该配置可无
-  #      logic-not-delete-value: 0 # 逻辑未删除值，与mp配置一样时，该配置可无
-  #      table-prefix: sys_ # 表名前缀
-  #      table-underline: true # 表名是否使用下划线命名
+    map-underscore-to-camel-case: true # 下划线转驼峰，默认为true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 配置sql打印日志
+#  global-config:
+#    refresh: true # 是否自动刷新 Mapper 对应的 XML 文件，开发时设置为是
+#    db-config:
+#      db-type: mysql # 数据库类型，不配置时会自动按照url连接获取
+#      id-type: id_worker_str # 全局主键配置，字符串类型的id_worker
+#      logic-delete-value: 1 # 逻辑删除值，逻辑删除有效，与mp配置一样时，该配置可无
+#      logic-not-delete-value: 0 # 逻辑未删除值，与mp配置一样时，该配置可无
+#      table-prefix: sys_ # 表名前缀
+#      table-underline: true # 表名是否使用下划线命名
+
+
+######################
+##  swagger 配置
+#####################
+swagger:
+  open: true
+
+## 安全功能 配置
+security:
+  cors: true

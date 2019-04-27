@@ -1,9 +1,12 @@
 package com.wang.sso.core.security.handler
 
+import com.wang.sso.common.utils.JsonUtils
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler
 import org.springframework.stereotype.Service
+import java.io.PrintWriter
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -19,7 +22,10 @@ import javax.servlet.http.HttpServletResponse
 class SsoLogoutSuccessHandler : HttpStatusReturningLogoutSuccessHandler() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    override fun onLogoutSuccess(p0: HttpServletRequest?, p1: HttpServletResponse?, p2: Authentication?) {
+    override fun onLogoutSuccess(p0: HttpServletRequest, p1: HttpServletResponse, p2: Authentication) {
         logger.info("logout success.")
+        p1.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
+        val out: PrintWriter = p1.writer
+        out.write(JsonUtils.toJson("登出成功！"))
     }
 }

@@ -10,6 +10,7 @@ import java.util.*
  * @author FlowersPlants
  * @since v1
  */
+@Deprecated("暂不使用")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class ResponseDto : Serializable {
     companion object {

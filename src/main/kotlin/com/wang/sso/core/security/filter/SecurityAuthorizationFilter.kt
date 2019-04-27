@@ -43,7 +43,7 @@ class SecurityAuthorizationFilter(authenticationManager: AuthenticationManager) 
      * 解析token，返回AuthenticationToke
      * 返回的不是一个SecurityUser对象，导致SecurityUtils中只能从json转化
      */
-    private fun getAuthentication(tokenHeader: String): Authentication? {
+    private fun getAuthentication(tokenHeader: String): Authentication {
         if (!TokenUtils.isExpiration(tokenHeader)) {
             val account = TokenUtils.getSubjectFormToken(tokenHeader)
             // 需要从缓存获取信息，否则导则每个请求都会执行此sql查询操作

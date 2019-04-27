@@ -7,6 +7,7 @@ import com.wang.sso.core.consts.CommonConstant
 import com.wang.sso.core.exception.ExceptionEnum
 import com.wang.sso.core.exception.ServiceException
 import com.wang.sso.core.exception.SsoException
+import com.wang.sso.core.logging.annotation.SystemLog
 import com.wang.sso.modules.sys.dao.IUserDao
 import com.wang.sso.modules.sys.entity.User
 import com.wang.sso.modules.sys.service.UserService
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 
 /**
  * 用户service实现类
@@ -31,12 +33,14 @@ open class UserServiceImpl : UserService {
     @Autowired
     private lateinit var userDao: IUserDao
 
-    override fun findPage(entity: User?, page: Page<User>?): IPage<User> {
+    override fun findById(id: Serializable?): User? {
+        return if (id != null) userDao.selectById(id) else null
+    }
+
+    @SystemLog(title = "获取用户列表")
+    override fun findPage(entity: User?, page: Page<User>): IPage<User> {
         return userDao.selectPage(page, QueryWrapper<User>().apply {
             if (entity != null) {
-                if (!entity.id.isNullOrEmpty()) {
-                    eq("id", "${entity.id}")
-                }
                 if (!entity.account.isNullOrEmpty()) {
                     eq("account", "${entity.account}")
                 }

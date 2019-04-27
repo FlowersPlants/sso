@@ -1,6 +1,5 @@
 package com.wang.sso.core.security.handler
 
-import com.wang.sso.common.dto.ResponseDto
 import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.core.exception.ExceptionEnum
 import org.springframework.http.HttpStatus
@@ -30,15 +29,13 @@ class SsoFailureHandler : SimpleUrlAuthenticationFailureHandler() {
     ) {
         response.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
-        val body = ResponseDto().apply {
-            // 前端不输出code，所以此处不设置code的值
-            var msg = exception.message
-            if (exception.javaClass.simpleName == "BadCredentialsException") {
-                msg = ExceptionEnum.USERNAME_OR_PASSWORD_INCORRECT.message
-            }
-            data = msg
+
+        // 前端不输出code，所以此处不设置code的值
+        var msg = exception.message
+        if (exception.javaClass.simpleName == "BadCredentialsException") {
+            msg = ExceptionEnum.USERNAME_OR_PASSWORD_INCORRECT.message
         }
         val out: PrintWriter = response.writer
-        out.write(JsonUtils.toJson(body))
+        out.write(JsonUtils.toJson(msg))
     }
 }

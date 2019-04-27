@@ -15,11 +15,16 @@ import java.util.*
 
 /**
  * MySQL generator
- * 需要vm文件
+ * 需要vm文件，mybatis-plus 3.1.1版本移除了generator的依赖，可按需引入
  * @author FlowersPlants
  * @since v1
  */
 object MysqlGenerator {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        generator()
+    }
+
     fun generator() {
         // 自定义需要填充的字段
         val tableFillList = ArrayList<TableFill>()
@@ -106,7 +111,7 @@ object MysqlGenerator {
             // 包配置
             PackageConfig()
                 .setParent("com.wang.sso.modules")
-                .setController("controller")
+                .setController("web")
                 .setEntity("entity")
                 .setMapper("dao")
                 .setService("service")

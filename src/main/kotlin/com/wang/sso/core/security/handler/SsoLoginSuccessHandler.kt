@@ -1,6 +1,5 @@
 package com.wang.sso.core.security.handler
 
-import com.wang.sso.common.dto.ResponseDto
 import com.wang.sso.common.utils.JsonUtils
 import com.wang.sso.core.security.user.SecurityUser
 import com.wang.sso.core.security.user.TokenUtils
@@ -34,9 +33,8 @@ class SsoLoginSuccessHandler : SavedRequestAwareAuthenticationSuccessHandler() {
         // 把用户账号放在token里面，以后可以保存其他信息，比如session
         val token = TokenUtils.generateToken(securityUser.username)
         response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
-        response.writer.write(JsonUtils.toJson(ResponseDto().apply {
-            data = token
-        }))
+        response.writer.write(JsonUtils.toJson(token))
+
         // 调用父类的方法会默认跳转，来自：https://blog.csdn.net/qq_37502106/article/details/81045773
         // super.onAuthenticationSuccess(request, response, authentication)
     }

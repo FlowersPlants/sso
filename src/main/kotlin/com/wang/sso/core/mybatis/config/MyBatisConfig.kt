@@ -2,8 +2,6 @@ package com.wang.sso.core.mybatis.config
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
-import com.baomidou.mybatisplus.core.injector.ISqlInjector
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
 import com.wang.sso.core.mybatis.handler.MyBatisPlusMetaObjectHandler
@@ -27,14 +25,14 @@ open class MyBatisConfig {
 
     @Autowired
     private lateinit var dataSource: DataSource
-
-    /**
-     * 逻辑删除时注入Bean
-     */
-    @Bean
-    open fun sqlInjector(): ISqlInjector {
-        return LogicSqlInjector()
-    }
+//
+//    /**
+//     * 逻辑删除时注入Bean
+//     */
+//    @Bean
+//    open fun sqlInjector(): ISqlInjector {
+//        return LogicSqlInjector()
+//    }
 
     /**
      * mp字段自动填充Bean
@@ -88,8 +86,7 @@ open class MyBatisConfig {
      */
     @Bean
     open fun globalConfig(): GlobalConfig {
-        return GlobalConfig()
-            .setMetaObjectHandler(metaObjectHandler()) // 自动填充插件
-            .setSqlInjector(sqlInjector()) // 逻辑删除插件
+        return GlobalConfig().setMetaObjectHandler(metaObjectHandler()) // 自动填充插件
+//            .setSqlInjector(sqlInjector()) // 逻辑删除插件
     }
 }

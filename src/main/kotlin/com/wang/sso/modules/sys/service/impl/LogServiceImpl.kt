@@ -25,9 +25,6 @@ class LogServiceImpl : LogService {
                 if (!log.logTitle.isNullOrEmpty()) {
                     like("log_title", "${log.logTitle}")
                 }
-                if (!log.bizType.isNullOrEmpty()) {
-                    eq("biz_type", "${log.bizType}")
-                }
                 if (!log.hasException.isNullOrEmpty()) {
                     eq("has_exception", "${log.hasException}")
                 }

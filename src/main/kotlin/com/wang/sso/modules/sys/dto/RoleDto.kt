@@ -21,4 +21,9 @@ class RoleDto : Serializable {
      * 菜单ID集合
      */
     var menuIds: MutableList<String>? = null
+
+    /**
+     * 用户ID集合
+     */
+    var userIds: MutableList<String>? = null
 }

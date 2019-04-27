@@ -85,11 +85,7 @@ object TreeUtils {
                     result.add(temp)
 //                    break
                 }
-                temp.children?.let {
-                    it.forEach {
-                        stack.add(it as T)
-                    }
-                }
+                temp.children?.let { it.forEach { t -> stack.add(t as T) } }
             }
         }
         return result
@@ -109,11 +105,7 @@ object TreeUtils {
                 if (transform(temp)) {
                     result.add(temp)
                 }
-                temp.children?.let {
-                    it.forEach {
-                        deque.add(it as T)
-                    }
-                }
+                temp.children?.let { c -> c.forEach { t -> deque.add(t as T) } }
             }
         }
         return result

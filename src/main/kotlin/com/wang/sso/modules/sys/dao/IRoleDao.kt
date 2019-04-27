@@ -19,12 +19,19 @@ interface IRoleDao : BaseDao<Role> {
     fun findByUserId(userId: String): MutableList<Role>?
 
     /**
-     * 批量新增前都的先删除记录
+     * 批量新增之前先删除记录
      */
     fun deleteRoleMenuByRoleId(roleDto: RoleDto): Int
+
+    fun deleteRoleUserByRoleId(roleDto: RoleDto): Int
 
     /**
      * 批量新增角色和菜单中间表记录
      */
-    fun insertBatchRecord(roleDto: RoleDto): Int
+    fun insertBatchMenuRecord(roleDto: RoleDto): Int
+
+    /**
+     * 批量新增角色和用户中间记录
+     */
+    fun insertBatchUserRecord(roleDto: RoleDto): Int
 }

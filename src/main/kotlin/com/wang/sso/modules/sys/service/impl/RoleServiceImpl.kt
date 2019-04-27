@@ -14,6 +14,7 @@ import com.wang.sso.modules.sys.service.RoleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.Serializable
 
 /**
  * 角色service实现类
@@ -28,12 +29,13 @@ open class RoleServiceImpl : RoleService {
     @Autowired
     private lateinit var redisService: RedisService
 
-    override fun findPage(entity: Role?, page: Page<Role>?): IPage<Role>? {
+    override fun findById(id: Serializable?): Role? {
+        return if (id != null) roleDao.selectById(id) else null
+    }
+
+    override fun findPage(entity: Role?, page: Page<Role>): IPage<Role>? {
         return roleDao.selectPage(page, QueryWrapper<Role>().apply {
             if (entity != null) {
-                if (!entity.id.isNullOrEmpty()) {
-                    eq("id", "${entity.id}")
-                }
                 if (!entity.name.isNullOrEmpty()) {
                     like("name", "${entity.name}")
                 }
@@ -70,12 +72,23 @@ open class RoleServiceImpl : RoleService {
     override fun insertBatchRecord(roleDto: RoleDto?) {
         if (roleDto != null) {
             if (roleDto.id != null && !roleDto.id.isNullOrEmpty()) {
-                roleDao.deleteRoleMenuByRoleId(roleDto)
+                if (roleDto.menuIds != null) {
+                    roleDao.deleteRoleMenuByRoleId(roleDto)
+                } else if (roleDto.userIds != null) {
+                    roleDao.deleteRoleUserByRoleId(roleDto)
+                }
             }
 
-            val i = roleDao.insertBatchRecord(roleDto)
-            if (i != roleDto.menuIds?.size) {
-                throw ServiceException(ExceptionEnum.SERVICE_INSERT)
+            if (roleDto.menuIds != null) {
+                val i = roleDao.insertBatchMenuRecord(roleDto)
+                if (i != roleDto.menuIds?.size) {
+                    throw ServiceException(ExceptionEnum.SERVICE_INSERT)
+                }
+            } else if (roleDto.userIds != null) {
+                val i = roleDao.insertBatchUserRecord(roleDto)
+                if (i != roleDto.userIds?.size) {
+                    throw ServiceException(ExceptionEnum.SERVICE_INSERT)
+                }
             }
 
             redisService.del(CommonConstant.CACHE_ROLES)

@@ -23,7 +23,7 @@ class PropertiesUtils {
         private val logger = LoggerFactory.getLogger(PropertiesUtils::class.java)
 
         // 正则表达式预编译
-        private val p1 = Pattern.compile("\\$\\{.*?\\}")
+        private val p1 = Pattern.compile("\\$\\{.*?}")
 
         /**
          * 重新加载实例（重新实例化，以重新加载属性文件数据）
@@ -119,7 +119,7 @@ class PropertiesUtils {
             val m = p1.matcher(value)
             while (m.find()) {
                 val g = m.group()
-                val keyChild = g.replace("\\$\\{".toRegex(), "").replace("\\}".toRegex(), "")
+                val keyChild = g.replace("\\$\\{".toRegex(), "").replace("}".toRegex(), "")
                 value = value!!.replace(g, getProperty(keyChild)!!)
             }
             return value

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false">
-    <springProperty scop="context" name="spring.application.name" source="spring.application.name" defaultValue="pig"/>
-    <property name="log.path" value="/Users/wangzaijun/documents/idea_work/${spring.application.name}" />
+    <springProperty scop="context" name="spring.application.name" source="spring.application.name" defaultValue="sso-sys"/>
+    <property name="log.path" value="${spring.application.name}" />
     <!-- Console log output -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -9,7 +9,7 @@
         </encoder>
     </appender>
 
-    <!-- Log file debug output -->
+    <!-- SystemLog file debug output -->
     <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -22,7 +22,7 @@
         </encoder>
     </appender>
 
-    <!-- Log file error output -->
+    <!-- SystemLog file error output -->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

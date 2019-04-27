@@ -1,18 +1,20 @@
 package com.wang.sso.core.security.config
 
+import com.wang.sso.core.filter.GlobalCorsWebFilter
+import com.wang.sso.core.properties.SecurityProperties
+import com.wang.sso.core.security.filter.SecurityAuthorizationFilter
 import com.wang.sso.core.security.filter.SecurityLoginFilter
 import com.wang.sso.core.security.handler.SsoFailureHandler
 import com.wang.sso.core.security.handler.SsoLoginSuccessHandler
-import com.wang.sso.core.security.user.SecurityUserService
-import com.wang.sso.core.security.filter.SecurityAuthorizationFilter
 import com.wang.sso.core.security.handler.SsoLogoutSuccessHandler
-import org.springframework.boot.web.servlet.FilterRegistrationBean
+import com.wang.sso.core.security.user.SecurityUserService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.Ordered
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -22,10 +24,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter
-import javax.servlet.Filter
 
 /**
  * spring security 安全配置
@@ -34,8 +32,16 @@ import javax.servlet.Filter
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 使PreAuthorize注解生效
-open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+@EnableConfigurationProperties(value = [SecurityProperties::class])
+open class WebSecurityConfig() : WebSecurityConfigurerAdapter() {
+
+    private lateinit var properties: SecurityProperties
+
+    @Autowired
+    constructor(properties: SecurityProperties) : this() {
+        this.properties = properties
+        System.err.println("security properties cors => ${properties.cors}")
+    }
 
     /**
      * 添加userDetailsService的bean
@@ -50,24 +56,33 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return BCryptPasswordEncoder()
     }
 
+//    /**
+//     * cors跨域配置
+//     * 跨域问题在没有设置bean.order = Ordered.HIGHEST_PRECEDENCE时都还存在
+//     * 设置之后跨域问题解决
+//     */
+//    @Bean
+//    open fun corsFilter(): FilterRegistrationBean<*> {
+//        val source = UrlBasedCorsConfigurationSource()
+//        val config = CorsConfiguration()
+//        config.allowCredentials = true // 设置携带令牌
+//        config.addAllowedHeader("*")
+//        config.addAllowedMethod("*")
+//        config.addAllowedOrigin("http://localhost:8080") // 设置允许跨域的域，此域为前端框架的域
+//        source.registerCorsConfiguration("/**", config) // 对所有接口有效
+//        val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
+//        bean.order = Ordered.HIGHEST_PRECEDENCE
+//        return bean
+//    }
+
     /**
-     * cors跨域配置
-     * 跨域问题在没有设置bean.order = Ordered.HIGHEST_PRECEDENCE时都还存在
-     * 设置之后跨域问题解决
+     * 解决跨域的另一种方式，较上面的方式好
+     * 好在allowedOrigin可动态获取
      */
     @Bean
-    open fun corsFilter(): FilterRegistrationBean<*> {
-        val source = UrlBasedCorsConfigurationSource()
-        val config = CorsConfiguration()
-        config.allowCredentials = true // 设置携带令牌
-        config.addAllowedHeader("*")
-        config.addAllowedMethod("*")
-        config.addAllowedOrigin("http://localhost:8080") // 设置允许跨域的域，此域为前端框架的域
-        source.registerCorsConfiguration("/**", config) // 对所有接口有效
-
-        val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
-        bean.order = Ordered.HIGHEST_PRECEDENCE
-        return bean
+    @ConditionalOnProperty(prefix = "security", name = ["cors"], havingValue = "true")
+    open fun corsFilter(): GlobalCorsWebFilter {
+        return GlobalCorsWebFilter()
     }
 
     @Bean
@@ -101,20 +116,6 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         auth!!.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder())
     }
 
-//    没有访问服务器的静态资源，所以取消此设置
-//    /**
-//     * 解决静态资源被拦截问题
-//     * 当静态资源访问被拦截后自动跳转到login链接，导致浏览器请求报错误如下：
-//     * because non script MIME types are not allowed when 'X-Content-Type: nosniff' is given.
-//     * 因为login链接返回到不是标准到Content-Type,并且浏览器设置X-Content-Type: nosniff后不能猜测其Mime类型
-//     * 参考链接https://blog.csdn.net/zhuyiquan/article/details/52173735
-//     *
-//     * 需要在[com.wang.sso.core.config.WebMvcConfig.addResourceHandlers]重新配置静态文件访问路径
-//     */
-//    override fun configure(web: WebSecurity?) {
-//        web!!.ignoring().antMatchers("/static/**")
-//    }
-
     /**
      * http访问配置，配置各个路径的访问权限
      * 登录和登出都是覆盖默认的
@@ -123,7 +124,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers("/auth/register")
+            .antMatchers("/auth/register", "/swagger-ui.html/**", "/**/swagger-resources/**", "/v2/**", "/webjars/**")
             .permitAll() // 配置可匿名访问的URL
 
             .anyRequest()

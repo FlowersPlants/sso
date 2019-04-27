@@ -2,6 +2,13 @@
 * 项目说明：
 * 项目前端[sso-front](https://github.com/FlowersPlants/sso-front)
 
+# 技术栈
+0 Kotlin语言
+1 SpringBoot v2.0
+2 SpringSecurity
+3 Redis缓存
+4 Vue element-ui
+
 # 规划功能
 * 基于Spring Security的权限控制
 * 前后端分离，前端基于Vue
@@ -24,11 +31,20 @@
 * 登录相关问题：
 
 # 参考
+* 强烈建议参考[种子项目](https://github.com/Zoctan/spring-boot-api-seedling)
+* [boot security session并发管理](http://www.cnblogs.com/sweetchildomine/p/6932488.html)
+* [前后端分离 SpringBoot整合SpringSecurity权限控制（动态拦截url）](https://blog.csdn.net/weixin_39792935/article/details/84541194)
 * 项目开发时可以参考[framework](https://gitee.com/sunhan521/framework/tree/master)项目，[git地址](https://gitee.com/sunhan521/framework.git)
 * 可以浏览[MP文档](https://blog.csdn.net/helloPurple/article/details/78715508)的优秀案例
 * 也可以浏览[优秀案例](http://mp.baomidou.com/guide/#优秀案例)
 
 # 更新日志
+* 优化 查询时返回结果为null时忽略
+* spring-boot 升级到`2.1.3.RELEASE`, mybatis-plus升级到`3.1.1`
+* 删除`ResponseDto`类的使用，不确定该类的优势
+* 完善认证中心，尝试添加session共享、实现单点登录功能
+* 完成swagger2 接口文档功能，[本地访问地址](http://localhost:8899/swagger-ui.html)
+
 ### 2019-01-12
 * 字典功能完成
 

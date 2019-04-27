@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
  */
 @Configuration
 @EnableTransactionManagement // 事务控制
+//@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60)
 open class RedisConfig {
 
     @Autowired
