@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false">
-    <springProperty scop="context" name="spring.application.name" source="spring.application.name" defaultValue="sso-sys"/>
-    <property name="log.path" value="${spring.application.name}" />
+    <springProperty
+            scop="context"
+            name="app.name"
+            source="spring.application.name"
+            defaultValue="sso-sys"/>
+    <property name="log.path" value=".logs"/>
+    <!--设置系统日志目录-->
+    <property name="log.dir" value="${app.name}"/>
     <!-- Console log output -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -11,9 +17,9 @@
 
     <!-- SystemLog file debug output -->
     <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/debug.log</file>
+        <file>${log.path}/${log.dir}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/%d{yyyy-MM}/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${log.path}/${log.dir}/%d{yyyy-MM}/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -24,9 +30,9 @@
 
     <!-- SystemLog file error output -->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/error.log</file>
+        <file>${log.path}/${log.dir}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/%d{yyyy-MM}/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${log.path}/${log.dir}/%d{yyyy-MM}/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -43,8 +49,8 @@
 
     <!-- Level: FATAL 0  ERROR 3  WARN 4  INFO 6  DEBUG 7 -->
     <root level="INFO">
-        <appender-ref ref="console" />
-        <appender-ref ref="debug" />
-        <appender-ref ref="error" />
+        <appender-ref ref="console"/>
+        <appender-ref ref="debug"/>
+        <appender-ref ref="error"/>
     </root>
 </configuration>
