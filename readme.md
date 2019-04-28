@@ -40,6 +40,8 @@
 
 # 更新日志
 
+* 登出发现bug：跨越配置导致登出处理器没有执行(原来是`SsoLogoutSuccessHandler`的`p2`参数问题--需要可null)
+
 ### 2019-04-29
 * 优化 查询时返回结果为null时忽略
 * spring-boot 升级到`2.1.3.RELEASE`, mybatis-plus升级到`3.1.1`

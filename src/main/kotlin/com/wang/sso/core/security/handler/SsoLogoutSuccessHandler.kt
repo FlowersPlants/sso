@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse
 class SsoLogoutSuccessHandler : HttpStatusReturningLogoutSuccessHandler() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    override fun onLogoutSuccess(p0: HttpServletRequest, p1: HttpServletResponse, p2: Authentication) {
+    override fun onLogoutSuccess(p0: HttpServletRequest, p1: HttpServletResponse, p2: Authentication?) {
         logger.info("logout success.")
         p1.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
         val out: PrintWriter = p1.writer
