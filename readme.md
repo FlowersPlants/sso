@@ -39,6 +39,8 @@
 * 也可以浏览[优秀案例](http://mp.baomidou.com/guide/#优秀案例)
 
 # 更新日志
+
+### 2019-04-29
 * 优化 查询时返回结果为null时忽略
 * spring-boot 升级到`2.1.3.RELEASE`, mybatis-plus升级到`3.1.1`
 * 删除`ResponseDto`类的使用，不确定该类的优势

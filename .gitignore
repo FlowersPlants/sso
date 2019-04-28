@@ -12,9 +12,6 @@
 
 ### IntelliJ IDEA ###
 target
-mvnw
-mvnw.cmd
-.mvn
 .logs
 .idea
 *.iws
