@@ -11,10 +11,11 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
+target
 mvnw
 mvnw.cmd
 .mvn
-.logs/*
+.logs
 .idea
 *.iws
 *.iml
