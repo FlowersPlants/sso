@@ -1,13 +1,13 @@
 # 简介
-* 项目说明：
+* 项目说明：一步一步实现可用的单点登陆项目
 * 项目前端[sso-front](https://github.com/FlowersPlants/sso-front)
 
 # 技术栈
-0 Kotlin语言
-1 SpringBoot v2.0
-2 SpringSecurity
-3 Redis缓存
-4 Vue element-ui
+0. Kotlin语言
+1. SpringBoot v2.0
+2. SpringSecurity
+3. Redis缓存
+4. Vue element-ui
 
 # 规划功能
 * 基于Spring Security的权限控制
@@ -27,7 +27,7 @@
 
 
 # 开发中问题集锦
-* 前后端分离跨域问题：
+* 前后端分离跨域问题：跨域问题请看`GlobalCorsWebFilter.kt`类
 * 登录相关问题：
 
 # 参考
@@ -37,6 +37,12 @@
 * 项目开发时可以参考[framework](https://gitee.com/sunhan521/framework/tree/master)项目，[git地址](https://gitee.com/sunhan521/framework.git)
 * 可以浏览[MP文档](https://blog.csdn.net/helloPurple/article/details/78715508)的优秀案例
 * 也可以浏览[优秀案例](http://mp.baomidou.com/guide/#优秀案例)
+
+
+# 代办任务
+* 权限细化到按钮级别
+* 日志记录功能
+...
 
 # 更新日志
 
