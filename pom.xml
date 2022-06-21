@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <mysql.version>6.0.5</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <mybatis-plus.version>3.1.1</mybatis-plus.version>
         <fastjson.version>1.2.47</fastjson.version>
         <fackson.version>2.9.7</fackson.version>
