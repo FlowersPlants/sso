@@ -27,7 +27,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <fackson.version>2.9.7</fackson.version>
         <jjwt.version>0.9.0</jjwt.version>
-        <swagger2.version>2.8.0</swagger2.version>
+        <swagger2.version>2.10.0</swagger2.version>
         <kotlin.version>1.2.71</kotlin.version>
     </properties>
 
